@@ -3,7 +3,7 @@
 # Outputs: Display integer results
 
 # Mental Model: Have user input 2 integers and a mathmatecal operator 
-# to be applied to the integers, then display the results. 
+# to be applied to the integers, perform the operation on the numbers, then display the results. 
 
 # Test cases: 
 #   Input: 3, 4, 'add'
@@ -39,24 +39,24 @@ loop do
   puts "2. Subtract"
   puts "3. Multiply"
   puts "4. Divide"
-  operator = gets.chomp.to_i
+  operator = gets.chomp
 
   # if !num1.is_a?(Integer) || !num2.is_a?(Integer) || !operator.is_a?(Integer)  
   #   puts "Make sure you're entering numbers only."
   # end 
   
   case operator 
-  when 1
+  when '1'
     puts "#{num1} added to #{num2} equals #{num1 + num2}!"
     break
-  when 2
+  when '2'
     puts "#{num1} subtracted by #{num2} equals #{num1 - num2}!"
     break
-  when 3
+  when '3'
     puts "#{num1} times #{num2} equals #{num1 * num2}!"
     break
-  when 4
-    puts "#{num1} divided by #{num2} equals #{num1 / num2} rounded down!"
+  when '4'
+    puts "#{num1} divided by #{num2} equals #{num1.to_f / num2.to_f}!"
     break
   else
     puts "Lets try this again..."
