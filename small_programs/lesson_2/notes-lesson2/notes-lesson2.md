@@ -88,3 +88,64 @@ FLOWCHART
         - Visualizing the way information will flow through a program also helps us develop a better overview of the programs architecture and how to build the most efficient and bug free program.
     - Where does pseudo-code fit in with flowcharts?
         - Because flowcharts give us a visual way of seeing how a programs structure process information we will have a more clear understanding of how to put that into pseudo-code and, eventually, into programming code.
+
+
+PRECEDENCE
+  Textbook
+    - The meaning of an expression in Ruby is determined by what is called operator precedence. It’s a set of rules that dictate how Ruby determines what operands each operator takes.
+    - Another way to think of precedence is that it controls the order of evaluation. Operations involving operators with high precedence get evaluated before operations involving low precedence. When two operations involve operators of the same precedence, the operations occur left-to-right (or right-to-left in some cases). However, thinking of precedence in this way can sometimes lead to unexpected results when using the || and && short-circuit operators or the ternary operator (a ? b : c). It's safer to think of precedence as the mechanism used by Ruby to determine which operands get passed to each operator.
+    - An operator that has higher precedence than another is said to bind more tightly to its operands. In the expression 3 + 5 * 7, the * operator binds more tightly to its operands, 5 and 7, than does the + operator. Thus, + binds to 3 and the return value of 5 * 7 instead of 3 and 5.
+    - From time to time, you may hear or read somebody saying that precedence determines the order in which expressions get evaluated. The evaluation process is more complicated than just determining what gets evaluated first, though. In fact, precedence in Ruby is only part of the story; the other parts are either left-to-right evaluation, right-to-left evaluation, short-circuiting, and ternary expressions.
+    - As it turns out, blocks have the lowest precedence of all operators. But between the two, { } has slightly higher precedence than do...end. This has an effect on which method call the block gets passed to. That's why we get the unexpected result.
+    - How exactly did we get #<Enumerator: [1, 2, 3]:map>? With do...end being the “weakest” of all the operators, array.map gets bound to p, which first invokes array.map, returning an Enumerator object. The Enumerator is then passed to p, along with the block. p prints the Enumerator, but doesn't do anything with the block.
+
+  Notes
+    - What does order precedence mean?
+        - Precedence refers to the priority with which operators are executed.
+        - For example a * operator has a higher precedence than a + operator, meaning it takes a higher priority and with be executed before a + operator.
+    - How can you ensure an expression executes in the order you desire?
+        - Using parenthesis is a great way to ensure the desired pattern of operator execution.
+    - What does the term **bind** refer to in relation to precedence?
+        - Bind is referring to the values attached to either side of an operator.
+        - When the operation is simple, like 3 + 8, there's not much confusion. There's only one possible value the operator can bind to on either side of itself, in which to evaluate.
+        - But it becomes more complicated with multiple operators.
+        - 8 + 7 / 5 ≥ 9 * 8 || true
+        - The above situation will not be executed left to right because there are varying levels of precedence. For example the || logical or operator cannot bind to any value on the left until all of the operators are evaluated according to their precedence.
+        - Basically bind is what an operator must do to a value on each side of itself before it can execute.
+    - Besides deciding what gets evaluated first, what else does precedence determine?
+        - Precedence also decides the direction in which an expression is evaluated.
+        - For example: left-right evaluation, right-left evaluation, short circuiting, and ternary expressions.
+    - When does right-to-left evaluation occur?
+        - If an expression that has 2 operators in it and the operator on the right has a higher precedence than the one on the left the expression on the right will be evaluated and then the one on the left.
+        - Additionally making multiple assignments at once will execute right-to-left:
+        - a = b = c = 10
+        - As well a multiple modifiers:
+        - puts a if a == b if a == c
+        - These are not good practice in ruby and should be avoided.
+    - Why are ternary operators common places of confusion when it comes to precedence?
+        - Ternary operators can be confusing because they are 'short-circuiting' operators. Meaning that depending on whether the condition is met or not will determine which of the code will be executed.
+        - With ||, && and ?: expressions as soon as the condition is met the expression is returned.
+    - How do blocks fit in order precedence?
+        - do/end blocks have a different precedence than { } blocks do. The { } block has a higher precedence than the do/end block.
+            - For example, the **parenthesis** in the following code should illuminate how the { } block has a higher precedence to array.map than array.map does to p.
+            - And the do/end block has a lower precedence to arr.map than arr.map does to p.
+
+            array = [1, 2, 3]
+
+            p(array.map) do |num|
+                num + 1                         
+            end                                 
+
+            #  => <Enumerator: [1, 2, 3]:map>
+
+            p(array.map { |num| num + 1 })     
+
+            #  => [2, 3, 4]
+
+    - What does the #tap method do?
+        - The #tap method allows you to 'tap into' a method or method chain and print the return value at that point in the method/chain.
+        - It's a useful debugging tool.
+    - When in doubt about the precedence rules what should you do?
+        - Using parenthesis will allow you to have complete control of the order of execution.
+
+

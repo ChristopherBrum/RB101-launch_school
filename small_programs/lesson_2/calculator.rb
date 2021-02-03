@@ -2,29 +2,25 @@
 #         string or integer input choosing math operator
 # Outputs: Display integer results
 
-# Mental Model: Have user input 2 integers and a mathmatecal operator 
-# to be applied to the integers, perform the operation on the numbers, then display the results. 
+# Mental Model: Have user input 2 integers and a mathmatecal operator
+# to be applied to the integers, perform the operation on the numbers,
+# then display the results.
 
-# Test cases: 
+# Test cases:
 #   Input: 3, 4, 'add'
 #   Output: 7
-
 
 #   Input: 10, 9, 'subtract'
 #   Output: 1
 
-
 #   Input: 19, 17, 'multiply'
 #   Output: 323
-
 
 #   Input: 55, 5, 'divide'
 #   Output: 11
 
-
 #   Input: -13, 4, 'add'
 #   Output: 7
-
 
 #   Input: 5, 5, 'multiply'
 #   Output: -25
@@ -57,12 +53,12 @@ end
 prompt("Welcome to Calculator! Enter you name:")
 name = ''
 
-loop do 
+loop do
   name = gets.chomp
 
   if name.empty?
     prompt("Make sure to enter a valid name.")
-  else 
+  else
     prompt("Hi #{name}.")
     break
   end
@@ -81,7 +77,7 @@ loop do
       prompt("Hmm... that doesn't look like a valid number.")
     end
   end
-  
+
   # num2 input and validation
   num2 = nil
   loop do
@@ -97,9 +93,8 @@ loop do
 
   # operator input and validation
   operator = ''
-  loop do 
-
-    operator_prompt = <<-MSG 
+  loop do
+    operator_prompt = <<-MSG
     What operation would you like to perform? 
     1)Add  
     2)Subtract  
@@ -117,7 +112,6 @@ loop do
     end
   end
 
-
   result =  case operator
             when '1'
               num1.to_i + num2.to_i
@@ -133,7 +127,8 @@ loop do
   sleep 1.5
   prompt("The result is #{result}")
 
-  prompt("Do you want to perform another calculation #{name}? (Y to calculate again)")
+  prompt("Do you want to perform another calculation
+    #{name}? (Y to calculate again)")
   answer = gets.chomp
   break unless answer.downcase.start_with?('y')
 end
