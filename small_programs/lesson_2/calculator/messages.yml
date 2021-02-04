@@ -1,0 +1,3 @@
+greeting: "Welcome to Calculator! Enter you name:"
+get_num1: "What's your first number?"
+number_error: "Hmm... that doesn't look like a valid number."
