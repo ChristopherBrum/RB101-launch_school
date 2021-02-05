@@ -20,7 +20,7 @@ en:
     3) Multiply  
     4) Divide
   operator_error: "Hmm... that doesn't look like a valid input."
-  operation_calc_indicator: " the two numbers..."
+  calc_phrase: " the two numbers..."
   return_result: "The result is"
   another_calc: "Do you want to perform another calculation? (Y to calculate again)"
   farewell: "Thanks for using Calculator! Byeeeeeeee."
@@ -45,11 +45,11 @@ es:
       3)Multiplicar
       4)Dividir
   operator_error: "Hmm... eso no parece una entrada válida."
-  operation_calc_indicator: "los dos números..."
+  calc_phrase: "los dos números..."
   return_result: "El resultado es"
-  another_calc: "¿Quieres realizar otro cálculo? (Y para calcular de nuevo)"
-  farewell: "¡Gracias por usar Calculadora! Graciaaaaaaas"
-  adding: "Añadiendo"
-  subtracting: "Restando"
-  multiplying: "Multiplicando"
-  dividing: "Divisiendo" 
+  another_calc: "¿Quieres realizar otro cálculo? (S para calcular de nuevo)"
+  farewell: "¡Gracias por usar Calculadora! Adioooooooos"
+  adding: "Añadiendo "
+  subtracting: "Restando "
+  multiplying: "Multiplicando "
+  dividing: "Divisiendo " 
