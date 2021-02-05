@@ -4,6 +4,7 @@ en:
     => Elija su idioma preferido: (Ingrese 1-2)
     1) English
     2) Espańol
+    3) Francés
   lang_error: "Hmm... that doesn't look like a valid input."
   prompt: "=> "
   greeting: "~~~~~>  Welcome to Calculator!  <~~~~~"
@@ -21,7 +22,7 @@ en:
     4) Divide
   operator_error: "Hmm... that doesn't look like a valid input."
   calc_phrase: " the two numbers..."
-  return_result: "The result is"
+  return_result: "The result is:"
   another_calc: "Do you want to perform another calculation? (Y to calculate again)"
   farewell: "Thanks for using Calculator! Byeeeeeeee."
   adding: Adding"
@@ -46,10 +47,35 @@ es:
       4)Dividir
   operator_error: "Hmm... eso no parece una entrada válida."
   calc_phrase: "los dos números..."
-  return_result: "El resultado es"
-  another_calc: "¿Quieres realizar otro cálculo? (S para calcular de nuevo)"
+  return_result: "El resultado es:"
+  another_calc: "¿Quieres realizar otro cálculo? (Y para calcular de nuevo)"
   farewell: "¡Gracias por usar Calculadora! Adioooooooos"
   adding: "Añadiendo "
   subtracting: "Restando "
   multiplying: "Multiplicando "
   dividing: "Divisiendo " 
+
+fr:
+  prompt: "=> "
+  greeting: "~~~~~>  Bienvenue dans Calculator!  <~~~~~"
+  get_name: "Entrez votre nom, veuillez:"
+  name_error: "Assurez-vous de saisir un nom valide."
+  hi: "Bonjour"
+  get_num1: "Quel est ton premier numéro?"
+  get_num2: "Quel est ton deuxième numéro?"
+  num_error: "Hmm... ça ne ressemble pas à un nombre valide."
+  operator_prompt: |
+    Quelle opération souhaitez-vous effectuer? (Entrez 1-4)
+    1) Ajouter
+    2) Soustraire
+    3) Multiplier
+    4) Diviser
+  operator_error: "Hmm... cela ne ressemble pas à une entrée valide."
+  calc_phrase: " les deux nombres..."
+  return_result: "Le résultat est:"
+  another_calc: "Voulez-vous effectuer un autre calcul? (Y pour calculer à nouveau)"
+  farewell: "Merci d'utiliser la calculatrice! Au revoirrrrrrrr."
+  adding: "Ajouter"
+  subtracting: "Soustraire"
+  multiplying: "Multiplier"
+  dividing: "Partage" 

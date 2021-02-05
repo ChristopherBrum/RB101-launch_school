@@ -35,7 +35,7 @@ def select_language
 end
 
 def valid_lang_choice?(lang_choice)
-  %w(1 2).include?(lang_choice)
+  %w(1 2 3).include?(lang_choice)
 end
 
 def set_lang(lang_selection)
@@ -44,6 +44,8 @@ def set_lang(lang_selection)
     language = 'en'
   when '2'
     language = 'es'
+  when '3'
+    language = 'fr'
   end
   language
 end
@@ -171,7 +173,7 @@ def calc_again(lang)
 end
 
 def valid_calc_again?(answer)
-  true if %w(Y y yes Yes YES si SI Si s).include?(answer)
+  true if %w(Y y yes Yes YES).include?(answer)
 end
 
 def farewell(lang)
@@ -195,6 +197,7 @@ loop do
 
   answer = calc_again(lang)
   break unless valid_calc_again?(answer)
+  reset_console
 end
 
 farewell(lang)
