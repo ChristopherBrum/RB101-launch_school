@@ -1,20 +1,27 @@
 en:
+  choose_lang: |
+    Please choose your preferred language: (Enter 1-2)
+    => Elija su idioma preferido: (Ingrese 1-2)
+    1) English
+    2) Espańol
+  lang_error: "Hmm... that doesn't look like a valid input."
   prompt: "=> "
-  greeting: "Welcome to Calculator! Enter you name:"
-  hi: "Hello "
+  greeting: "~~~~~>  Welcome to Calculator!  <~~~~~"
+  get_name: "Enter you name, please:"
+  name_error: "Make sure to enter a valid name."
+  hi: "Hello"
   get_num1: "What's your first number?"
   get_num2: "What's your second number?"
   num_error: "Hmm... that doesn't look like a valid number."
-  name_error: "Make sure to enter a valid name."
   operator_prompt: |
-      What operation would you like to perform? 
-      1)Add  
-      2)Subtract  
-      3)Multiply  
-      4)Divide
+    What operation would you like to perform? (Enter 1-4)
+    1) Add  
+    2) Subtract  
+    3) Multiply  
+    4) Divide
   operator_error: "Hmm... that doesn't look like a valid input."
   operation_calc_indicator: " the two numbers..."
-  return_result: "The result is "
+  return_result: "The result is"
   another_calc: "Do you want to perform another calculation? (Y to calculate again)"
   farewell: "Thanks for using Calculator! Byeeeeeeee."
   adding: Adding"
@@ -24,21 +31,22 @@ en:
 
 es:
   prompt: "=> "
-  greeting: "¡Bienvenido a Calculadora! Ingresa tu nombre:"
-  hi: "Hola "
+  greeting: "~~~~~>  ¡Bienvenido a Calculadora!  <~~~~~~"
+  get_name: "Ingrese su nombre, por favor:"
+  name_error: "Asegúrate de ingresar un nombre válido."
+  hi: "Hola"
   get_num1: "Cual es tu primer número?"
   get_num2: "Cual es tu segundo número?"
-  num_error: "Hmm ... eso no parece un número válido."
-  name_error: "Asegúrate de ingresar un nombre válido."
+  num_error: "Hmm... eso no parece un número válido."
   operator_prompt: |
       ¿Qué operación le gustaría realizar?
       1)Añadir
       2)Sustraer
       3)Multiplicar
       4)Dividir
-  operator_error: "Hmm ... eso no parece una entrada válida."
-  operation_calc_indicator: " los dos números ..."
-  return_result: "El resultado es "
+  operator_error: "Hmm... eso no parece una entrada válida."
+  operation_calc_indicator: "los dos números..."
+  return_result: "El resultado es"
   another_calc: "¿Quieres realizar otro cálculo? (Y para calcular de nuevo)"
   farewell: "¡Gracias por usar Calculadora! Graciaaaaaaas"
   adding: "Añadiendo"
