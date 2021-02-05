@@ -2,8 +2,6 @@ require 'yaml'
 
 MESSAGES = YAML.load_file('calculator_messages.yml')
 
-LANGUAGE = 'en'
-
 def messages(message, lang='en')
   MESSAGES[lang][message]
 end
@@ -157,7 +155,13 @@ loop do
             end
 
   prompt(operation_to_message(operator) + messages('operation_calc_indicator'))
-  sleep 1.5
+  10.times do 
+    sleep 0.1
+    print '='
+    sleep 0.1
+    print '-' 
+  end
+  puts
   prompt(messages('return_result'), result.to_s)
 
   prompt(messages('another_calc'))
