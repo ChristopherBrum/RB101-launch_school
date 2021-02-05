@@ -21,7 +21,7 @@ def reset_console
   system 'clear'
 end
 
-# ~~~~~~~~~~~~~~~~~~ Language selection and validation ~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~ language selection and validation ~~~~~~~~~~~~~~~~~~
 def select_language
   system 'clear'
   prompt(messages('choose_lang'))
@@ -50,7 +50,7 @@ def set_lang(lang_selection)
   language
 end
 
-# ~~~~~~~~~~~~~~~~~~ Name input and validation ~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~ name input and validation ~~~~~~~~~~~~~~~~~~
 def get_name(lang)
   prompt(messages('get_name', lang))
   name = gets.chomp
@@ -65,7 +65,7 @@ def valid_name?(name, lang)
   end
 end
 
-# ~~~~~~~~~~~~~~~~~~ Number and Float input and validation ~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~ number and float input and validation ~~~~~~~~~~~~~~~~~~
 def valid_number?(num)
   true unless /\D/.match(num)
 end
@@ -127,7 +127,7 @@ def calculate(operator, num1, num2)
   result
 end
 
-# ~~~~~~~~~~~~~~~~~~ Results & Display Messaging ~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~ results and display messaging ~~~~~~~~~~~~~~~~~~
 def greeting(lang)
   reset_console
   prompt(messages('greeting', lang))
@@ -180,7 +180,7 @@ def farewell(lang)
   prompt(messages('farewell', lang))
 end
 
-# ~~~~~~~~~~~~~~~~~~ Program begins ~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~ program begins ~~~~~~~~~~~~~~~~~~
 
 lang = select_language()
 greeting(lang)
