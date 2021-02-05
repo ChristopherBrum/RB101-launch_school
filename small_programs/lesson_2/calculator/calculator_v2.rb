@@ -24,7 +24,6 @@ end
 # ~~~~~~~~~~~~~~~~~~ language selection and validation ~~~~~~~~~~~~~~~~~~
 
 def select_language
-  system 'clear'
   prompt(messages('choose_lang'))
   lang_choice = gets.chomp
   if valid_lang_choice?(lang_choice)
@@ -57,11 +56,13 @@ def get_name(lang)
   prompt(messages('get_name', lang))
   name = gets.chomp
   valid_name?(name, lang)
+  name
 end
 
 def valid_name?(name, lang)
-  if name.empty?
+  if name.empty? || !/[a-zA-Z]/.match(name)
     prompt(messages('name_error', lang))
+    get_name(lang)
   else
     prompt(messages('hi', lang), name)
   end
@@ -180,15 +181,16 @@ def valid_calc_again?(answer)
   true if %w(Y y yes Yes YES).include?(answer)
 end
 
-def farewell(lang)
-  prompt(messages('farewell', lang))
+def farewell(name, lang)
+  prompt(messages('farewell', lang), name) 
 end
 
 # ~~~~~~~~~~~~~~~~~~ program begins ~~~~~~~~~~~~~~~~~~
 
+reset_console
 lang = select_language()
 greeting(lang)
-get_name(lang)
+name = get_name(lang)
 
 loop do
   num1 = get_num('get_num1', lang)
@@ -204,4 +206,4 @@ loop do
   reset_console
 end
 
-farewell(lang)
+farewell(name, lang)
