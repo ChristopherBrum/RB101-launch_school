@@ -1,0 +1,17 @@
+---
+en:
+  valid_yes_no: ["y", "Y", "yes", "YES", "Yes", "YEs", "yES", "yeS", "n", "N", "No", "NO"]
+  valid_yes: ["y", "Y", "yes", "YES", "Yes", "YEs", "yES", "yeS"]
+  invalid: "I'm sorry, I didn't understand that. Lets try it again..."
+  title: "       +$$$$$  THE MORGATE CALCULATOR  $$$$$+"
+  english_or_other: "Welcome, would you like to continue in English? (Y/N)"
+  choose_language: |
+    Please select a language: (Enter the corresponding number)
+    1) English
+    2) Spanish
+  greeting_and_first_name: |
+    Thank you for using THE MORTGAGE CALCULATOR!
+    Lets start by getting a little more information about you.
+    Please enter your first name:
+  last_name: "Please enter your last name:"
+  invalid_name: "Hmm... that doesn't look like a vaid entry"
