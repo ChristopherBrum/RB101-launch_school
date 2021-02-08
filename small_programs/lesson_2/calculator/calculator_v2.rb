@@ -71,7 +71,7 @@ end
 # ~~~~~~~~~~~~~~~~~~ number and float input and validation ~~~~~~~~~~~~~~~~~~
 
 def valid_number?(num)
-  true unless /\D/.match(num)
+  num.to_i.to_s == num
 end
 
 def valid_float?(num)
@@ -79,6 +79,7 @@ def valid_float?(num)
 end
 
 def number?(num)
+  return false if num.length == 0
   valid_number?(num) || valid_float?(num)
 end
 
@@ -120,15 +121,18 @@ def calculate(operator, num1, num2)
   result = nil
   case operator
   when '1'
-    result = num1.to_i + num2.to_i
+    result = num1.to_f + num2.to_f
   when '2'
-    result = num1.to_i - num2.to_i
+    result = num1.to_f - num2.to_f
   when '3'
-    result = num1.to_i * num2.to_i
+    result = num1.to_f * num2.to_f
   when '4'
     result = num1.to_f / num2.to_f
+    if num2 == '0'
+      result = :error
+    end
   end
-  result
+  result.to_s.end_with?('.0') ? result.to_i : result
 end
 
 # ~~~~~~~~~~~~~~~~~~ results and display messaging ~~~~~~~~~~~~~~~~~~
@@ -168,7 +172,11 @@ def calc_arrow
 end
 
 def show_result(result, lang)
-  prompt(messages('return_result', lang), result.to_s)
+  if result == :error
+    prompt(messages('zero_based_div_error', lang))
+  else
+    prompt(messages('return_result', lang), result.to_s)
+  end
 end
 
 def calc_again(lang)
@@ -182,7 +190,7 @@ def valid_calc_again?(answer)
 end
 
 def farewell(name, lang)
-  prompt(messages('farewell', lang), name) 
+  prompt(messages('farewell', lang), name)
 end
 
 # ~~~~~~~~~~~~~~~~~~ program begins ~~~~~~~~~~~~~~~~~~

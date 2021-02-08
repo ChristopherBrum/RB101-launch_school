@@ -100,3 +100,8 @@ loop do
   customer = customer_info(lang)
   break
 end
+
+# When prompted about cont in english or y and n work fine, 
+# but if you enter an incorrect input 1 or more times the y will 
+# take you to the language choice selection. 
+# Effectively y and n do the same thing at that point.
