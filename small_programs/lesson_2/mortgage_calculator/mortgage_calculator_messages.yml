@@ -1,5 +1,4 @@
 ---
-  valid_yes_no: ["y", "Y", "yes", "YES", "Yes", "YEs", "yES", "yeS", "n", "N", "No", "NO"]
   valid_yes: ["y", "Y", "yes", "YES", "Yes", "YEs", "yES", "yeS"]
   invalid: "I'm sorry, I didn't understand that. Lets try it again..."
   title: "       +$$$$$  THE MORGATE CALCULATOR  $$$$$+"
@@ -21,7 +20,15 @@
   invalid_loan_amt: "That is not a valid loan amount, lets try this again."
   interest_rate_prompt: |
     Enter then Interest Rate.
-    ~~> Example: 8 for 8% / 5.5 for 5.5% 
+    ~~> Example: 8 for 8% / 5.5 for 5.5% / .25 for 0.25%
   invalid_interest_rate_input: "That is not a valid interest rate, lets try this again."
   loan_term_prompt: "Enter your desired loan term length, in years."
-  invalid_loan_tern: "That is not a valid loan term, lets try this again."
+  invalid_loan_term: "That is not a valid loan term, lets try this again."
+  confirm_prompt: |
+    Please confirm the loan information you entered (Y/y to confirm): 
+
+  amount: "Loan Amount: "
+  rate: "Interest Rate:"
+  term: "Term of Loan: "
+  recalculate?: "Would you like to adjust your mortgage parameters? (Y/y)"
+  farewell: "Thanks for using THE MORTGAGE CALCULATOR, Goodbye!"
