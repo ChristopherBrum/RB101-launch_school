@@ -1,5 +1,4 @@
 ---
-en:
   valid_yes_no: ["y", "Y", "yes", "YES", "Yes", "YEs", "yES", "yeS", "n", "N", "No", "NO"]
   valid_yes: ["y", "Y", "yes", "YES", "Yes", "YEs", "yES", "yeS"]
   invalid: "I'm sorry, I didn't understand that. Lets try it again..."
@@ -15,3 +14,14 @@ en:
     Please enter your first name:
   last_name: "Please enter your last name:"
   invalid_name: "Hmm... that doesn't look like a vaid entry"
+  loan_amt_prompt: |
+    Enter the size size home loan you are interested in taking out.
+    ~~> Please only enter digits. Example: 100000 / 200000 / 599999
+  confirm_loan_amt: "Please confirm that the loan amount is correct (enter Y to confirm):"
+  invalid_loan_amt: "That is not a valid loan amount, lets try this again."
+  interest_rate_prompt: |
+    Enter then Interest Rate.
+    ~~> Example: 8 for 8% / 5.5 for 5.5% 
+  invalid_interest_rate_input: "That is not a valid interest rate, lets try this again."
+  loan_term_prompt: "Enter your desired loan term length, in years."
+  invalid_loan_tern: "That is not a valid loan term, lets try this again."
