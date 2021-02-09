@@ -10,7 +10,7 @@ def write(message, extra_input='')
   if extra_input != ''
     puts "~~> #{message} #{extra_input}"
   else
-    puts message.start_with?('     ') ? "#{message}" : "~~> #{message}"
+    puts message.start_with?('     ') ? message : "~~> #{message}"
   end
 end
 
@@ -26,19 +26,13 @@ def display_title
   write('title')
 end
 
-def recalculate?()
+def recalculate?
   write('recalculate?')
   answer = gets.chomp
   yes_or_no(answer) ? true : false
 end
 
 ####################  validation  ####################
-
-# def valid_yes_no?(input)
-#   return true if messages('valid_yes_no').include?(input) 
-#   write('invalid')
-#   false
-# end
 
 def yes_or_no(input)
   messages('valid_yes').include?(input) ? true : false
@@ -59,18 +53,14 @@ end
 def valid_pos_number?(num)
   if (valid_integer?(num) || valid_float?(num)) && num.to_f > 0
     true
-  else 
+  else
     false
   end
 end
 
 def valid_rate?(rate)
   test_rate = rate.to_f.to_s.slice(1, 3)
-  if rate.slice(0, 3) == test_rate
-    return true
-  else
-    false
-  end
+  rate.slice(0, 3) == test_rate
 end
 
 ####################  formatting  ####################
@@ -79,7 +69,7 @@ def format_loan_amt(loan_amt)
   loan_amt = loan_amt.to_s
   count = loan_amt.length - 3
 
-  until count <= 0 do
+  until count <= 0
     loan_amt.insert(count, ',')
     count -= 3
   end
@@ -100,7 +90,7 @@ def format_monthly_payment(amount)
 
   amount.slice!(amount.index('.'), amount.length - 1)
   amount = format_loan_amt(amount)
-  decimal = check_decimal(decimal) 
+  decimal = check_decimal(decimal)
   amount = '$' + (amount + decimal)
   amount
 end
@@ -115,7 +105,7 @@ end
 
 ####################  loan amount  ####################
 
-def get_loan_amt()
+def get_loan_amt
   loan_amt = ''
 
   loop do
@@ -130,7 +120,7 @@ end
 
 ####################  interest rate  ####################
 
-def get_interest_rate()
+def get_interest_rate
   interest_rate = ''
 
   loop do
@@ -145,7 +135,7 @@ end
 
 ####################  term of loan  ####################
 
-def get_loan_term()
+def get_loan_term
   loan_term = ''
   loop do
     write('loan_term_prompt')
@@ -165,7 +155,7 @@ def confirm_figures(amount, rate, term)
   write('amount', "$#{amount}")
   write('rate', "#{rate}%")
   write('term', "#{term} years / #{term.to_i * 12} months")
-  puts 
+  puts
   confirmation = gets.chomp
   yes_or_no(confirmation)
 end
@@ -175,7 +165,7 @@ def calculate_monthly_payment(int_rate, term, amount)
   monthly_interest_rate = annual_interest_rate / 12
   term_in_months = term.to_i * 12
 
-  monthly_payment = amount * (monthly_interest_rate / (1 - 
+  monthly_payment = amount * (monthly_interest_rate / (1 -
     (1 + monthly_interest_rate)**(-term_in_months)))
   puts
   payment = format_monthly_payment(monthly_payment)
@@ -192,8 +182,9 @@ loop do
   interest_rate_raw = get_interest_rate()
   term_raw = get_loan_term()
   formatted_loan_amount = format_loan_amt(loan_amount_raw)
-  next unless confirm_figures(formatted_loan_amount, interest_rate_raw, term_raw)
-
+  next unless confirm_figures(formatted_loan_amount,
+                              interest_rate_raw,
+                              term_raw)
   calculate_monthly_payment(interest_rate_raw, term_raw, loan_amount_raw)
   break unless recalculate?
   reset_screen
@@ -220,18 +211,18 @@ write('farewell')
 # => USER INPUT
 # prompt for loan amount
 # store loan amount
-  # validate input
-  # allow for $ and ,'s?
+# validate input
+# allow for $ and ,'s?
 
 # prompt for loan apr
 # store loan apr
-  # validate input
-  # convert into percentage?
+# validate input
+# convert into percentage?
 
 # prompt for loan duration
 # store loan duration
-  # validate input
-  # convert into months
+# validate input
+# convert into months
 
 # => CALCULATIONS
 # monthly payments calculation
