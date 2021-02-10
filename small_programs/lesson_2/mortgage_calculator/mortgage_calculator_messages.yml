@@ -1,5 +1,5 @@
 ---
-  valid_yes: ["y", "Y", "yes", "YES", "Yes", "YEs", "yES", "yeS"]
+  valid_yes: ["y", "Y"]
   invalid: "I'm sorry, I didn't understand that. Lets try it again..."
   title: "       +$$$$$  THE MORGATE CALCULATOR  $$$$$+"
   loan_amt_prompt: |
@@ -13,11 +13,10 @@
   invalid_interest_rate_input: "That is not a valid interest rate, lets try this again."
   loan_term_prompt: "Enter your desired loan term length, in years."
   invalid_loan_term: "That is not a valid loan term, lets try this again."
-  confirm_prompt: |
-    Please confirm the loan information you entered (Y/y to confirm): 
-
+  confirm_prompt: "Please enter Y or y to confirm the loan information you entered is correct:"
   amount: "Loan Amount: "
   rate: "Interest Rate:"
   term: "Term of Loan: "
-  recalculate?: "Would you like to adjust your mortgage parameters? (Y/y)"
+  payment_display: "Your monthly payment would be:"
+  recalculate?: "Would you like calculate another mortgage loan? (Enter Y or y)"
   farewell: "Thanks for using THE MORTGAGE CALCULATOR, Goodbye!"

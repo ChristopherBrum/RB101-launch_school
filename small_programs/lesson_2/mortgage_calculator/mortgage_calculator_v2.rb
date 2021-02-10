@@ -1,5 +1,4 @@
 require 'yaml'
-require 'pry'
 
 ####################  messages and display  ####################
 
@@ -22,6 +21,10 @@ def reset_screen
   system("clear")
 end
 
+def display_newline
+  puts
+end
+
 def display_title
   write('title')
 end
@@ -39,7 +42,7 @@ def yes_or_no(input)
 end
 
 def valid_integer?(num)
-  true if num.to_i.to_s == num
+  true if num.to_i.to_s == num && num.to_i > 0
 end
 
 def valid_float?(num)
@@ -51,16 +54,13 @@ def valid_loan_amt?(loan_amt)
 end
 
 def valid_pos_number?(num)
-  if (valid_integer?(num) || valid_float?(num)) && num.to_f > 0
-    true
-  else
-    false
-  end
+  (valid_integer?(num) || valid_float?(num)) && num.to_f > 0
 end
 
 def valid_rate?(rate)
   test_rate = rate.to_f.to_s.slice(1, 3)
-  rate.slice(0, 3) == test_rate
+  true if rate.slice(0, 3) == test_rate ||
+          (valid_pos_number?(rate) || valid_float?(rate))
 end
 
 ####################  formatting  ####################
@@ -140,7 +140,7 @@ def get_loan_term
   loop do
     write('loan_term_prompt')
     loan_term = gets.chomp.strip
-    break if valid_pos_number?(loan_term)
+    break if valid_integer?(loan_term)
     write('invalid_loan_term')
   end
 
@@ -151,11 +151,11 @@ end
 
 def confirm_figures(amount, rate, term)
   write('confirm_prompt')
-  puts
+  display_newline
   write('amount', "$#{amount}")
   write('rate', "#{rate}%")
   write('term', "#{term} years / #{term.to_i * 12} months")
-  puts
+  display_newline
   confirmation = gets.chomp
   yes_or_no(confirmation)
 end
@@ -167,10 +167,10 @@ def calculate_monthly_payment(int_rate, term, amount)
 
   monthly_payment = amount * (monthly_interest_rate / (1 -
     (1 + monthly_interest_rate)**(-term_in_months)))
-  puts
+  display_newline
   payment = format_monthly_payment(monthly_payment)
-  puts "Your monthly payment would be : #{payment}"
-  puts
+  write('payment_display', payment)
+  display_newline
 end
 
 ####################  program  ####################
@@ -190,43 +190,3 @@ loop do
   reset_screen
 end
 write('farewell')
-
-# user input
-
-# GET loan amount from user
-# GET APR from user
-# GET the loan duration from user
-
-# calculations
-
-# CALC monthly interest rates
-# CALC loan duration in months
-# CALC monthly payment
-
-# display monthly payment
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# display welcome
-
-# => USER INPUT
-# prompt for loan amount
-# store loan amount
-# validate input
-# allow for $ and ,'s?
-
-# prompt for loan apr
-# store loan apr
-# validate input
-# convert into percentage?
-
-# prompt for loan duration
-# store loan duration
-# validate input
-# convert into months
-
-# => CALCULATIONS
-# monthly payments calculation
-
-# => DISPLAY
-# display monthly payments
-# ask to recalulate
