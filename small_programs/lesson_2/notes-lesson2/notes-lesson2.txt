@@ -149,3 +149,135 @@ PRECEDENCE
         - Using parenthesis will allow you to have complete control of the order of execution.
 
 
+Coding Tips
+    - Textbook
+        - A lot of people try to save on characters and like to use very short variable or method names. There's no need to save on characters. Choose descriptive variable and method names.
+        - In Ruby, make sure to use snake_case when naming everything, except classes which are CamelCase or constants, which are all UPPERCASE.
+        - Because CARDS is a constant, do not add or remove values from this array. Though Ruby allows it, in general, constants should not be mutated at all.
+        - Here are some guidelines on how to write good methods:
+            - Don't display something to the output and return a **meaningful** value. Since Ruby always returns a value, the key here is that the return value shouldn't be the intent of the method.
+            - Decide whether the method should return a value with no side effects *or* perform side effects with no return value. If you do both, you probably won't remember what the method does when you need to use it. The method name should reflect whether it has side effects or not (for example, some methods in the standard Ruby library end with a `!` when the method has side effects).
+            - In Ruby, we would not say `return_total`, it would be just `total` - returning a value is implied. Further, we would not expect a `total` method to have side effects or print a value out. We would expect a method called `total` to be defined something like this:
+        - Methods should be at the same level of abstraction. This is a little hard in the beginning because you have to develop a feel for it over time. Usually, methods take some input and return an output. We should be able to just copy and paste the method into irb and test it. When working with a method, you should be able to mentally extract the method from the larger program, and just work with the method in isolation. You should be able to feed this method inputs, and expect it to give some outputs. When you have a method like this, you can use it without thinking about its implementation. Working this way helps compartmentalize your focus, an important skill when working on large codebases.
+        - The more you have to think about the method, the harder it is to use it. If it is performing a side effect and at the same time returning a value, this makes debugging and using the method very hard.
+        - Your goal should be to build small methods that are like LEGO blocks: they should be stand-alone pieces of functionality that you can use to piece together larger structures. You don't want these methods to be mentally taxing to use. Interesting structures are comprised of many hundreds or thousands of atomic lego pieces. Likewise, large programs are comprised of hundreds or thousands of small methods (later, we'll talk about organizing methods into classes and objects)
+        - Don't prematurely exit the program. All your methods should be at the same mental scope and not just randomly exit the program. Your program should probably only have one exit point.
+        - Watch your indentation. 2 spaces, not tabs. This violation burns Rubyists' eyes. Verify your indentation after you pushed to Github.
+        - Name your methods from the perspective of using them later. That is, think about how you would like to invoke them. Think about the implementation later. For example, if you have an array of `cards`, and you want to write a method to find the ace, your method should be called `find_ace`, and you can use it like this: `ace = find_ace(cards)`. You shouldn't name it `find_ace_from_cards`, because you'd be invoking it like this: `find_ace_from_cards(cards)`. When Rubyists see a method like that, they think "what else can you find an ace from besides cards? tiles?". The easier your code is to read, the easier it is to debug and maintain.
+        - Know when to use a "do/while" vs a "while" loop. Here's an example:
+    - Notes
+        - What is one way that remembering things occurs in programming?
+            - By doing things and making mistakes.
+            - When you spend a few hours debugging something your mind will remember what it is that you've done to cause the bug and will remember to **not** do that again in the future.
+        - What do we need to keep in mind when naming things?
+            - Be descriptive. You should know what a variable is just by looking at the variable name.
+            - For methods you need to be able to understand what the method does and the result of the method will be just by reading the name.
+            - If it is mutating a variable make sure thats obvious. for example, you could name a method update_total() and that would signify that you're mutating the variable passed into it.
+        - What are the naming conventions when creating variables, classes and constants?
+            - Variables use snake_case in ruby.
+            - Classes use CamelCase in ruby.
+            - Constants use ALLCAPS in ruby.
+        - Can you mutate constants?
+            - Ruby will allow you to mutate a constant but it should not be done. It can cause confusion and errors within the codebase.
+        - How many things should a method accomplish?
+            - A method should only accomplish one thing. If your method is doing multiple things thats an indicator to break up your method into multiple methods.
+        - Whats a good rule of thumb for how long a method should be?
+            - Generally try and keep it under 10 lines long. If its longer than that see if the method can be broken up into multiple methods.
+        - What are some things to keep in mind when creating methods?
+            - Naming methods is important. Whoever reads your code should be able to understand what the method does just by the name.
+            - It should signify whether it prints something to the screen, or it mutates a variable, or it has some other side effect. Make it obvious.
+            - A method should be easy to copy and paste into a repl for testing purposes.
+            - Think of methods as pieces of legos. Individually they are small but together they can build a something remarkable.
+            - All methods should be at the same level of abstraction.
+        - What does methods being at the same level of abstraction mean?
+            - Methods should all function independently. They should not depend on other methods to perform a purpose.
+            - All methods are on the same level of 'mental scope', meaning they are all broken down to their simplest forms and can be utilized anywhere in the code base and by other methods if required.
+            - All methods should be broken down to the level of the programmers concern.
+        - What should you keep in mind when naming a method?
+            - A method name should describe what the method does clearly. It should tell you if its going to print something to the screen, if its going to mutate a piece of data, or if its going to take a piece of data in what will it return/do to the data.
+    - Highlights
+
+
+Variable Scope
+    - Textbook
+        - The two major areas where we encounter local variable scoping rules are related to method definition and method invocation with a block.
+        - Rubyists prefer to use do..end for multi-line blocks, and {..} for single line blocks. The block following the method invocation is actually an argument being passed into the method. For now, we won't dive deeper into how to use blocks or what they mean.
+        - You can think of the scope created by a block following a method invocation as an inner scope. Nested blocks will create nested scopes. A variable's scope is determined by where it is initialized.
+        - Variables initialized in an outer scope can be accessed in an inner scope, but not vice versa.
+        - Inner scope can access outer scope variables. The less intuitive concept is that you can change variables from an inner scope and have that change affect the outer scope. This means that when we instantiate variables in an inner scope, we have to be very careful that we're not accidentally re-assigning an existing variable in an outer scope. This is a big reason for avoiding single-letter variable names.
+        - Remember that where a variable is initialized determines its scope.
+        - Peer blocks cannot reference variables initialized in other blocks. This means that we could use the same variable name a in the block of code that follows the loop method invocation. However, it's not the same variable as in the first block.
+        - A method definition has no notion of "outer" or "inner" scope -- you must explicitly pass in any parameters to a method definition.
+        - The rules of scope for a method invocation with a block remain in full effect even if we're working inside a method definition.
+    - Notes
+        - What is a block in Ruby?
+            - A block is any code contained within do...end or {...} following a method invocation.
+        - What are the standards ways of signifying a block in Ruby?
+            - For creating a block that will fit on one line the preferred way is to use {...} following a method invocation.
+            - For creating a a block that will span more that one line the preferred way is to use do...end following a method invocation.
+        - What dictates a variables scope?
+            - A variables scope is dependent upon where it is initialized.
+            - A variable initialized in the main object will be accessible within expression blocks but variables initialized within an expression block are not accessible in the main object.
+            - The type of variable also determines its scope. For instance a constant is scope much differently than a local variable.
+        - What do we mean when we say scope?
+            - Scope refers to where a variable is visible or accessible to, and where it isn't.
+        - Explain variable shadowing?
+            - Variable shadowing is when an outer scope variable and an inner scoped variable have the same name. When this occurs the outer scoped variable is essentially invisible. The inner scoped variable takes precedence over the outer.
+        - What is the difference in scope between a block following a method invocation and a block not following a method invocation?
+            - Any code contained within do...end or {...} that follows a method invocation is scoped in a way where no variables are accessible either out or into he method block. The only way variables can be passed into a method block is as an argument.
+            - Any code contained within do...end or {...} that does not follow a method invocation is inner scoped, meaning variables outside of the do...end or the {...} are accessible within it but any variables initialized with are not accessible outside of it.
+        - Do blocks within a the block of a method invocation change in scope?
+            - The same rules apply within a method block aply as they would in the global scope.
+        - How is scope different for constants?
+            - Constants are accessible within method blocks without being passed in via argument.
+            - Constants initialized within a method block are also accessible globally.
+    - Highlights
+
+
+More Variable Scope
+    - Textbook
+        - Method definition is when, within our code, we define a Ruby method using the def keyword.
+        - Technically any method can be called with a block, but the block is only executed if the method is defined in a particular way.
+        - What we do want you to be clear on at this stage however, is that a block is part of the method invocation. In fact, method invocation followed by curly braces or do..end is the way in which we define a block in Ruby.
+        - Essentially the block acts as an argument to the method. In the same way that a local variable can be passed as an argument to a method at invocation, when a method is called with a block, the block acts as an argument to that method.
+        - The way that an argument is used, whether it is a method parameter or a block, depends on how the method is defined.
+        - Blocks and methods can interact with each other; the level of that interaction is set by the method definition and then used at method invocation.
+        - Let's review what we discussed in the previous assignment regarding how a method definition accesses local variables compared to how a method invocation with a block accesses local variables. Method definitions cannot directly access local variables initialized outside of the method definition, nor can local variables initialized outside of the method definition be reassigned from within it. A block can access local variables initialized outside of the block and can reassign those variables. We already know that methods can access local variables passed in as arguments, and now we have seen that methods can access local variables through interaction with blocks.
+        - Given this additional context, we can think of method definition as setting a certain scope for any local variables in terms of the parameters that the method definition has, what it does with those parameters, and also how it interacts (if at all) with a block. We can then think of method invocation as using the scope set by the method definition. If the method is defined to use a block, then the scope of the block can provide additional flexibility in terms of how the method invocation interacts with its surroundings.
+        - The interaction between methods and blocks is a deep topic and is covered in much more detail in a later course; for now you just need to understand a few key points:
+            - The `def..end` construction in Ruby is method definition
+            - Referencing a method name, either of an existing method or subsequent to definition, is method invocation
+            - Method invocation followed by `{..}` or `do..end` defines a block; the block is *part of* the method invocation
+            - Method definition *sets* a scope for local variables in terms of parameters and interaction with blocks
+            - Method invocation *uses* the scope set by the method definition
+    - Notes
+        - What do we use to construct a method definition?
+            - We use def...end to construct a method definition.
+        - What is method invocation?
+            - A method invocation is the referencing or *calling* of a method definition.
+        - How do we define a block?
+            - A block is defined by do...end {...} following a method invocation.
+            - It is part of the method invocation itself.
+        - What **sets** the scope for local variables and interaction with blocks?
+            - The method definition sets the scope for local variables(parameters) and interaction with blocks(via the yield reserved word).
+        - Whats **uses** the scope set by a method definition?
+            - A method invocation uses the scope set by the method definition.
+    - Highlights
+
+
+Understand Variable Reference & Mutability (STUDY)
+    - Textbook
+        - When an operation within the method mutates the caller, it will affect the original object. That's what mutation is.
+        - Mutable objects can be changed; immutable objects cannot be changed.
+        - In Ruby, numbers and boolean values are immutable. But objects of some complex classes, such as nil (the only member of the NilClass class) and Range objects (e.g., 1..10) are immutable too. Any class can establish itself as immutable by simply not providing any methods that alter its state.
+    - Notes
+        - What does pass by *reference* or pass by *value* mean?
+            - Passing by reference is when a variable is assigned to a reference of a variable. Also referred to as the variable binds to the object.
+            - Passed by value is when a variable is assigned to a copy of an object.
+        - What does Ruby use?
+            - Ruby uses a combination of both. As a ruby developer it your job to know what method pass variables by reference and what methods pass variables by value.
+        - What are mutable and immutable objects and what objects are immutable in ruby?
+            - A mutable object is an object that can be altered while maintaining its original object id. For instance an array can be mutated. The elements within an array can be moved, changed, created, destroyed while the array itself remains the same array as always.
+            - Immutable objects, like integers and booleans, are objects that are unchangeable. You can assign variables to them but they will never be altered regardless of what you do to them.
+        - What is the *caller* when calling a method?
+    - Highlights
