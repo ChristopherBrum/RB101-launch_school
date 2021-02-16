@@ -1,10 +1,4 @@
-VALID_CHOICES = %w(rock paper scissors)
-
-def test_method
-  prompt("Hello there")
-end
-
-# test_method
+VALID_CHOICES = %w(rock paper scissors lizard spock)
 
 def prompt(message)
   puts "=> #{message}"
