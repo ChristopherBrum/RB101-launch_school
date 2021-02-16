@@ -1,6 +1,6 @@
 VALID_CHOICES = ['rock', 'paper', 'scissors']
 
-def test_method()
+def test_method
   prompt("Hello there")
 end
 
@@ -10,8 +10,8 @@ end
 
 def display_result(player, computer)
   if (player == 'rock' && computer == 'scissors') ||
-    (player == 'paper' && computer == 'rock') ||
-    (player == 'scissors' && computer == 'paper')
+     (player == 'paper' && computer == 'rock') ||
+     (player == 'scissors' && computer == 'paper')
     prompt("You win!")
   elsif (player == 'scissors' && computer == 'rock') ||
         (player == 'rock' && computer == 'paper') ||
@@ -30,12 +30,7 @@ loop do
   loop do
     prompt("Choose one: #{VALID_CHOICES.join(', ')}")
     choice = gets.chomp
-    
-    if VALID_CHOICES.include?(choice)
-      break
-    else
-      prompt("That's not a valid choice.")
-    end
+    VALID_CHOICES.include?(choice) ? break : prompt("Not a valid choice.")
   end
 
   prompt("You chose: #{choice}; Computer chose: #{computer_choice}.")
