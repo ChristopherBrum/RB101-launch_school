@@ -1,5 +1,12 @@
 VALID_CHOICES = %w(rock paper scissors lizard spock)
 VALID_INPUTS = %w(r p sc l sp)
+WINNERS_HASH = {
+  'rock' => ['scissors', 'lizard'],
+  'paper' => ['rock', 'spock'],
+  'scissors' => ['paper', 'lizard'],
+  'lizard' => ['spock', 'paper'],
+  'spock' => ['scissors', 'rock']
+}
 
 ##### Meassagiong & Layout #####
 
@@ -21,20 +28,24 @@ end
 
 def display_choices
   prompt("Choose one: #{VALID_CHOICES.join(', ')}")
-  prompt("Enter 'r' for rock, 'p' for paper, 'sc' for scissors, 'l' for lizard', 'sp' for spock")
+  prompt("Enter 'r' for rock, 'p' for paper, 'sc' for scissors,"\
+        "'l' for lizard', 'sp' for spock")
 end
 
 def display_winner(player, computer)
+  display_result(player, computer)
   if win?(player, computer)
-    prompt("You chose: #{player}; Computer chose: #{computer}.")
     prompt("You win!")
   elsif win?(computer, player)
-    prompt("You chose: #{player}; Computer chose: #{computer}.")
     prompt("Computer Won!")
   else
-    prompt("You chose: #{player}; Computer chose: #{computer}.")
     prompt("It's a tie!")
   end
+  display_blank_space
+end
+
+def display_result(player, computer)
+  prompt("You chose: #{player}, Computer chose: #{computer}.")
 end
 
 def winners_animation
@@ -44,13 +55,13 @@ def winners_animation
     print '~'
     sleep 0.05
   end
-display_blank_space
+  display_blank_space
 end
 
 ##### Validation #####
 
 def valid_choice?(choice)
-  VALID_INPUTS.include?(choice) 
+  VALID_INPUTS.include?(choice)
 end
 
 ##### Determine One Time Winner #####
@@ -60,11 +71,7 @@ def convert_choice_input(choice)
 end
 
 def win?(first, second)
-  (first == 'rock' && (second == 'scissors' || second == 'lizard')) ||
-    (first == 'paper' && (second == 'rock' || second == 'spock')) ||
-    (first == 'scissors' && (second == 'paper' || second == 'lizard')) ||
-    (first == 'lizard' && (second == 'spock' || second == 'paper')) ||
-    (first == 'spock' && (second == 'scissors' || second == 'rock'))
+  WINNERS_HASH[first].include?(second)
 end
 
 ##### Determine Grand Winner #####
@@ -96,7 +103,6 @@ def return_grand_winner(wins)
 end
 
 def finale(wins_tally)
-  display_blank_space
   winners_animation
   display_blank_space
   prompt("#{return_grand_winner(wins_tally)} the GRAND WINNER!!")
@@ -105,7 +111,7 @@ def finale(wins_tally)
   prompt("The computers wins: #{wins_tally[:computer]}")
   prompt("Ties: #{wins_tally[:tie]}")
   display_blank_space
-  prompt("Congratulations and thanks for playing. Goodbye!")
+  prompt("Congratulations and thanks for playing!")
 end
 
 ##### Program #####
@@ -113,7 +119,7 @@ end
 clear_screen
 welcome
 display_blank_space
-wins = {user: 0, computer: 0, tie: 0}
+wins = { user: 0, computer: 0, tie: 0 }
 
 loop do
   choice = ''
@@ -122,7 +128,7 @@ loop do
   loop do
     display_choices
     choice = gets.chomp
-    valid_choice?(choice) ? break : prompt("Not a valid choice.")
+    valid_choice?(choice) ? break : prompt("Not a valid choice. Try again.")
   end
 
   choice = convert_choice_input(choice)
