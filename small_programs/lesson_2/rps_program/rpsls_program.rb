@@ -1,3 +1,5 @@
+require 'pry'
+
 VALID_CHOICES = %w(rock paper scissors lizard spock)
 VALID_INPUTS = %w(r p sc l sp)
 WINNERS_HASH = {
@@ -7,11 +9,16 @@ WINNERS_HASH = {
   'lizard' => ['spock', 'paper'],
   'spock' => ['scissors', 'rock']
 }
+GOAL_WINS = 5
 
 ##### Meassagiong & Layout #####
 
 def clear_screen
   system('clear')
+end
+
+def clear_screen_after_first(wins)
+  clear_screen if wins.any? { |key, value| value > 0 }
 end
 
 def display_blank_space
@@ -26,13 +33,26 @@ def welcome
   puts "====>  Welcome to Rock-Paper-Scissors-Lizard-Spock  <===="
 end
 
+def display_score(wins)
+  prompt("First person to 5 wins is the GRAND WINNER")
+  prompt("Your wins: #{wins[:user]}, Computer wins: #{wins[:computer]}, Ties: #{wins[:tie]}")
+  display_blank_space
+end
+
 def display_choices
   prompt("Choose one: #{VALID_CHOICES.join(', ')}")
   prompt("Enter 'r' for rock, 'p' for paper, 'sc' for scissors,"\
-        "'l' for lizard', 'sp' for spock")
+        " 'l' for lizard', 'sp' for spock")
+  display_blank_space
+end
+
+def display_input_error
+  prompt("Not a valid choice. Try again.")
+  sleep 2.0
 end
 
 def display_winner(player, computer)
+  display_blank_space
   display_result(player, computer)
   if win?(player, computer)
     prompt("You win!")
@@ -46,6 +66,41 @@ end
 
 def display_result(player, computer)
   prompt("You chose: #{player}, Computer chose: #{computer}.")
+end
+
+def display_finale(wins_tally)
+  display_blank_space
+  prompt("#{return_grand_winner(wins_tally)} the GRAND WINNER!!")
+  display_blank_space
+  prompt("Your wins: #{wins_tally[:user]}")
+  prompt("The computers wins: #{wins_tally[:computer]}")
+  prompt("Ties: #{wins_tally[:tie]}")
+  display_blank_space
+end
+
+def display_farewell
+  display_blank_space
+  prompt("Thanks for playing! Goodbye!!")
+end
+##### Animations #####
+
+def determine_animation(wins)
+  if wins[:user] == GOAL_WINS || wins[:computer] == GOAL_WINS
+    winners_animation
+  else
+    new_round_animation
+  end 
+end
+
+def new_round_animation
+  count = 1
+
+  print "=> Next round in..."
+  while count > 0 
+    print " #{count}"
+    count -= 1
+    sleep 1.0
+  end
 end
 
 def winners_animation
@@ -64,7 +119,23 @@ def valid_choice?(choice)
   VALID_INPUTS.include?(choice)
 end
 
+def valid_yes?(answer)
+  %w(y Y).include?(answer)
+end
+
 ##### Determine One Time Winner #####
+
+def retrieve_player_choice(wins)
+  choice = ''
+  loop do
+    clear_screen_after_first(wins)
+    display_score(wins)
+    display_choices
+    choice = gets.chomp.downcase
+    valid_choice?(choice) ? break : display_input_error
+  end
+  convert_choice_input(choice)
+end
 
 def convert_choice_input(choice)
   VALID_CHOICES[VALID_INPUTS.index(choice)]
@@ -76,7 +147,7 @@ end
 
 ##### Determine Grand Winner #####
 
-def determine_wins(player, computer)
+def determine_winner(player, computer)
   if win?(player, computer)
     :user
   elsif win?(computer, player)
@@ -91,27 +162,23 @@ def update_wins(winner, scoreboard)
 end
 
 def grand_winner?(wins)
-  wins[:user] == 5 || wins[:computer] == 5
+  wins[:user] == GOAL_WINS || wins[:computer] == GOAL_WINS
 end
 
 def return_grand_winner(wins)
-  if wins[:user] == 5
+  if wins[:user] == GOAL_WINS
     "You are"
-  elsif wins[:computer] == 5
+  elsif wins[:computer] == GOAL_WINS
     "The computer is"
   end
 end
 
-def finale(wins_tally)
-  winners_animation
-  display_blank_space
-  prompt("#{return_grand_winner(wins_tally)} the GRAND WINNER!!")
-  display_blank_space
-  prompt("Your wins: #{wins_tally[:user]}")
-  prompt("The computers wins: #{wins_tally[:computer]}")
-  prompt("Ties: #{wins_tally[:tie]}")
-  display_blank_space
-  prompt("Congratulations and thanks for playing!")
+##### Ending #####
+
+def play_again?()
+  prompt("Would you like to play again? (y/Y to play)")
+  answer = gets.chomp.downcase
+  valid_yes?(answer)
 end
 
 ##### Program #####
@@ -122,19 +189,16 @@ display_blank_space
 wins = { user: 0, computer: 0, tie: 0 }
 
 loop do
-  choice = ''
+  choice = retrieve_player_choice(wins)
   computer_choice = VALID_CHOICES.sample
-
-  loop do
-    display_choices
-    choice = gets.chomp
-    valid_choice?(choice) ? break : prompt("Not a valid choice. Try again.")
-  end
-
-  choice = convert_choice_input(choice)
   display_winner(choice, computer_choice)
-  update_wins(determine_wins(choice, computer_choice), wins)
-  break if grand_winner?(wins)
+  update_wins(determine_winner(choice, computer_choice), wins)
+  determine_animation(wins)
+  display_finale(wins)
+  if grand_winner?(wins)
+    play_again? ? wins = { user: 0, computer: 0, tie: 0 } : break
+  end
+  clear_screen
 end
 
-finale(wins)
+display_farewell
