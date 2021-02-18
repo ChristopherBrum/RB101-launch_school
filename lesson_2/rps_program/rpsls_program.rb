@@ -1,5 +1,3 @@
-require 'pry'
-
 VALID_CHOICES = %w(rock paper scissors lizard spock)
 VALID_INPUTS = %w(r p sc l sp)
 WINNERS_HASH = {
@@ -93,7 +91,7 @@ def determine_animation(wins)
 end
 
 def new_round_animation
-  count = 1
+  count = 3
 
   print "=> Next round in..."
   while count > 0 
