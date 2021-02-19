@@ -110,3 +110,94 @@
 
 
 
+# str = "The Flintstones Rock!"
+# # For this practice problem, write a one-line program that creates the following output 10 times, with the subsequent line indented 1 space to the right:
+
+# 10.times do |i|
+#   print ' ' * i
+#   1.times do 
+#     puts str
+#   end
+# end
+
+# # OR
+
+# 10.times { |i| puts (' ' * i) + str }
+
+
+
+# # puts "the value of 40 + 2 is " + (40 + 2)
+# # Why is there an error and what are two possible ways to fix this?
+
+# # The error is because there is no implicit conversion from integer to string. 
+
+# puts "the value of 40 + 2 is " + (40 + 2).to_s
+# puts "the value of 40 + 2 is " + String(40 + 2)
+# puts "the value of 40 + 2 is #{(40 + 2)}"
+
+
+
+# def factors(number)
+#   divisor = number
+#   factors = []
+#   if number <= 0
+#     factors = "Positive integers only, please."
+#   else
+#     while divisor > 0 do
+#       factors << number / divisor if number % divisor == 0
+#       divisor -= 1
+#     end
+#   end
+#   factors
+# end
+
+
+# p factors(11)
+
+# # What is the purpose of the number % divisor == 0 ?
+# # This is checking to see if the divisor is a factor of the number. 
+# If this expression evaluates to true then the number is divided by 
+# the divisor with no remainder.
+
+# What is the purpose of the second-to-last line (line 8) in the 
+# method (the factors before the method's end)?
+# This returns the array of factors of the number parameter. Or a 
+# string telling you to only enter positive integers.
+
+
+
+# def rolling_buffer1(buffer, max_buffer_size, new_element)
+#   buffer << new_element
+#   buffer.shift if buffer.size > max_buffer_size
+#   buffer
+# end
+
+# def rolling_buffer2(input_array, max_buffer_size, new_element)
+#   buffer = input_array + [new_element]
+#   buffer.shift if buffer.size > max_buffer_size
+#   buffer
+# end
+
+# # These methods differ because the first method uses the << operator 
+# # which mutates the object variable being passed into the method as an 
+# # argument and the second method uses reassignment which points the 
+# # object variable within the method to a new object.
+
+
+
+# limit = 15
+
+# def fib(first_num, second_num, limit)
+#   while first_num + second_num < limit
+#     sum = first_num + second_num
+#     first_num = second_num
+#     second_num = sum
+#   end
+#   sum
+# end
+
+# result = fib(0, 1, limit)
+# puts "result is #{result}"
+
+
+
