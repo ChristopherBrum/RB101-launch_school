@@ -143,3 +143,32 @@
 # p real_palindrome?('123ab321') == false
 
 
+###############
+# PROBLEM:
+
+# Given a string, write a method `palindrome_substrings` which returns
+# all the substrings from a given string which are palindromes. Consider
+# palindrome words case sensitive.
+
+# Test cases:
+
+# palindrome_substrings("supercalifragilisticexpialidocious") == ["ili"]
+# palindrome_substrings("abcddcbA") == ["bcddcb", "cddc", "dd"]
+# palindrome_substrings("palindrome") == []
+# palindrome_substrings("") == []
+
+# Questions I have:
+#   -What do we do with spaces?
+#   -Whats a substring?
+#   -Whats a palendrome?
+#   -Will inputs always be strings?
+
+# INPUT: string
+# OUTPUT: array of substrings
+
+#   Expliciit rules;
+#     -return only substrings that are palendromes.
+#     -palendromes are case sensetive.
+
+#   Implicit rules;
+#     -
