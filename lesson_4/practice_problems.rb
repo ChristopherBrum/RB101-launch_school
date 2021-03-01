@@ -253,3 +253,129 @@ p add_age_group(munsters) == { "Herman" => { "age" => 32, "gender" => "male", "a
   "Grandpa" => { "age" => 402, "gender" => "male", "age_group" => "senior" },
   "Eddie" => { "age" => 10, "gender" => "male", "age_group" => "kid" },
   "Marilyn" => { "age" => 23, "gender" => "female", "age_group" => "adult" } }
+
+
+
+
+  ############
+=begin
+Understand the Problem:
+  - INPUT: string
+  - OUTPUT: neg or positive integer
+
+  -Takes in a string of digits
+  - returns the number as an integer
+  - number can be signed either + or - or not signed
+  - '+' sign means its a pos integer
+  - '-' sign means its an odd integer
+  - if there is not sign it should return a positive number
+  - Assume string contains valid number
+  - Do not use #to_i, Integer()
+
+Test Cases / Examples:
+  string_to_signed_integer('4321') == 4321
+  string_to_signed_integer('-570') == -570
+  string_to_signed_integer('+100') == 100
+
+Data Structure:
+  - string input
+  - arrays in the method
+  - return an integer
+
+Algorithm:
+  - Will use string_to_int method from the last exercise to convert from string to integer.
+
+  - Method will take in a string as an argument
+    - heck to see if the first character of input string is the character '+' or '-'.
+    - if the first char is '+'
+      - set variable 'is_pos?' to true 
+      - remove first char
+    - if the first char is '-'
+      - set variable 'is_true?' to false
+      - remove first char
+
+    - set 'integer' to the invoked string_to_int method passing string input as the argument
+    - if 'is_pos?' is true 
+      -return 'integer'
+    - otherwise 
+      - return -'integer'
+
+Code:
+=end
+DIGITS = { '0' => 0, '1' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5, '6' => 6, '7' => 7, '8' => 8, '9' => 9 }
+
+def string_to_integer(str)
+  numbers = str.chars
+  if numbers[0] == '+' || numbers[0] == '-'
+    numbers.shift
+  end
+  arr_of_nums = numbers.map { |str_num| DIGITS[str_num] }
+
+  value = 0
+  arr_of_nums.each do |digit|
+    value = 10 * value + digit
+  end
+  value
+end
+
+
+def string_to_signed_integer(string)
+  is_pos = true 
+  is_pos = false if string[0] == '-' 
+
+  num = string_to_integer(string)
+
+  is_pos ? num : -num
+end
+
+string_to_signed_integer('4321') == 4321
+string_to_signed_integer('-570') == -570
+string_to_signed_integer('+100') == 100
+
+
+
+################
+=begin
+Understand the Problem:
+  -INPUT: string
+  -OUTPUT: integer
+
+  -Rules:
+    -take a string as an input
+    -determine the ASCII value of all of the characters of the string combined
+    -return the total ASCII value
+
+Test Cases:
+  ascii_value('Four score') == 984
+  ascii_value('Launch School') == 1251
+  ascii_value('a') == 97
+  ascii_value('') == 0
+
+Data Structures:
+  -strings, array, integer
+
+Algorithm:
+  -set 'total' variable to 0
+  -split the string by characters
+  -iterate through the array
+    -find the ascii value of the character and add it to the 'total' variable
+  -return 'total'
+
+Code:
+=end
+
+def ascii_value(string)
+  total = 0
+  string.each_char { |char| total += char.ord }
+  total
+end
+
+
+ascii_value('Four score') == 984
+ascii_value('Launch School') == 1251
+ascii_value('a') == 97
+ascii_value('') == 0
+
+
+
+#############
