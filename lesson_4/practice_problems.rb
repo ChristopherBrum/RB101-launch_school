@@ -379,3 +379,84 @@ ascii_value('') == 0
 
 
 #############
+=begin
+Understanding the Problem:
+  -2 methods here, both input/output is the same:
+    -INPUT: String  (in time format)
+    -OUTPUT: Integer (minutes )
+
+  -Rules: 
+    -Take the string input and break it down into hours and minutes 
+    -Calculate those minutes before /after midnight
+    -Return minutes before/after midnight
+    -Do not use Time or Date classes
+
+Test Cases / Examples:
+  after_midnight('00:00') == 0
+  before_midnight('00:00') == 0
+  after_midnight('12:34') == 754
+  before_midnight('12:34') == 686
+  after_midnight('24:00') == 0
+  before_midnight('24:00') == 0
+
+Data Structures:
+  -strings, arrays and integers
+
+Algorithm:
+  -before_midnight
+    -split input string at ':'
+    -assign first element 'hours'
+    -assign second element 'minutes'
+    -if hours is >= 24 subtract 24 until its < 24
+    -multiply hours by 60
+    -add hours and minutes together
+
+    -subtract hours from 1440
+    -reutrn total
+
+  -after_midnight
+    -split input string at ':'
+    -assign first element 'hours'
+    -assign second element 'minutes'
+    -if hours is >= 24 subtract 24 until its < 24
+    -multiply hours by 60
+    -add hours and minutes together
+
+    -return total
+
+Code:
+=end
+
+HOURS_IN_DAY = 24
+MINUTES_IN_HOUR = 60
+MINUTES_IN_DAY = HOURS_IN_DAY * MINUTES_IN_HOUR
+
+def before_midnight(time)
+  total_minutes = find_minutes(time)
+  total_minutes = MINUTES_IN_DAY - total_minutes
+  reduce_by_day(total_minutes)
+end
+
+def after_midnight(time)
+  total_minutes = find_minutes(time)
+  reduce_by_day(total_minutes)
+end
+
+def find_minutes(time)
+  time_str = time.split(':')
+  hours = time_str[0].to_i
+  minutes = time_str[1].to_i
+  total_minutes = (hours * MINUTES_IN_HOUR) + minutes
+  total_minutes
+end
+
+def reduce_by_day(minutes)
+  minutes % MINUTES_IN_DAY
+end
+
+after_midnight('00:00') == 0
+before_midnight('00:00') == 0
+after_midnight('12:34') == 754
+before_midnight('12:34') == 686
+after_midnight('24:00') == 0
+before_midnight('24:00') == 0

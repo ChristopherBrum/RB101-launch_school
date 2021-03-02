@@ -1,59 +1,133 @@
-def integer_to_string(num)
-  result = []
-  loop do
-    rem = num.divmod(10)[1]
-    num = num.divmod(10)[0]
-    result << rem
-    break if num == 0
+=begin
+CONVERT A SIGNED NUMBER TO A STRING
+
+Understand the Problem:
+  - INPUT: string
+  - OUTPUT: neg or positive integer
+
+  -Takes in a string of digits
+  - returns the number as an integer
+  - number can be signed either + or - or not signed
+  - '+' sign means its a pos integer
+  - '-' sign means its an odd integer
+  - if there is not sign it should return a positive number
+  - Assume string contains valid number
+  - Do not use #to_i, Integer()
+
+Test Cases / Examples:
+  string_to_signed_integer('4321') == 4321
+  string_to_signed_integer('-570') == -570
+  string_to_signed_integer('+100') == 100
+
+Data Structure:
+  - string input
+  - arrays in the method
+  - return an integer
+
+Algorithm:
+  - Will use string_to_int method from the last exercise to convert from string to integer.
+
+  - Method will take in a string as an argument
+    - heck to see if the first character of input string is the character '+' or '-'.
+    - if the first char is '+'
+      - set variable 'is_pos?' to true 
+      - remove first char
+    - if the first char is '-'
+      - set variable 'is_true?' to false
+      - remove first char
+
+    - set 'integer' to the invoked string_to_int method passing string input as the argument
+    - if 'is_pos?' is true 
+      -return 'integer'
+    - otherwise 
+      - return -'integer'
+
+Code:
+=end
+DIGITS = { '0' => 0, '1' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5, '6' => 6, '7' => 7, '8' => 8, '9' => 9 }
+
+def string_to_integer(str)
+  numbers = str.chars
+  if numbers[0] == '+' || numbers[0] == '-'
+    numbers.shift
   end
-  result.reverse.join
-end
+  arr_of_nums = numbers.map { |str_num| DIGITS[str_num] }
 
-#Solution Using hash  
-def integer_to_string(num)
-  h = (0..9).zip('0'..'9').to_h
-  result = ''
-  loop do 
-    rem = num.divmod(10)[1]    
-    num = num.divmod(10)[0]
-     result << h.fetch(rem)
-    break if num == 0
+  value = 0
+  arr_of_nums.each do |digit|
+    value = 10 * value + digit
   end
-  result.reverse
-end
-
-###########
-def merge_sort(array)
-  return array if array.size == 1
-
-  sub_array_1 = array[0...array.size / 2]
-  sub_array_2 = array[array.size / 2...array.size]
-
-  sub_array_1 = merge_sort(sub_array_1)
-  sub_array_2 = merge_sort(sub_array_2)
-
-  merge(sub_array_1, sub_array_2)
+  value
 end
 
 
-#############
-def letter_percentages(string)
-  counts = { lowercase: 0, uppercase: 0, neither: 0 }
-  percentages = { lowercase: [], uppercase: [], neither: [] }
-  characters = string.chars
-  length = string.length
+def string_to_signed_integer(string)
+  is_pos = true 
+  is_pos = false if string[0] == '-' 
 
-  counts[:uppercase] = characters.count { |char| char =~ /[A-Z]/ }
-  counts[:lowercase] = characters.count { |char| char =~ /[a-z]/ }
-  counts[:neither] = characters.count { |char| char =~ /[^A-Za-z]/ }
+  num = string_to_integer(string)
 
-  calculate(percentages, counts, length)
-
-  percentages
+  is_pos ? num : -num
 end
 
-def calculate(percentages, counts, length)
-  percentages[:uppercase] = (counts[:uppercase] / length.to_f) * 100
-  percentages[:lowercase] = (counts[:lowercase] / length.to_f) * 100
-  percentages[:neither] = (counts[:neither] / length.to_f) * 100
+string_to_signed_integer('4321') == 4321
+string_to_signed_integer('-570') == -570
+string_to_signed_integer('+100') == 100
+
+
+
+################
+=begin
+Understanding the Problem:
+  -INPUT: string
+  -OUTPUT: boolean
+
+  -Rules:
+    -There is a collection of word blocks containing 2 letters per element connected by a colon.
+    -Method will take in a string as an argument.
+    -Determine whether the charcters of the input string correlate with only one of the letters any of the spelling blocks in the collection given.
+    -Return true if the string characters only correlate with one of any of the spelling block elements. 
+    -Return false if the string characters  correlate with more than one of any of the spelling block elements. 
+
+Test Cases / Examples:
+  collection of a spelling block:
+    B:O   X:K   D:Q   C:P   N:A
+    G:T   R:E   F:S   J:W   H:U
+    V:I   L:Y   Z:M
+
+  block_word?('BATCH') == true
+  block_word?('BUTCH') == false
+  block_word?('jest') == true
+
+Data Structures:
+  -strings, arrays and booleans
+
+Algorithm:
+  -set 'str_arr' to the input string split into an array of characters
+  -down case all charcters in 'str_arr'
+  -iterate through 'SPELLING_BLOCK'
+    -split each element at ':'
+    -iterate through the 2 elements
+      -check to see if 'str_arr' includes the first element and (&&) the second element
+      -if true, return false
+  -return true
+
+Code:
+=end
+
+SPELLING_BLOCK = %w(B:O X:K D:Q C:P N:A G:T R:E F:S J:W H:U V:I L:Y Z:M)
+
+def block_word?(string)
+  one_char_max = true
+  str_arr = string.chars.map { |el| el.downcase }
+  SPELLING_BLOCK.each do |block|
+    block = block.split(':')
+    one_char_max = false if (str_arr.include?(block[0].downcase)
+                          && str_arr.include?(block[1].downcase))
+  end
+  one_char_max
 end
+
+p block_word?('BATCH') == true
+p block_word?('BUTCH') == false
+p block_word?('jest') == true
