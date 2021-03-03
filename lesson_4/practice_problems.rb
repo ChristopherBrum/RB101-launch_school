@@ -460,3 +460,50 @@ after_midnight('12:34') == 754
 before_midnight('12:34') == 686
 after_midnight('24:00') == 0
 before_midnight('24:00') == 0
+
+
+################
+=begin
+Understand the Problem: 
+  -INPUT: string of words
+  -OUTPUT: string
+
+  -Rules:
+    -Take each word in string (sparated by a space) and swap the first and last charcter
+    -Every word contains at least one letter
+    -String will always contain at least one word
+    -String contains only words and spaces
+
+Test Cases / Examples:
+  swap('Oh what a wonderful day it is') == 'hO thaw a londerfuw yad ti si'
+  swap('Abcde') == 'ebcdA'
+  swap('a') == 'a'
+
+Data Structures:
+  -strings and arrays
+
+Algorithm:
+  -split string input at every ' '
+  -iterate through the array
+    -swap the first and last character of each element
+  -join the array
+  -return new string
+
+Code:
+=end
+
+def swap(sentence)
+  string_arr = sentence.split(' ')
+  string_arr.map do |word|
+    word[0], word[-1] = word[-1], word[0]
+    word
+  end.join(' ')
+end
+
+swap('Oh what a wonderful day it is') == 'hO thaw a londerfuw yad ti si'
+swap('Abcde') == 'ebcdA'
+swap('a') == 'a'
+
+
+
+##############
