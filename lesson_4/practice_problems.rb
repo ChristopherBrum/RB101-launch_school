@@ -507,3 +507,41 @@ swap('a') == 'a'
 
 
 ##############
+=begin
+Given a string that consists of some words (all lowercased) and an assortment of non-alphabetic characters, write a method that returns that string with all of the non-alphabetic characters replaced by spaces. If one or more non-alphabetic characters occur in a row, you should only have one space in the result (the result should never have consecutive spaces).
+
+Understand the Problem:
+  -INPUT: string
+  -OUTPUT: string
+
+  -Rules: 
+    -input string can contain words, non-alphabetic characters and spaces. 
+    -replace all non-alphabetic characters with a space (' ')
+    -If there is more than one space remove extras and leave one space.
+    -return the string
+
+Test Cases:
+  cleanup("---what's my +*& line?") == ' what s my line '
+
+Data Structures:
+  -string and array
+
+Algorithm:
+  -swap all non-alphabetic characters with a space (' ')
+  -split the string by ' '
+  -join array with ' '
+  -return string
+
+Code:
+=end
+
+def cleanup(string)
+  str = string.gsub(/[^a-z]/i, ' ').squeeze(' ')
+end
+
+cleanup("---what's my +*& line?")
+cleanup("---what's my +*& line?") == ' what s my line '
+
+
+
+##############
