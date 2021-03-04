@@ -545,3 +545,216 @@ cleanup("---what's my +*& line?") == ' what s my line '
 
 
 ##############
+=begin
+Write a method that takes a string with one or more space separated words and returns a hash that shows the number of words of different sizes.
+
+Words consist of any string of characters that do not include a space.
+
+Understanding the Problem:
+  -Input: string
+  -Output: hash
+
+  -Rules:
+    -Takes in a strring of words separated by one or more space.
+    -Returns a hash, key is the length of a word and the value is the number of words of that length.
+    -Words are considered any characters except spaces.
+    -Spaces dillineate a separation of words.
+
+Test Cases:
+  word_sizes('Four score and seven.') == { 3 => 1, 4 => 1, 5 => 1, 6 => 1 }
+  word_sizes('Hey diddle diddle, the cat and the fiddle!') == { 3 => 5, 6 => 1, 7 => 2 }
+  word_sizes("What's up doc?") == { 6 => 1, 2 => 1, 4 => 1 }
+  word_sizes('') == {}
+
+Data Structures:
+  -strings, integers, arrays, hashes
+
+Algorithm:
+  -split string at every ' ' into an array of words
+  -convert the array of words into an array of word lengths. 
+  -iterate through the array and insert length of words and number of words of that length into a hash
+=end
+
+def word_sizes(string)
+  string_hash = string.split(' ').group_by { |word| word.delete('^A-z').length }
+  string_hash.each_with_object({}) do |(length, instances), final_hash| 
+    final_hash[length] = instances.length
+  end
+end
+
+word_sizes('Four score and seven.') == { 3 => 1, 4 => 1, 5 => 2 }
+word_sizes('Hey diddle diddle, the cat and the fiddle!') == { 3 => 5, 6 => 3 }
+word_sizes("What's up doc?") == { 5 => 1, 2 => 1, 3 => 1 }
+word_sizes('') == {}
+
+
+
+
+#################
+=begin
+Write a method that takes an Array of Integers between 0 and 19, and returns an Array of those Integers sorted based on the English words for each number:
+
+zero, one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen
+
+Understanding the Problem:
+  -INPUT: array of integers
+  -OUTPUT: array of integers
+
+  -Rules:
+    -Method takes an array of integers as an argument
+    -The integers are between 0 and 19
+    -sort the integers alphabetically, based on their english written version
+
+Test Cases:
+  alphabetic_number_sort((0..19).to_a) == [
+    8, 18, 11, 15, 5, 4, 14, 9, 19, 1, 7, 17,
+    6, 16, 10, 13, 3, 12, 2, 0
+  ]
+
+Data Structures:
+  -integers, strings, arrays and hash
+
+Algorithm:
+  -Initiate 'NUM_WORDS' to an array of the words 'one' through 'nineteen'
+  -Initiate 'num_to_words', using the integers of the input array as keys and the strings associated with of 'NUM_WORDS' as the values
+  -Iterate through the values of 'num_to_words' and sort alphabetically
+  -Using the sorted values, push the associated keys to 'sorted_integers'
+  -return 'sorted_integers'
+
+=end
+
+NUM_WORDS = %w(zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen)
+
+def alphabetic_number_sort(arr)
+  nums_to_strings = arr.each_with_object({}) do |integer, hash|
+    hash[integer] = NUM_WORDS[integer]
+  end
+  nums_to_strings.values.sort.each_with_object([]) do |string, sorted_arr|
+    sorted_arr << nums_to_strings.key(string)
+  end
+end
+
+alphabetic_number_sort((0..19).to_a) == [
+  8, 18, 11, 15, 5, 4, 14, 9, 19, 1, 7, 17,
+  6, 16, 10, 13, 3, 12, 2, 0
+]
+
+
+
+
+################
+=begin 
+Write a method that takes a string argument and returns a new string that contains the value of the original string with all consecutive duplicate characters collapsed into a single character. You may not use String#squeeze or String#squeeze!.
+
+Understand the Problem:
+  -INPUT: string
+  -OUTPUT: string 
+
+  -Rules:
+    -Method takes in a string
+    -Returns a string of the same but with consecutive characters collapsed into one character.
+    -Don't use #squeeze or #squeeze!
+
+Test Cases:
+  crunch('ddaaiillyy ddoouubbllee') == 'daily double'
+  crunch('4444abcabccba') == '4abcabcba'
+  crunch('ggggggggggggggg') == 'g'
+  crunch('a') == 'a'
+  crunch('') == ''
+
+Data Structures:
+  -strings, arrays
+
+Algorithm:
+  -iterate through input string by character
+    -check if current char == the next char
+     -if true delete one of the matching characters
+  -return string
+
+=end
+
+def crunch(string)
+  new_str = []
+  str = string.split('')
+  str.each_with_index do |char, index|
+    new_str.push(char) unless char == str[index + 1] 
+  end
+  new_str.join
+end
+
+crunch('ddaaiillyy ddoouubbllee') == 'daily double'
+crunch('4444abcabccba') == '4abcabcba'
+crunch('ggggggggggggggg') == 'g'
+crunch('a') == 'a'
+crunch('') == ''
+
+
+
+
+##############
+=begin 
+Write a method that will take a short line of text, and print it within a box.
+
+You may assume that the input will always fit in your terminal window.
+
+Understand the Problem:
+  -INPUT: string
+  -OUTPUT:  string
+
+  -Rules:
+    -Takes in a string
+    -returns the same string within a box
+    -the top and bottom of the box consist of '+' at the beginning and end of the line with '-' symbols the length of the string plus 2
+    -theres a line on top and on bottom of the the center of the box that starts and ends with '|' and has ' ' the length of the string plus 2
+    - The center line will contain the string passed in with a space and '|' on both sides
+
+
+Test Cases:
+  print_in_box('To boldly go where no one has gone before.')
+  +--------------------------------------------+
+  |                                            |
+  | To boldly go where no one has gone before. |
+  |                                            |
+  +--------------------------------------------+
+
+  print_in_box('')
+  +--+
+  |  |
+  |  |
+  |  |
+  +--+
+Data Structures:
+  -strings
+
+Algorithm:
+  -assign 'length' to the length of the string input plus 2
+  -initialize top line 
+
+=end
+
+def print_in_box(string)
+  size = string.length + 2
+  top_bottom = "+#{'-' * size}+" 
+  space = "|#{' ' * size}|"
+  text = "| #{string} |"
+  puts top_bottom, space, text, space, top_bottom
+end
+
+print_in_box('To boldly go where no one has gone before.')
+# +--------------------------------------------+
+# |                                            |
+# | To boldly go where no one has gone before. |
+# |                                            |
+# +--------------------------------------------+
+
+print_in_box('')
+# +--+
+# |  |
+# |  |
+# |  |
+# +--+
+
+
+
+
+##################
