@@ -758,3 +758,22 @@ print_in_box('')
 
 
 ##################
+'a'.ord # returns => 97
+'b'.ord # returns => 98
+'a' <=> 'b' # returns => -1
+
+I'm in need of clarification of how the String#<=> method works. From what I can gather from reading through the lesson on sorting and consulting the docs for the String#<=> and String#ord methods, the String#<=> method is simply comparing the ascii value of a string to another string and return -1, 0 1, or nil. 
+```
+From the Docs for String#<=>
+
+string <=> other_string
+
+-1 if other_string is smaller.
+0 if the two are equal.
+1 if other_string is larger.
+nil if the two are incomparable.
+```
+My confusion begins when I check the ascii value using String#ord for 'a' and 'b'. I get an ascii value of 97 for the string 'a' and an ascii value of 98 for the string 'b'. When I compare them using String#<=> it returns -1, indicating that the ascii value for 'b' (98) is less than the ascii value for 'a' (97). When I use Integer#<=>
+```ruby
+
+```

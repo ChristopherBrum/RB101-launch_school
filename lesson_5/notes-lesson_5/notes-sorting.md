@@ -1,0 +1,96 @@
+- Textbook
+    - Sorting is setting the order of the items in a collection according to a certain criterion.
+    - Under the hood of the sort method is the complex algorithm we discussed earlier. We don't need to see this, or understand how the method is implemented, in order to use it. What we do need to understand though is the way in which sort applies criterion in order to return an ordered collection.
+    - Sorting is essentially carried out by comparing the items in a collection with each other, and ordering them based on the result of that comparison. Comparison is at the heart of how sorting works.
+    - Any object in a collection that we want to sort must implement a <=> method. This method performs comparison between two objects of the same type and returns a -1, 0, or 1, depending on whether the first object is less than, equal to, or greater than the second object; if the two objects cannot be compared then nil is returned.
+    - The return value of the <=> method is used by sort to determine the order in which to place the items. If <=> returns nil to sort then it throws an argument error.
+    - The `sort` method doesn't actually care about how `<=>` compares items, all it is concerned about is the return value of the `<=>` method (that is, it's looking for `-1`, `0`, `1` or `nil`). When using `sort` however, it is important to know how `<=>` performs comparison for the type of object that you want to sort; the place to check for that is in the documentation. If you want to sort a collection that contains particular types of objects (e.g. strings or integers) you need to know two things:
+        1. Does that object type implement a `<=>` comparison method?
+        2. If yes, what is the specific implementation of that method for that object type (e.g. `String#<=>` will be implemented differently to `Integer#<=>`).
+    - You don't need to memorize all the positions in the ASCII table, but when dealing with comparing or sorting strings it is important to know that they are ordered in a particular way and roughly what that order is. Some useful rules to remember are:
+        - Uppercase letters come before lowercase letters
+        - Digits and (most) punctuation come before letters
+        - There is an *extended* ASCII table containing accented and other characters - this comes after the main ASCII table
+    - We can also call sort with a block; this gives us more control over how the items are sorted. The block needs two arguments passed to it (the two items to be compared) and the return value of the block has to be -1, 0, 1 or nil.
+    - sort_by always returns an array, even when called on a hash, so the result here is a new array with the key-value pairs as objects in nested arrays. If we need to convert this back into a hash we can call Array#to_h on it.
+    - Sorting is complex to carry out algorithmically on your own, but we can use the built-in `sort` and `sort_by` methods to do the complex work for us.
+    - Comparison is at the heart of sorting. When sorting collections, you need to know if the objects you want to sort on implement a `<=>` method and how that method is defined.
+    - Methods other than `sort` and `sort_by` also use comparison as the basis for how they work.
+- Notes
+    - What is sorting?
+        - Sorting is a way of ordering or re-ordering a collection of elements based on a specific comparison of criteria.
+    - What do the #sort and #sort_by methods use to sort objects?
+        - They both utilize the #<=> method under the hood to compare objects or elements in some fashion.
+        - Comparison is at the heart of how sorting works.
+    - What is the <=> called?
+        - This is the comparison operator also called the spaceship operator.
+    - What does the <=> do and what does it return?
+        - The comparison operator compares two objects of the same type with each other.
+        - Returns -1 if the object on the right is smaller
+        - Returns 0 if they are equal
+        - Returns 1 if the object on the right is larger
+        - Returns nil if the two are incompatible
+    - Why is important to know how <=> works if we have the #sort method?
+        - The #sort method uses the #<=> method under the hood so understanding how #<=> works is crucial to being able to utilize #sort effectively.
+    - What must you know if you want to sort a collection that contains a particular type of object?
+        - First, you need to know if that type of object implement a #<=> method.
+        - If yes, you need to know how that object type implements the #<=> method.
+    - What is an ordinal and what does it pertain to?
+        - Is the ascii value associated with string characters.
+
+    - How is the ordinal/ascii value of a string relevant to sorting?
+        - The #<=> uses the ordinal/ascii value to determine whether characters are greater than or less than other characters.
+    - What are some key concepts to be aware of when it comes to the way the ascii table it ordered?
+        - Uppercase letters come before lowercase letters.
+        - Digits come before letters.
+        - Many punctuation comes before letters.
+    - Why would we want to call #sort with a block?
+        - Calling #sort with a block gives us greater control over how a collection is sorted.
+    - When using #sort with a block how many arguments do we pass in and what are the two arguements?
+        - Sorting with a block requires us to pass in 2 arguments.
+        - These will be two items that will be compared.
+    - When using a block with the #sort method what does the return value have to be?
+        - When calling #sort with a block it must return 1, 0 , -1 or nil. If it returns something different it will throw an error.
+    - How does #<=> compare strings with multiple characters?
+        - #<=> begins with the first character of each string based on their ascii value.
+        - If all of the first characters are equal it will then move onto the second character.
+        - If all the strings contain the same characters and are of equal length a new collection will be returned with the elements in the same order as the original.
+        - If all the characters are equal up to the last character of one of the strings it will equate a string that is longer as being greater.
+    - How does the Array#<=> differ from the String#method?
+        - The Array#<=> method compares each element within an array with each element in another array. The first element within an array is compared with the first of another, from start to end. If equal, it will compare the second element, character by character. If all elements are equal but one array is longer than the other, the longer array will be greater.
+        - The String#<=> method compares each character of a string character by character. If the character are the same up to the end of one string the longer string will be greater.
+    - Is it common to sort a hash? What ways do we have for sorting a hash?
+        - It is not common to sort through a hash because a hash elements can referenced using a key which makes sorting largely unnecessary.
+        - If sorting through a hash using the #sort_by method would be the way to do so. It will take in 2 arguments, one for the key and the other for the value.
+    - What does the #sort_by method return?
+        - The #sort_by method will always return an array.
+    - What happens when you call #<=> on a symbol?
+        - It throws an error because there is no #<=> for symbols. Therefore #to_s must be invoked on the symbol before, but this just means you are comparing strings.
+    - What issues can occur when calling #<=> on a symbol and how can we avoid them?
+        - Because we need to convert a symbol into a string before we can compare them the issue of case sensitivity comes into play. If two strings, one capitalized and one not, are to be sorted alphabetically the capitalized string will have a smaller ascii value than any string that is down-cased.
+        - By calling capitalize on the symbols they will then all be compared just alphabetically.
+    - Whats different about Array#sort and Array#sort_by compared to Array#sort! and Array#sort_by! ?
+        - The methods ending with ! are both destructive, meaning that they will return the original object that has had the elements mutated by sorting. The methods without the ! will return new objects with the sorted elements.
+    - What are some useful methods to be aware of when using the #sort and #sort_by methods? Specifically the #<=> used under the hood in #sort and #sort_by? Where can they be found in the docs?
+        - **#min**
+            - with no block and no arguments returns the object with the smallest/minimum value.
+            - with a block but no arguments returns the object with the smallest/minimum value, or the value specified in the block.
+            - with a block and a parameter returns an array object the length of the argument passed in, of the objects with the smallest/minimum values, or the value specified by the block
+        - **#max**
+            - with no block and no arguments returns the object with the largest/maximum value.
+            - with a block but no arguments returns the object with the largest/maximum value, or the value specified in the block.
+            - with a block and a parameter returns an array object the length of the argument passed in, of the objects with the largest/maximum values, or the value specified by the block
+        - **#minmax**
+            - Returns a two-element array with the minimum and maximum values of an array object.
+            - With a block you can alter the default comparison.
+        - **#min_by**
+            - with no block am enumerator is returned
+            - with a block but no arguments returns the object with the smallest/minimum value, or the value specified in the block.
+            - with a block and a parameter returns an array object the length of the argument passed in, of the objects with the smallest/minimum values, or the value specified by the block
+        - **#max_by**
+            - with no block am enumerator is returned
+            - with a block but no arguments returns the object with the largest/maximum value, or the value specified in the block.
+            - with a block and a parameter returns an array object the length of the argument passed in, of the objects with the largest/maximum values, or the value specified by the block
+        - **minmax_by**
+            - Returns a two-element array with the minimum and maximum values of an array object.
+            - With a block you can alter the default comparison.
