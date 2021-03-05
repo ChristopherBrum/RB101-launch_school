@@ -1,0 +1,142 @@
+- Collection References
+    - Textbook
+        - Strings use an integer-based index that represents each character in the string. The index starts counting at zero and increments by one for the remaining index values.
+        - You can also reference multiple characters within a string by using an index starting point and the number of characters to return.
+        - Like strings, arrays are also ordered, zero-indexed collections.
+        - Arrays are lists of elements that are ordered by index, where each element can be any object. Arrays use an integer-based index to maintain the order of its elements.
+        - Just as with String, arr[2, 3] is alternative syntax for the Array#slice method. It is important to be aware, however, that Array#slice and String#slice are not the same method, even though they have the same name. They do share a lot of the same functionality, but are separate implementations. One key distinction is that String#slice returns a new string whereas Array#slice returns a new array.
+        - One situation where Array#slice does not return a new array is if we pass the method only an index, rather than a start and length or a range; in this case the element at that index is returned rather than a new array.
+        - Hashes are another very common collection data structure that, instead of using an integer-based index, uses key-value pairs, where the key or the value can be any type of Ruby object. This allows for a more expansive and descriptive collection of elements.
+        - When initializing a hash, the keys must be unique. Values, however, can be duplicated.
+        - Although both hash keys and values can be any object in Ruby, it is common practice to use symbols as the keys. Symbols in Ruby can be thought of as immutable strings.
+        - Referencing an out-of-bounds index in this way returns nil. This is not necessarily a problem for a string, since we know that nil is an invalid return value; with an array, nil could be a valid return value since arrays can contain any other type of object, including nil.
+        - #fetch throws an IndexError exception if the index is out of bounds. This is very helpful for catching indices that are out of bounds, but which method is better to use? #[] or #fetch? #[] occurs most often in Ruby code, but it's actually better to use #fetch since it enforces the array boundaries. The key point here is to be careful when #[] returns nil. Always try to think about whether nil is the real element in the array or if it's Ruby's way of telling us we've gone beyond the array boundary.
+        - Elements in String and Array objects can be referenced using negative indices, starting from the last index in the collection -1 and working backwards.
+    - Notes
+        - What is the syntax for referencing an element in a String collection? Or more than one element in a String collection?
+            - In order to reference a single element within a string you would type the variable name referencing the string, then using the #[ ] method with the index of the element you want to reference within the [ ]. This will return the string element you referenced by index.
+            - str = "Hello"
+            - str[0] # returns ⇒ 'H'
+        - What is happening when we reference multiple elements of a String collection?
+            - We can reference a string collection from within the original string by calling the #[ ] method on the variable referencing a string, the first argument within the [ ] will be the index of the starting string element, the next argument will be the length of the substring you would like to return. This is syntactical sugar for the String#slice method.
+            - str = "Mississippi"
+            - str[3, 6] # returns ⇒ "sissip"
+        - What does str[2, 3] return? And what can can we do with this?
+            - str[2, 3] will return a substring of the str variable starting at index 2 of str and has a length of 3 characters long. You can additionally access a substring of the substring or individual elements of the substring by using the String#slice method on the substring or by chaining the method.
+            - str = "Mississippi"
+            - str[3, 6] # returns ⇒ "sissip"
+            - str[3, 6][1, 4] # returns ⇒ 'issi'
+        - How could you reference an element in an Array collection? What about multiple consecutive elements?
+            - With in the Array#[ ] method you can use an elements index to access that element from an array, or you can access a subarray by adding a second parameter which is the length of the subarray.
+            - This is utilizing the Array#slice method under the hood but with [ ]
+            - arr = ["a", "b", "c", "d", "f"]
+            - arr[2] # returns ⇒ "c"
+            - arr[2, 3] # returns ⇒ ["c", "d", "f"]
+        - What is happening when we reference multiple elements in an Array collection?
+            - Ruby is utilizing the Array#slice method under the hood. The first parameter is the index of the starting element of the array, the second parameter is the number of array elements from the starting element to include in the subarray.
+        - Is the method #slice the same method for arrays and strings?
+            - No. Although they appear to function the same and implementation is the same they are two separate methods, one operating in the String class and one operating in the Array class.
+        - What are the possible outputs of #slice for arrays and strings?
+            - String#slice will always return a string but Array#slice will return a single element or an array.
+            - When only passing an index to the Array#slice method it will return whatever object is at that location within the collection. It could be a hash, a string, an integer an array, it doesn't matter.
+            - When passing an index and a length as a second argument to the Array#slice method it will always return an array.
+        - What is the syntax for referencing a value from a hash?
+            - Similar in appearance to accessing an element from a string or an array hashes differ in that instead of using an index to access a specific element you use a key that is associated with a specific value.
+            - hsh = {:apple=>"fruit", :carrot=>"vegetable", :pear=>"fruit"}
+            - hsh[:appple] # returns ⇒ "fruit"
+        - Can we have duplicate keys and values in a hash?
+            - Keys must be unique within a hash but values do not need to be.
+        - How can we access just the keys or just the values from a hash?
+            - The Hash#keys and Hash#values methods will return an array of all keys or values of a hash.
+            - hsh = {:apple=>"fruit", :carrot=>"vegetable", :pear=>"fruit"}
+            - hsh.keys # returns ⇒ [:apple, :carrot, :pear]
+            - hsh.values # returns ⇒ ["fruit", "vegetable", "fruit"]
+        - What is returned when we access all of the keys or all of the values?
+            - The #keys and #values methods return an array of the keys or hashes within the hash the methods were called upon.
+        - It's common practice to use *what* when naming a hash key?
+            - A symbol.
+        - What should we be aware of when referencing elements in strings or arrays, especially when they are out of bounds?
+            - When referencing elements by their index using the #[ ] method or #slice method we need to be aware that if the index falls out of the bounds of the string or array, *nil* will be returned. While not an issue for strings this can cause problems when dealing with arrays because *nil* is a valid element within arrays. The Array#fetch method can avoid these errors, as it throws an error when an element outside the bounds of an array is referenced.
+        - Do we have any tools at our disposal to take out of bounds elements into account?
+            - The Array#fetch method will return elements of an array similarly to #slice but will throw an error if an element or index is referenced that is outside the bounds the called array.
+        - What happens when trying to reference a String or Array elements with a negative index?
+            - Because strings and arrays are zero indexed, referencing a string or array with a negative number will start from the back of the string or array and work its way forward.
+            - An index of -1 is the last element in the string or array.
+            - An index of -2 is the second to last element in the string or array, and so on.
+        - What is returned when trying to reference an element index outside of the bounds of a String or Array and how could that cause problems?
+            - When attempting to reference an element that falls out of the bounds of  a string or array *nil* will be returned. This can be a problem for returning arrays because *nil* is a valid element within arrays.
+        - What occurs when referencing a Hash key that does not exist? What can we do to catch possible errors that could occur because of this?
+            - Similar to arrays, when referencing a key that doesn't exist in a hash Hash#[ ] and Hash#slice will return *nil.* This can cause problems as *nil*  is a valid input within a hash. The Hash#fetch method works like #slice but will throw an error if a non-existent key is referenced on a hash.
+    - Highlights
+        - To reference an individual character from a string you can use #[ ] method, with one parameter; the index of the target character.
+        - To reference multiple characters from a string you can also use the #[ ] method but with two parameters; the first being the starting index and the second being the length of the new substring.
+            - str = 'cheese'
+            - str[1] # ⇒ 'h'
+            - str[1, 4] # ⇒ 'hees'
+        - The #[ ] method is syntactical sugar for the calling the #slice method. Both function exactly the same way with different method syntax.
+        - We can access elements within an array the same way we access characters in a string. The #[ ] and #slice method are functionally identical with slightly different syntaxes.
+            - arr = ['a', 'b', 'c', 'd']
+            - arr[1] # ⇒ 'b'
+            - arr[1, 3] # ⇒ ['b', 'c', 'd']
+            - Notice that when one parameter was entered it returned the element at the selected index but with two parameters it returns an array.
+        - Using #[ ] and #slice methods on a string will always return a string, using them on an array will return the element at the index if one parameter is passed in, or a subarray if two parameters are passed in.
+        - Even though the #[ ] and #slice methods look like they function the same for Strings and Arrays they are different and belong to different classes.
+        - To reference a value from a hash we can use the #[ ] method, with the key being the parameter passed into the [ ].
+            - hash = { 'dad' ⇒ 'Steve', 'mom' ⇒ 'Diane' }
+            - hash['dad'] # ⇒ 'Steve'
+        - A hash cannot have duplicate keys, but there can be as many duplicate keys as you'd like in a hash.
+        - To access all of the keys of a hash use the #keys method. It will return an array of all the keys of a hash.
+        - To access all of the values of an array use the #values method. It will return an array of all the values of a hash.
+        - When referencing a character or element of a string or array that falls out of bounds of that object it will return *nil.* This can cause problems because nil is a valid element in some objects and can therefore lead to unexpected bugs.
+        - Using the #fetch method can help us avoid the types of bugs mentioned above because if a character or element out of bounds is referenced using #fetch it will throw an error instead of returning nil.
+        - Using a negative number when referencing a string character or an array element will reference a char/element starting from the end of the string or array. -1 will be the last character/element, -2 will be second to last character/element.
+            - str = 'hello'
+            - str[-1] # ⇒ 'o'
+        - Like strings and arrays, hashes will also return nil if attempting to reference an element not found within.
+- Collection Conversion
+    - Textbook
+        - The fact that strings and arrays share similarities, such as both being zero-indexed collections, lends itself to being able to convert from one to the other, and this is quite common practice in Ruby code. There are a number of Ruby methods that facilitate this type of conversion including String#chars and Array#join.
+        - Hash has a #to_a method, which returns an array. Notice the array that is returned from #to_a contains two other arrays, each sub-array containing a symbol and a string. Each sub-array is equivalent to a key-value pair from the initial hash.
+        - Just like Hash has a #to_a method, Array has a #to_h method.
+    - Notes
+        - Because referencing Strings and Arrays operates very similarly how does this effect our ability to convert strings to array and vice versa?
+            - Because of the similarities it makes it easier to convert from strings to arrays and vice versa.
+        - What common methods do we use for converting strings into arrays and arrays into strings?
+            - To convert strings to arrays we can use the #chars or the #split methods.
+            - To convert from an array to a string we can use the #join method.
+        - Can we convert a hash to an array? If so, how and what does it return?
+            - Yes we can using the Hash#to_a method. It converts the hash to an array and each key-value pair to a subarray within the array.
+        - Can we convert an array to a hash? If so, how and what does it return?
+            - Yes. Using the Array#to_h method. But there must be at least one subarray with 2 elements within the array. An error will be thrown if the array does not consist of 2 element subarrays. Elements must be paired up or else an error will be thrown.
+    - Highlights
+- Element Assignment
+    - Textbook
+        - 
+    - Notes
+        - How can we change a single character of string?
+            - By referencing an individual element or group of elements in a string and then setting them equal to a string.
+            - str = "Mississippi"
+            - str[0] = 'm' # returns ⇒ 'mississippi'
+        - How can we change an element within an array? Do we have multiple options?
+            - We can reference an individual element within an array or a group of elements in an array and then assign them to a new object.
+                - arr = [1, 2, 3, 4, 5]
+                - arr[2] = {cheese: "good"}
+                - arr # returns ⇒ [1, 2, {cheese: "good"}, 4, 5]
+            - You can also increment integers if you array contains integer objects.
+                - arr [1, 2, 3, 4, 5]
+                - arr[1] += 3
+                - arr # returns ⇒ [4, 2, 3, 4, 5]
+        - How would we change the value of a key-value pair in a hash? Whats the main difference between reassigning an element in a hash versus in a string or array?
+            - With a hash you reference a ket in the hash and then set that equal to a new object.
+                - hsh = {cheese: "good"}
+                - hsh[:cheese] = "bad"
+                - hsh # returns ⇒ {cheese: "bad"}
+        - What is crucial to remember when it comes to element assign with #[ ] methods?
+            - When referencing a string, array or hash with #[ ] methods and then assigning that to an object it is crucial to remember that this is a destructive action caller with be permanently mutated.
+    - Highlights
+        - By referencing an individual or multiple characters in a string  and then setting that equal to a new string, we can replace a single character or multiple characters in a string.
+        - The same applies for an array. By referencing a single element, or multiple elements, within the array using the #[ ] method. Then setting that reference equal to a new element or a new sub-array of elements.
+        - If an array contains integer values you can also increment the values. By referencing a single integer element and then using the += (or -=, *=, /=) operator followed by another integer, the integer referenced will be evaluated using the operator and the second integer and then set to that evaluated value.
+        - To change the value of a of you reference using its key, then set it equal to the new value.
+        - The main difference when reassigning a value in a hash versus a character or element in a string or array is that you reference it using its key.
+        - It's important to remember when using the #[ ] method to reassign values the action is destructive and will mutate the original object.

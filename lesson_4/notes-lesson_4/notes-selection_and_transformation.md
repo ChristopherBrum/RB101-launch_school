@@ -1,0 +1,21 @@
+- Textbook
+    - Now that we know how to loop through a collection, it's time to do something more interesting. Besides iteration, the two most common actions to perform on a collection are selection and transformation.
+    - Selection is picking certain elements out of the collection depending on some criterion.
+    - Transformation, on the other hand, refers to manipulating every element in the collection.
+    - Selection and transformation both utilize the basics of looping: a loop, a counter, a way to retrieve the current value, and a way to exit the loop. Keep those four things in mind. In addition, selection and transformation require some criteria; selection uses this criteria to determine which elements are selected, while transformation uses this criteria to determine how to perform the transformation.
+    - When performing transformation, it's always important to pay attention to whether the original collection was mutated or if a new collection was returned.
+    - We often want to perform iteration, selection or transformation operations on a collection. Using these 3 actions, we can manipulate a collection nearly any way we need to.
+    - Typically, these are generic actions that we can move into a method, so that we can perform these generic operations repeatedly on different collections.
+    - Pay attention to when the original collection is mutated vs when the method returns a new collection. This might seem trivial right now, but it's a source of a lot of misunderstanding. Make certain to study this.
+    - Understand how these methods can be made more generic by allowing for additional parameters to specify some criteria for selection or transformation.
+    - It's common to chain actions on collections; but pay special mind to the return value, especially if the return value is an empty collection or nil. Trying to chain methods on empty collections or nil is dangerous and results in a lot of broken programs.
+- Notes
+    - What's the main differences between selection and transformation?
+        - Selection will only return values that meet a certain condition, whereas transformation will return the same number of elements but possibly transformed from their original state.
+    - What is a crucial thing to pay attention to when performing transformation?
+        - Be very aware of whether you're mutating the original collection/input. Some methods will return a new collection and some will return the original collection but mutated.
+    - What are the 3 operations we can use to manipulate collections?
+        - Iteration, transformation and selection can be used to accomplish virtually anything with collections.
+    - What's one way we can make a method more generic and thus more flexible?
+        - By adding additional parameters we can add a lot more flexibility to our methods.
+- Highlights

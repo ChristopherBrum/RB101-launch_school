@@ -1,0 +1,47 @@
+- Textbook
+    - The PEDAC process is one approach to solving programming problems. Its primary goal is to help you identify and avoid pitfalls that you may encounter when you don't code with intent.
+        - P - [Understand the] **P**roblem
+        - E - **E**xamples / Test cases
+        - D - **D**ata Structure
+        - A - **A**lgorithm
+        - C - **C**ode
+    - [Understand the] **P**roblem  &  **E**xamples / Test cases
+        - Understanding the problem has three steps.
+            1. Read the problem description.
+            2. Check the **E**xamples/test cases, if any.
+            3. If any part of the problem is unclear, ask the interviewer or problem requester to clarify the matter.
+        - Write down what the inputs and outputs of the problem are.
+        - Write down any rules you must follow. The rules should encapsulate all of the explicit and implicit requirements of the problem. Identify the explicit rules, write them down, identify the implicit rules, write them down.
+    - **D**ata Structure / **A**lgorithm
+        - Data structures influence your algorithm, and for that reason, these two steps are often paired. Deciding what data structure to use is generally easy for students: use cases for arrays and objects, for instance, are generally easy to identify. However, designing the right algorithm is far more challenging. The biggest problem that students have when writing algorithms is providing sufficient detail.
+        - Writing out the algorithm in plain english using pseudo code first will help you work through the algorithm and keep track of the logic.
+        - Once again, we want to emphasize that you don't need to write all your pseudocode before you start coding. As you saw above, we wrote a high-level version of the palindrome_substrings pseudocode that omits the details of substrings and is_palindrome? methods. Afterwards, we wrote the corresponding code, and then returned to the two lower-level methods.
+        - We also want to emphasize that you don't need the formal pseudocode step. You can use it if it helps you, but it is an extra step.
+        - Finally, the main takeaway is that you should be able to write a plain English solution to the problem. If you can't do that, you won't be able to code it either. You also don't need any "fancy" methods to solve these problems.
+        - Testing isn't properly part of the PEDAC approach, but it's an important step that you don't want to omit. Test your code early and often while writing it. For instance, consider the longer version of the substrings method that we wrote above.
+        - Each time you write a bit of code that you can test, test it and make sure you're getting the answer you expect. Don't wait until you're finished writing the entire program or method or even an entire loop if you can test something earlier. This way, if there is a bug in your code, you'll find it as soon as possible; the sooner you find a bug, the easier it will be to identify what's wrong and fix it.
+- Notes
+    - What does the P and the E in PEDAC stand for?
+        - Understand the **P**roblem.
+    - What are the steps to the PE process in PEDAC?
+        - P is understanding the problem and E is to study the Examples to glean information about what the question is asking for.
+        - Read through the problem, study the test cases/examples, write down any questions you need clarification on.
+        - Once you've done these things you'll want to identify the inputs and outputs of the problem. What type of input is the problem giving you? WHat type of output is the problem asking for? What is the problem you're solving?
+        - Determine the explicit rules given for the problem. Write them down.
+        - Determine the implicit rules given for the problem. Write them down.
+    - What specific things should be identified and then written down in the PE process?
+        - Any questions you may have to clarify the problem and/or the desired outcome.
+        - The type of input and the type of output.
+        - The explicit rules given and determined.
+        - The implicit rules given and determined.
+    - How do you determine what data structure to use?
+        - This will based largely on the inputs and outputs of the problem but also depend on the route you are taking when building your algorithym.
+    - When working on your algorithm what tools can you use to keep track of the logic?
+        - Writing out the logical steps of the algorithm in plain english as informal pseudo-code will help organize the flow of logic needed to get the desired outcome from. Sometimes using formal pseudo-code can be additionally beneficial as well.
+    - Do you have to complete all pseudo-code before beginning to write programming code?
+        - No necessarily. If you're breaking your algorithm into separate functions and helper functions you can pseudo-code one function and then code it and then move onto the next part of the algorithm.
+    - If you can't ____ you won't be able to code it?
+        - Write out the logic of the algorithm in plain english you won't be able to code it.
+    - What should you do often when in the process of writing your algorithm?
+        - Test. As you build your algorithm test sections of code as you go. It will help ensure the code is doing what you want it to be doing and it will make debugging faster than waiting to test once the algorithm is completely written.
+- Highlights  
