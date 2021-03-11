@@ -206,5 +206,127 @@ mult_of_three_arr
 # some code that will return a hash where the key is the first item in each sub array 
 # and the value is the second item.
 
+=begin
+Understand the Problem:
+  -Input: an nested array
+  -Output: hash
+
+  -The given array has a series of sub-arrays
+  -create a hash
+    -the first item in each sub-array is the key
+    -the second item in each sub-array is the value
+    -do not use the #to_h method
+
+Test Cases:
+  arr = [[:a, 1], ['b', 'two'], ['sea', {c: 3}], [{a: 1, b: 2, c: 3, d: 4}, 'D']]
+  expected return value: {:a=>1, "b"=>"two", "sea"=>{:c=>3}, {:a=>1, :b=>2, :c=>3, :d=>4}=>"D"}
+  
+Data Structure:
+  -arrays and hashes
+
+Algorithm:
+  -
+
+=end
+
 arr = [[:a, 1], ['b', 'two'], ['sea', {c: 3}], [{a: 1, b: 2, c: 3, d: 4}, 'D']]
 # expected return value: {:a=>1, "b"=>"two", "sea"=>{:c=>3}, {:a=>1, :b=>2, :c=>3, :d=>4}=>"D"}
+
+arr.each_with_object({}) do |array, hash|
+  hash[array[0]] = array[1]
+end # == {:a=>1, "b"=>"two", "sea"=>{:c=>3}, {:a=>1, :b=>2, :c=>3, :d=>4}=>"D"}
+
+
+############
+
+# Given the following data structure, return a new array containing the same sub-arrays as 
+# the original but ordered logically by only taking into consideration the odd numbers they contain.
+
+arr = [[1, 6, 7], [1, 4, 9], [1, 8, 3]]
+
+# The sorted array should look like this:
+
+[[1, 8, 3], [1, 6, 7], [1, 4, 9]]
+
+arr.sort { |a, b| b <=> a } # == [[1, 8, 3], [1, 6, 7], [1, 4, 9]]
+
+# OR
+
+sorted_by_odd = []
+
+arr.sort_by do |sub_arr|
+  sub_arr.select do |num|
+    num.odd?
+  end
+end
+
+
+#############
+
+# Given this data structure write some code to return an array containing the colors 
+# of the fruits and the sizes of the vegetables. The sizes should be uppercase and the 
+# colors should be capitalized.
+
+hsh = {
+  'grape' => {type: 'fruit', colors: ['red', 'green'], size: 'small'},
+  'carrot' => {type: 'vegetable', colors: ['orange'], size: 'medium'},
+  'apple' => {type: 'fruit', colors: ['red', 'green'], size: 'medium'},
+  'apricot' => {type: 'fruit', colors: ['orange'], size: 'medium'},
+  'marrow' => {type: 'vegetable', colors: ['green'], size: 'large'},
+}
+
+# The return value should look like this:
+
+[["Red", "Green"], "MEDIUM", ["Red", "Green"], ["Orange"], "LARGE"]
+
+
+hsh.each_with_object([]) do |(key, value), array|
+  if value[:type] == 'fruit'
+    array.push(value[:colors].map { |color| color.capitalize })
+  elsif value[:type] == 'vegetable'
+    array.push(value[:size].upcase) 
+  end
+end # == [["Red", "Green"], "MEDIUM", ["Red", "Green"], ["Orange"], "LARGE"]]
+
+# OR
+
+hsh.map do |_, value|
+  if value[:type] == 'fruit'
+    value[:colors].map { |color| color.capitalize }
+  elsif value[:type] == 'vegetable'
+    value[:size].upcase
+  end
+end # == [["Red", "Green"], "MEDIUM", ["Red", "Green"], ["Orange"], "LARGE"]
+
+
+
+############
+
+# Given this data structure write some code to return an array which contains only the 
+# hashes where all the integers are even.
+
+arr = [{a: [1, 2, 3]}, {b: [2, 4, 6], c: [3, 6], d: [4]}, {e: [8], f: [6, 10]}]
+
+arr.select do |hsh|
+  hsh.values.all? { |val| val.all? { |v| v.even? } }
+end == [{e: [8], f: [6, 10]}]
+
+
+############
+
+HEX_NUMS = %w(0 1 2 3 4 5 6 7 8 9 a b c d e f)
+ORDER = [8, 4, 4, 4, 12]
+
+def create_UUID_num
+  hex_arr = []
+  ORDER.each do |num|
+    temp_arr = []
+    num.times do |n|
+      temp_arr.push(HEX_NUMS.sample)
+    end
+    hex_arr.push(temp_arr.join)
+  end
+  hex_arr.join('-')
+end
+
+create_UUID_num

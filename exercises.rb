@@ -144,31 +144,139 @@
 
 
 ###############
-# PROBLEM:
 
-# Given a string, write a method `palindrome_substrings` which returns
-# all the substrings from a given string which are palindromes. Consider
-# palindrome words case sensitive.
+=begin
+Understannding the Problem:
+  -Input:
+  -Output:
 
-# Test cases:
+  -Rules:
 
-# palindrome_substrings("supercalifragilisticexpialidocious") == ["ili"]
-# palindrome_substrings("abcddcbA") == ["bcddcb", "cddc", "dd"]
-# palindrome_substrings("palindrome") == []
-# palindrome_substrings("") == []
+Test Cases:
 
-# Questions I have:
-#   -What do we do with spaces?
-#   -Whats a substring?
-#   -Whats a palendrome?
-#   -Will inputs always be strings?
+Data Structures:
 
-# INPUT: string
-# OUTPUT: array of substrings
+Algorithm:
 
-#   Expliciit rules;
-#     -return only substrings that are palendromes.
-#     -palendromes are case sensetive.
+=end
 
-#   Implicit rules;
-#     -
+
+
+###############
+
+=begin
+Write a method that takes a floating point number that represents an angle 
+between 0 and 360 degrees and returns a String that represents that angle 
+in degrees, minutes and seconds. You should use a degree symbol (°) to 
+represent degrees, a single quote (') to represent minutes, and a double 
+quote (") to represent seconds. A degree has 60 minutes, while a minute has 60 seconds.
+
+Note: your results may differ slightly depending on how you round values, but should 
+be within a second or two of the results shown.
+
+You should use two digit numbers with leading zeros when formatting the minutes and 
+seconds, e.g., 321°03'07".
+
+You may use this constant to represent the degree symbol: DEGREE = "\xC2\xB0"
+
+Understannding the Problem:
+  -Input: Float, representing an angle between 0 and 360 degrees
+  -Output: String, representing that angle in degrees, minutes and seconds
+
+  -Rules:
+    -Use the degree symbol to represent degrees (˚)
+    -Use single quote to represent minutes (')
+    -Use double-quote to represent seconds (")
+    -A degree has 60 minutes (any remainder of degree == 60 * (remainder / 100))
+    -A minute has 60 seconds (any remainder of minute == 60 * (remainder / 100))
+    -Use two-digit numbers when formatting minutes and seconds, 
+      leading with a zero if the min/sec are single digit
+
+
+Test Cases:
+  dms(30) == %(30°00'00")
+  dms(76.73) == %(76°43'48")
+  dms(254.6) == %(254°36'00")
+  dms(93.034773) == %(93°02'05")
+  dms(0) == %(0°00'00")
+  dms(360) == %(360°00'00") || dms(360) == %(0°00'00")
+
+Data Structures:
+  -floats, strings
+
+Algorithm:
+  -'input_num' is the integer parameter passed in
+  -set 'degree' 
+    -the value of 'input_num' converted to integer
+  -set 'minutes'
+    -subtract 'degree' from the value of 'input_num' and round to the hundreth
+    -multiply previous value with 60
+    -set 'minutes' to the updated value of 'input_num' converted to integer
+  -set 'seconds' 
+    -subtract 'minutes' from the value of 'input_num' and round to the hundreth
+    -multiply previous value with 60
+    -set 'seconds' to the updated value of 'input_num' converted to integer
+  -if degree/minutes/seconds are single digit fill in first character with '0'
+  -return concatenated string of 'degree˚minutes'seconds"'
+
+=end
+
+def dms(num)
+  degree = num.to_i
+  p num, degree
+  # minutes = add_zero(minutes.to_i)
+  # seconds = add_zero(seconds)
+  #puts "#{degree}˚#{minutes}'#{seconds}\""
+end
+
+# def add_zero(integer)
+#   p integer.to_s
+#   if integer.to_s.length == 1
+#     integer = '0' + integer.to_s 
+#   elsif integer.to_s.length < 1
+#     integer = '00'
+#   end
+# end
+
+# dms(30) == %(30°00'00")
+# dms(76.73) == %(76°43'48")
+# dms(254.6) == %(254°36'00")
+dms(93.034773) == %(93°02'05")
+#dms(0) == %(0°00'00")
+#dms(360) == %(360°00'00") || dms(360) == %(0°00'00")
+
+###############
+
+=begin
+Understannding the Problem:
+  -Input:
+  -Output:
+
+  -Rules:
+
+Test Cases:
+
+Data Structures:
+
+Algorithm:
+
+=end
+
+
+
+###############
+
+=begin
+Understannding the Problem:
+  -Input:
+  -Output:
+
+  -Rules:
+
+Test Cases:
+
+Data Structures:
+
+Algorithm:
+
+=end
