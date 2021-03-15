@@ -760,3 +760,518 @@ end
 # triangle(5)
 # triangle(10)
 # triangle(15)
+
+
+
+###############
+
+=begin
+
+Write a method that combines two Arrays passed in as arguments, and 
+returns a new Array that contains all elements from both Array arguments, 
+with the elements taken in alternation.
+
+You may assume that both input Arrays are non-empty, and that they have 
+the same number of elements.
+
+Understannding the Problem:
+  -Input: 2 arrays
+  -Output: new array
+
+  -Rules:
+    -Method takes in two arrays as arguments
+    -Both methods are not empty
+    -Both methods have an equal amount of elements
+    -Set new array to []
+    -Iterate through both input arrays
+      -push elements from both input arrays with the same index into the new array
+      -repeat untill all elements have been entered 
+    -Return new array
+
+Test Cases:
+  interleave([1, 2, 3], ['a', 'b', 'c']) == [1, 'a', 2, 'b', 3, 'c']
+
+Data Structures:
+  -array
+
+Algorithm:
+  -Set 'combined_arr' to []
+  -Iterate thrtough the arrays based on their index
+    -Each input arr pushes the element at the current index in the iteration to 'combined_arr'
+  -Return 'combined_arr'
+
+=end
+
+def interleave(arr1, arr2)
+  combined_arr = []
+  arr1.length.times do |index|
+    combined_arr.push(arr1[index], arr2[index])
+  end 
+  combined_arr
+end
+
+# OR
+
+def interleave(arr1, arr2)
+  arr1.zip(arr2).flatten
+end
+
+# p interleave([1, 2, 3], ['a', 'b', 'c']) == [1, 'a', 2, 'b', 3, 'c']
+
+###############
+
+=begin
+
+Write a method that takes a string, and then returns a hash that contains 
+3 entries: one represents the number of characters in the string that are 
+lowercase letters, one the number of characters that are uppercase letters, 
+and one the number of characters that are neither.
+
+Understannding the Problem:
+  -Input: string
+  -Output: hash, with 3 entries
+
+  -Rules:
+    -Method takes in a string as an argument
+    -Returns a hash containing 3 things:
+      -num of lowercase letters in string
+      -num of uppercase letters in string
+      -num of characters that are not letters
+
+Test Cases:
+  letter_case_count('abCdef 123') == { lowercase: 5, uppercase: 1, neither: 4 }
+  letter_case_count('AbCd +Ef') == { lowercase: 3, uppercase: 3, neither: 2 }
+  letter_case_count('123') == { lowercase: 0, uppercase: 0, neither: 3 }
+  letter_case_count('') == { lowercase: 0, uppercase: 0, neither: 0 }
+
+Data Structures:
+  -strings and hash
+
+Algorithm:
+  -set 'hash' to equal {}
+  -set 'split_str' to the input string split into an array of characters
+  -find number of all lowercase letters
+  -find number of all uppercase letters
+  -find number of all other characters
+  -Add these numbers as key/value pairs to 'hash'
+
+=end
+
+def letter_case_count(str)
+  count_hash = {}
+  split_str = str.chars
+  count_hash[:lowercase] = split_str.select { |char| char =~ /[a-z]/ }.length
+  count_hash[:uppercase] = split_str.select { |char| char =~ /[A-Z]/ }.length
+  count_hash[:neither] = split_str.select { |char| char =~ /[^A-z]/ }.length
+  count_hash
+end
+
+# p letter_case_count('abCdef 123') == { lowercase: 5, uppercase: 1, neither: 4 }
+# p letter_case_count('AbCd +Ef') == { lowercase: 3, uppercase: 3, neither: 2 }
+# p letter_case_count('123') == { lowercase: 0, uppercase: 0, neither: 3 }
+# p letter_case_count('') == { lowercase: 0, uppercase: 0, neither: 0 }
+
+###############
+
+=begin
+
+Write a method that takes a single String argument and returns a new string 
+that contains the original value of the argument with the first character of 
+every word capitalized and all other letters lowercase.
+
+You may assume that words are any sequence of non-blank characters.
+
+Understannding the Problem:
+  -Input: string
+  -Output: string
+
+  -Rules:
+    -Takes in a string as an argument
+    -Capitalizes the first character in each word 
+    -Downcases all other letters in word
+    -returns modified string
+
+Test Cases:
+  word_cap('four score and seven') == 'Four Score And Seven'
+  word_cap('the javaScript language') == 'The Javascript Language'
+  word_cap('this is a "quoted" word') == 'This Is A "quoted" Word'
+
+Data Structures:
+  -strings and arrays
+
+Algorithm:
+  -Split input string into an array of words, splitting at every ' '
+  -Iterate through the array
+    -Call #capitalize method on each word
+  -Join array back into string
+  -Return modified string
+
+=end
+
+def word_cap(str)
+  str.split.map do |word| 
+    word[0] = word[0].upcase 
+    word
+  end.join(' ')
+end
+
+# p word_cap('four score and seven') == 'Four Score And Seven'
+# p word_cap('the javaScript language') == 'The Javascript Language'
+# p word_cap('this is a "quoted" word') == 'This Is A "quoted" Word'
+
+###############
+
+=begin
+
+Write a method that takes a string as an argument and returns a new string in 
+which every uppercase letter is replaced by its lowercase version, and every 
+lowercase letter by its uppercase version. All other characters should be unchanged.
+
+You may not use String#swapcase; write your own version of this method.
+
+Understanding the Problem:
+  -Input: string 
+  -Output:  string
+
+  -Rules:
+    -Method takes a string in as an argument
+    -Returns a new string with the case of the letters swapped
+      -Uppercase letters will be lowercase
+      -Lowercase letters will be uppercase
+      -All other characters will be ignored
+    -Do not use the String#swapcase method
+
+Test Cases:
+  swapcase('CamelCase') == 'cAMELcASE'
+  swapcase('Tonight on XYZ-TV') == 'tONIGHT ON xyz-tv'
+  
+Data Structures:
+  -strings and arrays
+
+Algorithm:
+  -Set 'str_chars' to the input string split into an array of characters
+  -Iterate through 'str_chars'
+    -If the current character is uppercase
+      -Change it to lowercase
+    -If the current character is lowercase
+      -Change it to uppercase
+    -Otherwise
+      -Do nothing
+  -Join 'str_char' back to a string
+  -Return string
+
+=end
+
+def swapcase(str)
+  str_chars = str.chars
+  str_chars.map do |char|
+    if char.match?(/[a-z]/)
+      char.upcase
+    elsif char.match?(/[A-Z]/)
+      char.downcase
+    else
+      char
+    end
+  end.join
+end 
+
+# p swapcase('CamelCase') == 'cAMELcASE'
+# p swapcase('Tonight on XYZ-TV') == 'tONIGHT ON xyz-tv'
+
+###############
+
+=begin
+
+Write a method that takes a String as an argument, and returns a new String that 
+contains the original value using a staggered capitalization scheme in which every 
+other character is capitalized, and the remaining characters are lowercase. 
+Characters that are not letters should not be changed, but count as characters 
+when switching between upper and lowercase.
+
+Understannding the Problem:
+  -Input: String
+  -Output: String
+
+  -Rules:
+    -Method takes in a string as an argument
+    -Returns a new string version of the original string with the capitalization staggered
+      -Every other character is capitalized
+      -Remaining characters are lowercase
+      -Non-letter characters are unchanged but are counted as characters when determining case
+
+Test Cases:
+  staggered_case('I Love Launch School!') == 'I LoVe lAuNcH ScHoOl!'
+  staggered_case('ALL_CAPS') == 'AlL_CaPs'
+  staggered_case('ignore 77 the 444 numbers') == 'IgNoRe 77 ThE 444 NuMbErS'
+
+Data Structures:
+  -Strings and Arrays
+
+Algorithm:
+  -Split input string into characters and assign array to 'split_str'
+  -Iterate through 'split_str'
+    -If character index is even
+      -Capitalize character
+    -Otherwise
+      -Lowercase character
+  -Join array to string and return
+
+=end
+
+def staggered_case(str, swap_every_char=false)
+  new_str = ''
+  up_case = true
+  str.chars.each_with_index do |char, index|
+    if char.match?(/[^A-z]/)      # if 'char' is any character other than a letter...
+      new_str << char               # push character to 'new_str'
+      if swap_every_char == true    # if every character should swap case...
+        up_case = !up_case            # swap case
+      end
+    else                          # if it is a letter
+      if up_case == true            # if 'up_case' is true
+        new_str << char.upcase        # push the uppercased character to 'new_str'
+        up_case = !up_case            # swap case
+      else                          # if 'up_case' is false
+        new_str << char.downcase      # push down cased character to 'new_str'
+        up_case = !up_case            # swap case
+      end
+    end
+  end
+  new_str                         # return 'new_str'
+end
+
+# p staggered_case('I Love Launch School!', true) == 'I LoVe lAuNcH ScHoOl!'
+# p staggered_case('ALL_CAPS', true) == 'AlL_CaPs'
+# p staggered_case('ignore 77 the 444 numbers', true) == 'IgNoRe 77 ThE 444 NuMbErS'
+
+# p staggered_case('I Love Launch School!') == 'I lOvE lAuNcH sChOoL!'
+# p staggered_case('ALL CAPS') == 'AlL cApS'
+# p staggered_case('ignore 77 the 444 numbers') == 'IgNoRe 77 ThE 444 nUmBeRs'
+
+
+###########
+
+=begin
+
+Write a method that returns a list of all substrings of a string that start at the beginning of the original string. The return value should be arranged in order from shortest to longest substring.
+
+Understannding the Problem:
+  -Input: string
+  -Output: array
+
+  -Rules:
+    -Method input is a string
+    -Returns an array of sub_strings that start at beginning of string
+    -ordered shortest to longest
+
+Test Cases:
+  leading_substrings('abc') == ['a', 'ab', 'abc']
+  leading_substrings('a') == ['a']
+  leading_substrings('xyzzy') == ['x', 'xy', 'xyz', 'xyzz', 'xyzzy']
+
+Data Structures:
+  -strings and arrays
+
+Algorithm:
+  -Split input string into array of characters
+  -initialize temp_str to ''
+  -Iterate through the array of characters
+    -concatenate current interation to temp_str and push to new arr
+    -return new array
+
+=end
+
+def leading_substrings(str)
+  arr = str.chars
+  temp_str = ''
+  arr.each_with_object([]) do |char, final_arr|
+    temp_str += char
+    final_arr << temp_str
+  end
+end
+
+# p leading_substrings('abc') == ['a', 'ab', 'abc']
+# p leading_substrings('a') == ['a']
+# p leading_substrings('xyzzy') == ['x', 'xy', 'xyz', 'xyzz', 'xyzzy']
+
+
+###########
+
+=begin
+
+Write a method that takes an Array of integers as input, multiplies all 
+the numbers together, divides the result by the number of entries in the 
+Array, and then prints the result rounded to 3 decimal places. Assume 
+the array is non-empty.
+
+Understannding the Problem:
+  -Input: Array of integers
+  -Output: Float, rounded to 3 decimal points
+
+  -Rules:
+    -Method takes in an array of integers
+    -Multiplies all the numbers together
+    -Divides the result by the length of the array
+    -Round result to 3 decimal point
+    -Return float number
+
+Test Cases:
+  show_multiplicative_average([3, 5])                # => The result is 7.500
+  show_multiplicative_average([6])                   # => The result is 6.000
+  show_multiplicative_average([2, 5, 7, 11, 13, 17]) # => The result is 28361.667
+
+Data Structures:
+  -Arrays, integers, floats
+
+Algorithm:
+  -Multiply array integers together
+  -Divide the result by the length of the input array
+  -Round the result down to 3 decimal points
+  -Return float number
+
+=end
+
+def show_multiplicative_average(arr)
+  result = (arr.reduce(:*).to_f / arr.length).round(3)
+  "%.3f" % result
+end
+
+# puts show_multiplicative_average([3, 5])                # => The result is 7.500
+# puts show_multiplicative_average([6])                   # => The result is 6.000
+# puts show_multiplicative_average([2, 5, 7, 11, 13, 17]) # => The result is 28361.667
+
+###########
+
+=begin
+
+Write a method that takes two Array arguments in which each Array contains a list 
+of numbers, and returns a new Array that contains the product of each pair of 
+numbers from the arguments that have the same index. You may assume that the arguments 
+contain the same number of elements.
+
+Understannding the Problem:
+  -Input: 2 arrays
+  -Output: 1 array
+
+  -Rules:
+    -Method takes in 2 arrays of integers
+    -Multiply the integers from each input array that share index numbers
+    -Save the product of that muliplication in a new array
+    -return the new array
+    -Arrays are the same length
+
+Test Cases:
+  multiply_list([3, 5, 7], [9, 10, 11]) == [27, 50, 77]  
+
+Data Structures:
+  -Arrays and integers
+
+Algorithm:
+  -Iterate through one of the arrays
+    -Using the index of one array multiply the integers of both input arrays 
+      at the current index iteration
+    -Save the product in a new array
+    -Return the new array
+
+=end
+
+def multiply_list(arr1, arr2)
+  
+end
+
+multiply_list([3, 5, 7], [9, 10, 11]) == [27, 50, 77]
+
+###########
+
+=begin
+
+
+Understannding the Problem:
+  -Input: 
+  -Output: 
+
+  -Rules:
+    -
+
+Test Cases:
+
+
+Data Structures:
+  -
+
+Algorithm:
+  
+
+=end
+
+
+###########
+
+=begin
+
+
+Understannding the Problem:
+  -Input: 
+  -Output: 
+
+  -Rules:
+    -
+
+Test Cases:
+
+
+Data Structures:
+  -
+
+Algorithm:
+  
+
+=end
+
+
+###########
+
+=begin
+
+
+Understannding the Problem:
+  -Input: 
+  -Output: 
+
+  -Rules:
+    -
+
+Test Cases:
+
+
+Data Structures:
+  -
+
+Algorithm:
+  
+
+=end
+
+
+###########
+
+=begin
+
+
+Understannding the Problem:
+  -Input: 
+  -Output: 
+
+  -Rules:
+    -
+
+Test Cases:
+
+
+Data Structures:
+  -
+
+Algorithm:
+  
+
+=end
