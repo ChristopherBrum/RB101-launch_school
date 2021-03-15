@@ -1176,58 +1176,103 @@ Algorithm:
 =end
 
 def multiply_list(arr1, arr2)
-  
+  combined_arr = []
+
+  # arr1.each_with_index do |num, index|
+  #   combined_arr << (num * arr2[index])
+  # end
+
+  # OR
+
+  arr1.zip(arr2) { |a, b| combined_arr << a * b }
+
+  combined_arr
 end
 
-multiply_list([3, 5, 7], [9, 10, 11]) == [27, 50, 77]
+# p multiply_list([3, 5, 7], [9, 10, 11]) == [27, 50, 77]
 
 ###########
 
 =begin
 
+Write a method that takes two Array arguments in which each Array contains a list of numbers, 
+and returns a new Array that contains the product of every pair of numbers that can be formed 
+between the elements of the two Arrays. The results should be sorted by increasing value.
+
+You may assume that neither argument is an empty Array.
 
 Understannding the Problem:
-  -Input: 
-  -Output: 
+  -Input: 2 arrays
+  -Output: 1 array
 
   -Rules:
-    -
+    -Takes two arrays of integers as an argument
+    -Make a new array that contains the product of every possible pair of integers 
+      between the two array arguments
+    -Return the new array sorted by increasing value
 
 Test Cases:
-
+  multiply_all_pairs([2, 4], [4, 3, 1, 2]) == [2, 4, 4, 6, 8, 8, 12, 16]
 
 Data Structures:
-  -
+  -integers and arrays
 
 Algorithm:
-  
+  -Create new empty array
+  -Iterate through the first array
+    -Iterate through the second array
+      -add each element of first array to each iteration of array 2 and add them to the new array
+  -Sort new array from least to greatest
+  -Return new array
 
 =end
 
+def multiply_all_pairs(arr1, arr2)
+  arr1.each_with_object([]) do |element_1, result|
+    arr2.each { |element_2| result << element_1 * element_2 }
+  end.sort
+end
+
+# p multiply_all_pairs([2, 4], [4, 3, 1, 2]) == [2, 4, 4, 6, 8, 8, 12, 16]
 
 ###########
 
 =begin
 
+Write a method that returns the next to last word in the String passed to it as an argument.
+Words are any sequence of non-blank characters.
+You may assume that the input String will always contain at least two words.
 
-Understannding the Problem:
-  -Input: 
-  -Output: 
+Understanding the Problem:
+  -Input: string
+  -Output: string
 
   -Rules:
-    -
+    -Takes in a string as a parameter
+    -Returns the second to last word within the string argument
+    -Words are any sequence of non-blank characters
+    -String argument will always contain at least 2 words
 
 Test Cases:
-
+  penultimate('last word') == 'last'
+  penultimate('Launch School is great!') == 'is'
 
 Data Structures:
-  -
+  -Strings and arrays
 
 Algorithm:
-  
+  -Break input string into an array of words
+  -Words are characters separated by a blank space
+  -Find and return the 2nd from last element in array
 
 =end
 
+def penultimate(str)
+  str.split[-2]
+end
+
+# p penultimate('last word') == 'last'
+# p penultimate('Launch School is great!') == 'is'
 
 ###########
 
