@@ -1277,6 +1277,118 @@ end
 ###########
 
 =begin
+A double number is a number with an even number of digits whose left-side digits 
+are exactly the same as its right-side digits. For example, 44, 3333, 103103, 
+7676 are all double numbers. 444, 334433, and 107 are not.
+
+Write a method that returns 2 times the number provided as an argument, unless 
+the argument is a double number; double numbers should be returned as-is.
+
+Understannding the Problem:
+  -Input: integer
+  -Output: integer
+
+  -Rules:
+    -What is a double number?
+      -A double number is an integer, when split in half by the number of digits 
+      its comprised of, its left side and right side are equal.
+    -Method will return the input integer multiplied by 2
+    -Unless the input integer is a double number, inwhich case return the input integer
+
+Test Cases:
+  twice(37) == 74
+  twice(44) == 44
+  twice(334433) == 668866
+  twice(444) == 888
+  twice(107) == 214
+  twice(103103) == 103103
+  twice(3333) == 3333
+  twice(7676) == 7676
+  twice(123_456_789_123_456_789) == 123_456_789_123_456_789
+  twice(5) == 10
+
+Data Structures:
+  -integers, strings, arrays
+
+Algorithm:
+  -if input integer contains an even number of digits
+    -convert integer to string
+    -split string into 2 even length strings down the middle
+    -if strings are equal
+      -return input integer
+    -otherwise
+      -return input integer times 2
+
+=end
+
+def twice(num)
+  str = num.to_s
+  if str.length.even?
+    sub_str = str.slice(0, str.length / 2)
+    sub_str2 = str.slice(str.length / 2 , str.length / 2)
+    return num if sub_str == sub_str2
+  end
+  num * 2
+end
+
+# twice(37) == 74
+# twice(44) == 44
+# twice(334433) == 668866
+# twice(444) == 888
+# twice(107) == 214
+# twice(103103) == 103103
+# twice(3333) == 3333
+# twice(7676) == 7676
+# twice(123_456_789_123_456_789) == 123_456_789_123_456_789
+# twice(5)= 10
+
+###########
+
+=begin
+
+Write a method that takes a number as an argument. If the argument 
+is a positive number, return the negative of that number. If the 
+number is 0 or negative, return the original number.
+
+Understanding the Problem:
+  -Input: Integer
+  -Output: Integer
+
+  -Rules:
+    -Method takes in an integer as a parameter
+    -Checks if the Integer object is positive, zero or negative
+    -if positive
+      -returns the negative version of the positive integer
+    -otherwise
+      -returns Integer object
+
+Test Cases:
+  negative(5) == -5
+  negative(-3) == -3
+  negative(0) == 0      # There's no such thing as -0 in ruby
+
+Data Structures:
+  -integer
+
+Algorithm:
+  -if input integer is greater than 0
+    -return negative version of input integer
+  -otherwise
+    -return input integer
+
+=end
+
+def negative(num)
+  num > 0 ? -num : num
+end
+
+p negative(5) == -5
+p negative(-3) == -3
+p negative(0) == 0      # There's no such thing as -0 in ruby
+
+###########
+
+=begin
 
 
 Understannding the Problem:
@@ -1297,6 +1409,28 @@ Algorithm:
 
 =end
 
+###########
+
+=begin
+
+
+Understannding the Problem:
+  -Input: 
+  -Output: 
+
+  -Rules:
+    -
+
+Test Cases:
+
+
+Data Structures:
+  -
+
+Algorithm:
+  
+
+=end
 
 ###########
 
