@@ -1382,16 +1382,442 @@ def negative(num)
   num > 0 ? -num : num
 end
 
-p negative(5) == -5
-p negative(-3) == -3
-p negative(0) == 0      # There's no such thing as -0 in ruby
+# p negative(5) == -5
+# p negative(-3) == -3
+# p negative(0) == 0      # There's no such thing as -0 in ruby
+
+###########
+
+=begin
+
+Write a method that takes an integer argument, and returns an 
+Array of all integers, in sequence, between 1 and the argument.
+
+You may assume that the argument will always be a valid integer 
+that is greater than 0.
+
+Understannding the Problem:
+  -Input: Integer 
+  -Output: Array
+
+  -Rules:
+    -Method takes in an Integer object as a parameter
+    -Returns an array of integers from 1 to the input integer
+    -Input integer will always be a valid integer greater than 0
+
+Test Cases:
+  sequence(5) == [1, 2, 3, 4, 5]
+  sequence(3) == [1, 2, 3]
+  sequence(1) == [1]
+
+Data Structures:
+  -Integers and arrays
+
+Algorithm:
+  -Create a range from 1 to the input integer and convdert to an array
+  -Return array
+
+=end
+
+# def sequence(number)
+#   range_arr = []
+#   if number.positive?
+#     1.upto(number) { |num| range_arr << num }
+#   else
+#     number.upto(1) { |num| range_arr << num }
+#   end
+#   range_arr
+# end
+
+def sequence(number)
+  number.positive? ? (1..number).to_a : (number..1).to_a
+end
+
+# p sequence(5) # == [1, 2, 3, 4, 5]
+# p sequence(3) # == [1, 2, 3]
+# p sequence(1) # == [1]
+# p sequence(-5)
+# p sequence(0)
+
+###########
+
+=begin
+
+Write a method that takes a string argument, and returns true 
+if all of the alphabetic characters inside the string are 
+uppercase, false otherwise. Characters that are not alphabetic 
+should be ignored.
+
+Understanding the Problem:
+  -Input: string
+  -Output: boolean
+
+  -Rules:
+    -Method takes a string object as an argument
+    -Returns a boolean
+      -true if all alphabetic characters in the string are upper case
+      -otherwise false
+    -Non alphabetic numbers should be ignored
+
+Test Cases:
+  uppercase?('t') == false
+  uppercase?('T') == true
+  uppercase?('Four Score') == false
+  uppercase?('FOUR SCORE') == true
+  uppercase?('4SCORE!') == true
+  uppercase?('') == true
+
+Data Structures:
+  -strings, arrays, booleans
+
+Algorithm:
+  -create an array containing all alphabetic character of input string
+  -iterate through array
+    -if each character is the same as itself with the #upcase method called on it
+      -return true
+    -otherwise
+      -return false
+
+=end
+
+def uppercase?(string)
+  letter_arr = string.scan(/[A-Za-z]/)
+  letter_arr.each do |char|
+    return false if char != char.upcase
+  end
+  true
+end
+
+# p uppercase?('t') == false
+# p uppercase?('T') == true
+# p uppercase?('Four Score') == false
+# p uppercase?('FOUR SCORE') == true
+# p uppercase?('4SCORE!') == true
+# p uppercase?('') == true
+
+###########
+
+=begin
+
+Write a method that takes a string as an argument, and returns 
+an Array that contains every word from the string, to which you 
+have appended a space and the word length.
+
+You may assume that words in the string are separated by exactly 
+one space, and that any substring of non-space characters is a word.
+
+Understanding the Problem:
+  -Input: string
+  -Output: array of strings
+
+  -Rules:
+    -Method takes in a string as an argument
+    -The string contains words seprated by one space
+    -Any sunstring of non-space characters is considered a word
+    -Return an array containing each individual word from the input 
+    string with a space and the length of the string concatenated 
+    onto the end of the string
+
+Test Cases:
+word_lengths("cow sheep chicken") == ["cow 3", "sheep 5", "chicken 7"]
+
+word_lengths("baseball hot dogs and apple pie") ==
+  ["baseball 8", "hot 3", "dogs 4", "and 3", "apple 5", "pie 3"]
+
+word_lengths("It ain't easy, is it?") == ["It 2", "ain't 5", "easy, 5", "is 2", "it? 3"]
+
+word_lengths("Supercalifragilisticexpialidocious") ==
+  ["Supercalifragilisticexpialidocious 34"]
+
+word_lengths("") == []
+
+Data Structures:
+  -strings, arrays
+
+Algorithm:
+  -Split input string into an array of indiviual strings
+  -Iterate through the array
+    -Concatenate a space and the length of each string onto the end of each string
+  -Return string
+
+=end
+
+def word_lengths(string)
+  string.split.map { |word| word + " #{word.length}" }
+end
+
+# p word_lengths("cow sheep chicken") == ["cow 3", "sheep 5", "chicken 7"]
+
+# p word_lengths("baseball hot dogs and apple pie") ==
+#   ["baseball 8", "hot 3", "dogs 4", "and 3", "apple 5", "pie 3"]
+
+# p word_lengths("It ain't easy, is it?") == ["It 2", "ain't 5", "easy, 5", "is 2", "it? 3"]
+
+# p word_lengths("Supercalifragilisticexpialidocious") ==
+#   ["Supercalifragilisticexpialidocious 34"]
+
+# p word_lengths("") == []
+
+###########
+
+=begin
+
+Write a method that takes a first name, a space, and a last name 
+passed as a single String argument, and returns a string that 
+contains the last name, a comma, a space, and the first name.
+
+Understanding the Problem:
+  -Input: string
+  -Output: string
+
+  -Rules:
+    -Method takes a string as an argument
+    -The input string will consist of a first name, a space, and a last name.
+    -Return a new string that consists of the last name, a comma, a space and the first name
+
+Test Cases:
+  swap_name('Joe Roberts') == 'Roberts, Joe'
+
+Data Structures:
+  -strings and arrays
+
+Algorithm:
+  -Split input string into an array of words
+  -Return a new string properly formatted
+
+=end
+
+def swap_name(name)
+  name_arr = name.split
+  "#{name_arr[1]}, #{name_arr[0]}"
+end
+
+# p swap_name('Joe Roberts') == 'Roberts, Joe'
+
+###########
+
+=begin
+
+Create a method that takes two integers as arguments. The first 
+argument is a count, and the second is the first number of a 
+sequence that your method will create. The method should return 
+an Array that contains the same number of elements as the count 
+argument, while the values of each element will be multiples of 
+the starting number.
+
+You may assume that the count argument will always have a value 
+of 0 or greater, while the starting number can be any integer 
+value. If the count is 0, an empty list should be returned.
+
+Understanding the Problem:
+  -Input: 2 integers
+  -Output: array
+
+  -Rules:
+    -Method takes two integer objects as arguments
+      -The first is a count
+      -The second is the first number of a sequence
+    -The method will return an array equal in length to the count argument
+    -The values of each element will be multiples of the starting number
+    -Count will always have a value greater than 1
+    -Starting number can be any integer
+    -If count is 0 an empty array should be returned
+
+Test Cases:
+  sequence(5, 1) == [1, 2, 3, 4, 5]
+  sequence(4, -7) == [-7, -14, -21, -28]
+  sequence(3, 0) == [0, 0, 0]
+  sequence(0, 1000000) == []
+
+Data Structures:
+  -integers and arrays
+
+Algorithm:
+  -initialize an empty array
+  -call the #times method on the count argument
+    -push the sum of count plus one multiplied by the value argument
+  -return the array
+
+=end
+
+def sequence(count, value)
+  range_arr = []
+    count.times do |num|
+    range_arr << (num + 1) * value
+  end
+  range_arr
+end
+
+# p sequence(5, 1) == [1, 2, 3, 4, 5]
+# p sequence(4, -7) == [-7, -14, -21, -28]
+# p sequence(3, 0) == [0, 0, 0]
+# p sequence(0, 1000000) == []
+
+###########
+
+=begin
+
+Write a method that determines the mean (average) of the 
+three scores passed to it, and returns the letter value 
+associated with that grade.
+
+Tested values are all between 0 and 100. There is no need 
+to check for negative values or values greater than 100.
+
+Understanding the Problem:
+  -Input: 3 integers
+  -Output: string
+
+  -Rules:
+    -Three integer objects will be passed in as arguments
+    -Find the average of the 3 integer inputs
+    -Return the associated letter score for the average
+    -Test values are all between 0 and 100
+    -No need to check for neg values or values greater than 100
+
+Test Cases:
+  get_grade(95, 90, 93) == "A"
+  get_grade(50, 50, 95) == "D"
+
+Data Structures:
+  -integers, strings
+
+Algorithm:
+  -Assign 'average' to 3 integer inputs added together and divided by 3
+  -Run the 'average' through a case statement and return the appropriate letter grade
+
+=end
+
+def get_grade(score_a, score_b, score_c)
+  average = (score_a + score_b + score_c) / 3
+  case average
+  when 90...    then "A"
+  when 80..89   then "B"
+  when 70..79   then "C"
+  when 60..69   then "D"
+  else               "F"
+  end
+end
+
+# p get_grade(95, 90, 93) == "A"
+# p get_grade(50, 50, 95) == "D"
+
+###########
+
+=begin
+
+Write a method which takes a grocery list (array) of fruits with 
+quantities and converts it into an array of the correct number 
+of each fruit.
+
+Understanding the Problem:
+  -Input: An array of arrays
+  -Output: An array
+
+  -Rules:
+    -Method takes in an array of arrays as an argument
+    -Each sub-array contains a string object and an integer object
+    -Return a new array with the string from each sub-array equal 
+    to the integer.
+
+Test Cases:
+  buy_fruit([["apples", 3], ["orange", 1], ["bananas", 2]]) ==
+  ["apples", "apples", "apples", "orange", "bananas","bananas"]
+
+Data Structures:
+  -strings, integers, arrays
+
+Algorithm:
+  -Initialize 'fruit_arr' to and empty array
+  -Iterate through the input array
+    -For each sub-array
+      -push the current string iteration to 'fruit_arr' a number of times equal to the integer iteration
+  -return 'fruit_arr'
+
+=end
+
+def buy_fruit(array)
+  fruit_arr = []
+  array.each do |sub_array|
+    sub_array.last.times { |_| fruit_arr << sub_array[0] }
+  end
+  fruit_arr
+end
+
+# p buy_fruit([["apples", 3], ["orange", 1], ["bananas", 2]]) ==
+# ["apples", "apples", "apples", "orange", "bananas","bananas"]
+
+###########
+
+=begin
+
+Write a program that prints out groups of words that are anagrams. 
+Anagrams are words that have the same exact letters in them but 
+in a different order. Your output should look something like this:
+
+["demo", "dome", "mode"]
+["neon", "none"]
+#(etc)
+
+Understanding the Problem:
+  -Input: Array of strings
+  -Output: A series of arrays
+
+  -Rules:
+    -Method takes in an array of strings
+    -The method will sort through the strings and return an array 
+    or arrays of all words that are anagrams
+
+Test Cases:
+
+words =  ['demo', 'none', 'tied', 'evil', 'dome', 'mode', 'live',
+          'fowl', 'veil', 'wolf', 'diet', 'vile', 'edit', 'tide',
+          'flow', 'neon']
+
+Data Structures:
+  -strings, arrays
+
+Algorithm:
+-Initialize 'anagrams' to an empty array
+  -Iterate through input array
+    -Split current string in iteration by character
+    -Sort the characters
+    -Iterate through the input array again
+      -Split current string in iteration by character
+      -Sort the characters
+      -Compare current split and ordered array with the parent 
+      split and sorted array
+      -If two array match add each to 'anagrams' array
+  -Return 'anagrams'
+
+=end
+
+def find_anagrams(arr)
+  final_anagrams = []
+  arr.each do |word|
+    sorted_word = word.chars.sort
+    temp_arr = arr.each_with_object([]) do |word_inner, anagrams|
+      if word_inner.chars.sort == sorted_word
+        anagrams << word_inner 
+      end
+    end
+    final_anagrams << temp_arr
+  end
+  final_anagrams.uniq.each { |arr| puts arr.to_s }
+end
+
+words =  ['demo', 'none', 'tied', 'evil', 'dome', 'mode', 'live',
+  'fowl', 'veil', 'wolf', 'diet', 'vile', 'edit', 'tide',
+  'flow', 'neon']
+
+find_anagrams(words)
 
 ###########
 
 =begin
 
 
-Understannding the Problem:
+Understanding the Problem:
   -Input: 
   -Output: 
 
@@ -1414,7 +1840,7 @@ Algorithm:
 =begin
 
 
-Understannding the Problem:
+Understanding the Problem:
   -Input: 
   -Output: 
 
@@ -1437,7 +1863,30 @@ Algorithm:
 =begin
 
 
-Understannding the Problem:
+Understanding the Problem:
+  -Input: 
+  -Output: 
+
+  -Rules:
+    -
+
+Test Cases:
+
+
+Data Structures:
+  -
+
+Algorithm:
+  
+
+=end
+
+###########
+
+=begin
+
+
+Understanding the Problem:
   -Input: 
   -Output: 
 
