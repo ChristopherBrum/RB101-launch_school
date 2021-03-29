@@ -1810,7 +1810,196 @@ words =  ['demo', 'none', 'tied', 'evil', 'dome', 'mode', 'live',
   'fowl', 'veil', 'wolf', 'diet', 'vile', 'edit', 'tide',
   'flow', 'neon']
 
-find_anagrams(words)
+# find_anagrams(words)
+
+###########
+
+=begin
+
+Write a method that takes a floating point number that represents 
+an angle between 0 and 360 degrees and returns a String that 
+represents that angle in degrees, minutes and seconds. You should 
+use a degree symbol (°) to represent degrees, a single quote (') 
+to represent minutes, and a double quote (") to represent seconds. 
+A degree has 60 minutes, while a minute has 60 seconds.
+
+Note: your results may differ slightly depending on how you round 
+values, but should be within a second or two of the results shown.
+
+You should use two digit numbers with leading zeros when formatting 
+the minutes and seconds, e.g., 321°03'07".
+
+You may use this constant to represent the degree symbol:
+
+DEGREE = "\xC2\xB0"
+
+Understanding the Problem:
+  -Input: Integer
+  -Output: String
+
+  -Rules:
+    -Method will take in an integer as an argument
+    -The input integer 
+
+Test Cases:
+  dms(30) == %(30°00'00")
+  dms(76.73) == %(76°43'48")
+  dms(254.6) == %(254°36'00")
+  dms(93.034773) == %(93°02'05")
+  dms(0) == %(0°00'00")
+  dms(360) == %(360°00'00") || dms(360) == %(0°00'00")
+
+Data Structures:
+  -
+
+Algorithm:
+  
+
+=end
+
+###########
+
+=begin
+
+Write a method that takes an Array of numbers and then returns 
+the sum of the sums of each leading subsequence for that Array. 
+You may assume that the Array always contains at least one number.
+
+Understanding the Problem:
+  -Input: Array of integers
+  -Output: Integer
+
+  -Rules:
+    -Method takers an array of integers as an argument
+    -The input array will always have at least one element 
+    -Return a new array with an equal amount of elements as the input array
+      -Each element will be the sum of all elements up until the current integer
+      -Find the sum of all the sums in the new array
+    -Return the sum of sums 
+
+Test Cases:
+  sum_of_sums([3, 5, 2]) == (3) + (3 + 5) + (3 + 5 + 2) # -> (21)
+  sum_of_sums([1, 5, 7, 3]) == (1) + (1 + 5) + (1 + 5 + 7) + (1 + 5 + 7 + 3) # -> (36)
+  sum_of_sums([4]) == 4
+  sum_of_sums([1, 2, 3, 4, 5]) == 35
+
+Data Structures:
+  -Integers and Arrays
+
+Algorithm:
+  -Iterate through the input array
+  -Add the sum of each iteration and all previous sums to a new array
+  -Find and return the sum of the array of sums
+
+=end
+
+def sum_of_sums(array)
+  sum = 0
+  array.map { |number| sum += number }.sum
+end
+
+# p sum_of_sums([3, 5, 2]) == (3) + (3 + 5) + (3 + 5 + 2) # -> (21)
+# p sum_of_sums([1, 5, 7, 3]) == (1) + (1 + 5) + (1 + 5 + 7) + (1 + 5 + 7 + 3) # -> (36)
+# p sum_of_sums([4]) == 4
+# p sum_of_sums([1, 2, 3, 4, 5]) == 35
+
+###########
+
+=begin
+
+Mad libs are a simple game where you create a story template with 
+blanks for words. You, or another player, then construct a list 
+of words and place them into the story, creating an often silly 
+or funny story as a result.
+
+Create a simple mad-lib program that prompts for a noun, a verb, 
+an adverb, and an adjective and injects those into a story that 
+you create.
+
+Understanding the Problem:
+  -Input: 
+  -Output: 
+
+  -Rules:
+    -
+
+Test Cases:
+  Enter a noun: dog
+  Enter a verb: walk
+  Enter an adjective: blue
+  Enter an adverb: quickly
+
+  Do you walk your blue dog quickly? That's hilarious!
+
+Data Structures:
+  -
+
+Algorithm:
+  
+
+=end
+
+def mad_lib
+  puts "=> Enter a noun:"
+  noun = gets.chomp
+  puts "=> Enter a verb:"
+  verb = gets.chomp
+  puts "=> Enter a adjective:"
+  adjective = gets.chomp
+  puts "=> Enter a adverb:"
+  adverb = gets.chomp
+
+  puts "Why does the #{noun} #{verb} with their #{adjective} passengers #{adverb}? Because its nuts!"
+end
+
+# mad_lib
+
+###########
+
+=begin
+
+Write a method that returns a list of all substrings of a string 
+that start at the beginning of the original string. The return 
+value should be arranged in order from shortest to longest substring.
+
+Understanding the Problem:
+  -Input: string
+  -Output: array
+
+  -Rules:
+    -Takes in a string as an argument
+    -Returns an array containing all substrings that start with at the 
+    beginning of the input string
+    -Sub-strings should be ordered from shortest to longest
+
+Test Cases:
+  leading_substrings('abc') == ['a', 'ab', 'abc']
+  leading_substrings('a') == ['a']
+  leading_substrings('xyzzy') == ['x', 'xy', 'xyz', 'xyzz', 'xyzzy']
+
+Data Structures:
+  -strings and arrays
+
+Algorithm:
+  -Initialize an emoty array
+  -Iterate through the string using its length
+    -Push 1 char long substring to new array
+    -Incrememnt the length of the substring and repeat
+  -Return new array
+
+=end
+
+def leading_substrings(string)
+  sub_strings = []
+  1.upto(string.size) do |length|
+    sub_strings << string.slice(0, length)
+  end
+  sub_strings
+end
+
+p leading_substrings('abc') == ['a', 'ab', 'abc']
+p leading_substrings('a') == ['a']
+p leading_substrings('xyzzy') == ['x', 'xy', 'xyz', 'xyzz', 'xyzzy']
 
 ###########
 
