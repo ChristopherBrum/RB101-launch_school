@@ -1991,84 +1991,227 @@ Algorithm:
 
 def leading_substrings(string)
   sub_strings = []
+  string = string.downcase.gsub(/[^0-9a-z ]/i, '')
   1.upto(string.size) do |length|
     sub_strings << string.slice(0, length)
   end
   sub_strings
 end
 
-p leading_substrings('abc') == ['a', 'ab', 'abc']
-p leading_substrings('a') == ['a']
-p leading_substrings('xyzzy') == ['x', 'xy', 'xyz', 'xyzz', 'xyzzy']
+# p leading_substrings('abc') == ['a', 'ab', 'abc']
+# p leading_substrings('a') == ['a']
+# p leading_substrings('xyzzy') == ['x', 'xy', 'xyz', 'xyzz', 'xyzzy']
 
 ###########
 
 =begin
 
+Write a method that returns a list of all substrings of a string. 
+The returned list should be ordered by where in the string the 
+substring begins. This means that all substrings that start at 
+position 0 should come first, then all substrings that start at 
+position 1, and so on. Since multiple substrings will occur at each 
+position, the substrings at a given position should be returned 
+in order from shortest to longest.
+
+You may (and should) use the leading_substrings method you wrote 
+in the previous exercise:
 
 Understanding the Problem:
-  -Input: 
-  -Output: 
+  -Input: string
+  -Output: array
 
   -Rules:
-    -
+    -Method takes in a string as an argument
+    -The method will return an array containiing all sub-strings of the input string
+    -The substrings will be ordered by where in the string the sub-string begins
+      -For example, all sub-strings that start at index 0 will be before sub-strings 
+      that begin at index 1
+      -All sub-strings starting at the same index should be ordered shortest to longest
 
 Test Cases:
-
+  substrings('abcde') == [
+    'a', 'ab', 'abc', 'abcd', 'abcde',
+    'b', 'bc', 'bcd', 'bcde',
+    'c', 'cd', 'cde',
+    'd', 'de',
+    'e'
+  ]
 
 Data Structures:
-  -
+  -string and array
 
 Algorithm:
   
 
 =end
 
+def substrings(string)
+  sub_strings = []
+  str_length = string.length
+  
+  0.upto(string.size - 1) do |index|
+    sub_str = string.slice(index, str_length)
+    sub_strings << leading_substrings(sub_str)
+    str_length -= 1
+  end
+
+  sub_strings.flatten
+end
+
+# p substrings('abcde') == [
+#   'a', 'ab', 'abc', 'abcd', 'abcde',
+#   'b', 'bc', 'bcd', 'bcde',
+#   'c', 'cd', 'cde',
+#   'd', 'de',
+#   'e'
+# ]
+
 ###########
 
 =begin
 
+Write a method that returns a list of all substrings of a string 
+that are palindromic. That is, each substring must consist of the 
+same sequence of characters forwards as it does backwards. The 
+return value should be arranged in the same sequence as the 
+substrings appear in the string. Duplicate palindromes should 
+be included multiple times.
+
+You may (and should) use the substrings method you wrote in the 
+previous exercise.
+
+For the purposes of this exercise, you should consider all characters 
+and pay attention to case; that is, "AbcbA" is a palindrome, but 
+neither "Abcba" nor "Abc-bA" are. In addition, assume that single 
+characters are not palindromes.
 
 Understanding the Problem:
-  -Input: 
-  -Output: 
+  -Input: string
+  -Output: array
 
   -Rules:
-    -
+    -Method takes inn a string as an argument
+    -Returns an array of all sub-strings that are palindromes
+      -Each sub-string that is the same backwards as forwards
+    -The order should be the same as the sub-strings appear in the string
+    -Duplicate palindromes should all be included
+    -Use the #substrings method written above
+    -All characters are considered
+    -Case sensetive
+    -Single character sub-strings are not palindromes
 
 Test Cases:
-
+  palindromes('abcd') == []
+  palindromes('madam') == ['madam', 'ada']
+  palindromes('hello-madam-did-madam-goodbye') == [
+    'll', '-madam-', '-madam-did-madam-', 'madam', 'madam-did-madam', 'ada',
+    'adam-did-mada', 'dam-did-mad', 'am-did-ma', 'm-did-m', '-did-', 'did',
+    '-madam-', 'madam', 'ada', 'oo'
+  ]
+  palindromes('knitting cassettes') == [
+    'nittin', 'itti', 'tt', 'ss', 'settes', 'ette', 'tt'
+  ]
 
 Data Structures:
-  -
+  -strings and arrays
 
 Algorithm:
-  
+  -Get an array of all substrings of the input string
+  -Initialize new_arr to an empty array
+  -Iterate through the sub-strings array
+    -If string is more than one char long and the same forward and backward
+      -Push to new_array
+  -Return new_array
 
 =end
+
+def palindromes(string)
+  sub_strings = substrings(string)
+  palindromes = sub_strings.select do |sub_str|
+    sub_str.length > 1 && sub_str == sub_str.reverse
+  end
+end
+
+# p palindromes('abcd') == []
+# p palindromes('madam') == ['madam', 'ada']
+# p palindromes('hello-madam-did-madam-goodbye') == [
+#   'll', '-madam-', '-madam-did-madam-', 'madam', 'madam-did-madam', 'ada',
+#   'adam-did-mada', 'dam-did-mad', 'am-did-ma', 'm-did-m', '-did-', 'did',
+#   '-madam-', 'madam', 'ada', 'oo'
+# ]
+# p palindromes('knitting cassettes') == [
+#   'nittin', 'itti', 'tt', 'ss', 'settes', 'ette', 'tt'
+# ]
 
 ###########
-
 =begin
 
+Write a method that takes two arguments: the first is the 
+starting number, and the second is the ending number. Print 
+out all numbers between the two numbers, except if a number 
+is divisible by 3, print "Fizz", if a number is divisible by 
+5, print "Buzz", and finally if a number is divisible by 3 and 5, 
+print "FizzBuzz".
 
 Understanding the Problem:
-  -Input: 
-  -Output: 
+  -Input: 2 integers, a starting number and an ending number
+  -Output: Print out pattern
 
   -Rules:
-    -
+    -Take in 2 integers as argument
+    -The first is the starting number
+    -The second is the ending number
+    -Print all numbers between the starting and ending numbers
+      -The starting and ending numbers are included
+    -If a number is divisible by 3
+      -Print 'Fizz' instead of the number
+    -If a number is divisible by 5
+      -Print 'Buzz' instead of the number
+    -If a number is divisible by 3 and 5
+      -Print 'Fizz Buzz' instead of the number
+    
 
 Test Cases:
-
+  fizzbuzz(1, 15) # -> 1, 2, Fizz, 4, Buzz, Fizz, 7, 8, Fizz, Buzz, 11, Fizz, 13, 14, FizzBuzz
 
 Data Structures:
-  -
+  -Strings and integers
 
 Algorithm:
-  
+  -Loop or iterate through the range of numbers
+    -If the current iteration is divisible by 3
+      -Print 'Fizz'
+    -If the current iteration is divisible by 5
+      -Print 'Buzz'
+    -If divisible by 3 and 5
+      -Print 'Fizz Buzz'
+    -Otherwise
+      -Print the current iteration integer
 
 =end
+
+def fizzbuzz(start_num, end_num)
+  fizzbuzz_arr = []
+  (start_num..end_num).each do |num|
+    case
+    when (num % 3 + num % 5) == 0 then fizzbuzz_arr << 'FizzBuzz' 
+    when num % 3 == 0             then fizzbuzz_arr << 'Fizz'
+    when num % 5 == 0             then fizzbuzz_arr << 'Buzz' 
+    else                               fizzbuzz_arr << num
+    end
+  end
+  display_fizzbuzz(fizzbuzz_arr)
+end
+
+def display_fizzbuzz(array)
+  array.each do |element|
+    puts element
+    puts ' '
+  end
+end
+
+fizzbuzz(1, 15) # -> 1, 2, Fizz, 4, Buzz, Fizz, 7, 8, Fizz, Buzz, 11, Fizz, 13, 14, FizzBuzz
 
 ###########
 
