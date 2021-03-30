@@ -2211,7 +2211,7 @@ def display_fizzbuzz(array)
   end
 end
 
-# fizzbuzz(1, 15) # -> 1, 2, Fizz, 4, Buzz, Fizz, 7, 8, Fizz, Buzz, 11, Fizz, 13, 14, FizzBuzz
+fizzbuzz(1, 15) # -> 1, 2, Fizz, 4, Buzz, Fizz, 7, 8, Fizz, Buzz, 11, Fizz, 13, 14, FizzBuzz
 
 ###########
 
@@ -2327,3 +2327,9 @@ Algorithm:
   
 
 =end
+
+
+a = 10
+b = 12
+puts a, b, c
+c = 15
