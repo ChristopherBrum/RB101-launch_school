@@ -17,8 +17,8 @@ COMPUTER_MARKER = 'O'
 WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] +
                 [[1, 4, 7], [2, 5, 8], [3, 6, 9]] +
                 [[1, 5, 9], [3, 5, 7]]
- 
-# GAME SETUP 
+
+# GAME SETUP
 
 def prompt(msg)
   puts "=> #{msg}"
@@ -92,13 +92,20 @@ end
 
 def computer_places_piece!(brd)
   square = nil
+
   WINNING_LINES.each do |line|
     if brd.values_at(*line).count('X') == 2 &&
        brd.values_at(*line).count(' ') == 1
       square = line[brd.values_at(*line).index(' ')]
     end
   end
-  square == nil ? computer_places_randomly!(brd) : computer_places_defensively!(brd, square)
+
+  if square.nil?
+    computer_places_randomly!(brd)
+  else
+    computer_places_defensively!(brd, square)
+  end
+
   brd
 end
 
@@ -161,7 +168,7 @@ end
 
 def display_grand_winner(wins)
   display_blank_line
-  prompt("Congratulations #{detect_grand_winner(wins)}, you are the grand winner!")
+  prompt("Congrats #{detect_grand_winner(wins)}, you are the grand winner!")
   display_blank_line
 end
 
@@ -197,7 +204,7 @@ loop do
     end
 
     # prompt("Next round in...")
-    break if wins.values.any? { |wins| wins == 5 }
+    break if wins.values.any? { |wins_count| wins_count == 5 }
   end
 
   display_board(board)
