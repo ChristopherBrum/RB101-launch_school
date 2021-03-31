@@ -53,10 +53,28 @@ def empty_squares(brd)
   brd.keys.select { |num| brd[num] == INITIAL_MARKER }
 end
 
+def joinor(arr, separator=', ', link='or')
+  integer_options = ''
+  arr.each_with_index do |integer, index|
+    integer = integer.to_s
+    return tiny_joinor(arr) if arr.size < 3
+    integer_options += if index == arr.size - 1
+                         "#{link} #{integer}"
+                       else
+                         integer + separator
+                       end
+  end
+  integer_options
+end
+
+def tiny_joinor(arr)
+  arr.size == 2 ? "#{arr[0]} or #{arr[1]}" : arr[0].to_s
+end
+
 def player_places_piece!(brd)
   square = ''
   loop do
-    prompt("Choose a square (#{empty_squares(brd).join(', ')}):")
+    prompt("Choose a square: #{joinor(empty_squares(brd))}")
     square = gets.chomp.to_i
     break if empty_squares(brd).include?(square)
     prompt("Sorry, that's not a valid choice.")
