@@ -61,7 +61,19 @@ def tiny_joinor(arr)
   arr.size == 2 ? "#{arr[0]} or #{arr[1]}" : arr[0].to_s
 end
 
-p joinor([1, 2]) == "1 or 2"
-p joinor([1, 2, 3]) == "1, 2, or 3"
-p joinor([1, 2, 3], '; ') == "1; 2; or 3"
-p joinor([1, 2, 3], ', ', 'and') == "1, 2, and 3"
+# p joinor([1, 2]) == "1 or 2"
+# p joinor([1, 2, 3]) == "1, 2, or 3"
+# p joinor([1, 2, 3], '; ') == "1; 2; or 3"
+# p joinor([1, 2, 3], ', ', 'and') == "1, 2, and 3"
+
+
+def detect_grand_winner(wins)
+  wins.key(5)
+end
+
+wins = {
+  'Player' => 5,
+  'Computer' => 0
+}
+
+p detect_grand_winner(wins)

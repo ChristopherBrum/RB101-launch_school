@@ -17,9 +17,15 @@ COMPUTER_MARKER = 'O'
 WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] +
                 [[1, 4, 7], [2, 5, 8], [3, 6, 9]] +
                 [[1, 5, 9], [3, 5, 7]]
+ 
+# GAME SETUP 
 
 def prompt(msg)
   puts "=> #{msg}"
+end
+
+def display_blank_line
+  puts ''
 end
 
 # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
@@ -42,6 +48,8 @@ def display_board(brd)
   puts ""
 end
 # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+
+# TURN FUNCTIONALITY
 
 def initialize_board
   (1..9).each_with_object({}) do |num, new_board|
@@ -87,6 +95,8 @@ def computer_places_piece!(brd)
   brd[square] = COMPUTER_MARKER
 end
 
+# DETERMINE ROUND OUTCOME
+
 def board_full?(brd)
   empty_squares(brd).empty?
 end
@@ -106,30 +116,83 @@ def detect_winner(brd)
   nil
 end
 
+# SCORE KEEPING
+
+def update_wins(winner, wins)
+  wins[winner] += 1
+end
+
+def display_wins(wins)
+  prompt("Player score: #{wins['Player']}")
+  prompt("Computer score: #{wins['Computer']}")
+  puts ''
+end
+
+def display_winner(brd)
+  prompt("#{detect_winner(brd)} won!")
+end
+
+def reset_score!(wins)
+  wins['Player'] = 0
+  wins['Computer'] = 0
+end
+
+# GRAND WINNER
+
+def detect_grand_winner(wins)
+  wins.key(5)
+end
+
+def display_grand_winner(wins)
+  display_blank_line
+  prompt("Congratulations #{detect_grand_winner(wins)}, you are the grand winner!")
+  display_blank_line
+end
+
+# PROGRAM
+
+wins = {
+  'Player' => 0,
+  'Computer' => 0
+}
+
 loop do
-  board = initialize_board
-
+  board = ''
   loop do
+    board = initialize_board
+    loop do
+      display_board(board)
+      display_wins(wins)
+
+      player_places_piece!(board)
+      break if someone_won?(board) || board_full?(board)
+
+      computer_places_piece!(board)
+      break if someone_won?(board) || board_full?(board)
+    end
+
     display_board(board)
+    display_wins(wins)
 
-    player_places_piece!(board)
-    break if someone_won?(board) || board_full?(board)
+    if someone_won?(board)
+      update_wins(detect_winner(board), wins)
+    else
+      prompt("It's a tie!")
+    end
 
-    computer_places_piece!(board)
-    break if someone_won?(board) || board_full?(board)
+    # prompt("Next round in...")
+    break if wins.values.any? { |wins| wins == 5 }
   end
 
   display_board(board)
-
-  if someone_won?(board)
-    prompt("#{detect_winner(board)} won!")
-  else
-    prompt("It's a tie!")
-  end
+  display_wins(wins)
+  display_winner(board)
+  display_grand_winner(wins)
 
   prompt("Play again? (y or n)")
   answer = gets.chomp
   break unless answer.downcase.start_with?('y')
+  reset_score!(wins)
 end
 
 prompt("Thanks for playing Tic-Tac-Toe! Good Bye!!")
