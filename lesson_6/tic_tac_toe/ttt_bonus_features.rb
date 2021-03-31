@@ -76,4 +76,4 @@ wins = {
   'Computer' => 0
 }
 
-p detect_grand_winner(wins)
+# p detect_grand_winner(wins)

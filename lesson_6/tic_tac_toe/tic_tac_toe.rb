@@ -31,7 +31,7 @@ end
 # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
 def display_board(brd)
   system 'clear'
-  puts "You're a '#{PLAYER_MARKER}'"
+  puts "Player is a '#{PLAYER_MARKER}'"
   puts "Computer is an '#{COMPUTER_MARKER}'"
   puts ""
   puts "     |     |"
@@ -91,6 +91,22 @@ def player_places_piece!(brd)
 end
 
 def computer_places_piece!(brd)
+  square = nil
+  WINNING_LINES.each do |line|
+    if brd.values_at(*line).count('X') == 2 &&
+       brd.values_at(*line).count(' ') == 1
+      square = line[brd.values_at(*line).index(' ')]
+    end
+  end
+  square == nil ? computer_places_randomly!(brd) : computer_places_defensively!(brd, square)
+  brd
+end
+
+def computer_places_defensively!(brd, square)
+  brd[square] = COMPUTER_MARKER
+end
+
+def computer_places_randomly!(brd)
   square = empty_squares(brd).sample
   brd[square] = COMPUTER_MARKER
 end
