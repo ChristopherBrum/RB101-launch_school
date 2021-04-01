@@ -92,21 +92,18 @@ end
 
 def computer_places_piece!(brd)
   square = nil
-
   WINNING_LINES.each do |line|
-    if brd.values_at(*line).count('X') == 2 &&
-       brd.values_at(*line).count(' ') == 1
-      square = line[brd.values_at(*line).index(' ')]
+    if brd.values_at(*line).count(PLAYER_MARKER) == 2 &&
+       brd.values_at(*line).count(INITIAL_MARKER) == 1
+      square = find_immediate_threat(brd, line)
     end
   end
-
-  if square.nil?
-    computer_places_randomly!(brd)
-  else
-    computer_places_defensively!(brd, square)
-  end
-
+  square == nil ? computer_places_randomly!(brd) : computer_places_defensively!(brd, square)
   brd
+end
+
+def find_immediate_threat(brd, line)
+  line[brd.values_at(*line).index(INITIAL_MARKER)]
 end
 
 def computer_places_defensively!(brd, square)
