@@ -92,21 +92,40 @@ end
 
 def computer_places_piece!(brd)
   square = nil
+  computer_choice = nil
   WINNING_LINES.each do |line|
     if brd.values_at(*line).count(PLAYER_MARKER) == 2 &&
        brd.values_at(*line).count(INITIAL_MARKER) == 1
       square = find_immediate_threat(brd, line)
+      computer_choice = 'defense'
+    elsif brd.values_at(*line).count(COMPUTER_MARKER) == 2 &&
+          brd.values_at(*line).count(INITIAL_MARKER) == 1
+      square = find_immediate_threat(brd, line)
+      computer_choice = 'offense'
     end
   end
-  square == nil ? computer_places_randomly!(brd) : computer_places_defensively!(brd, square)
-  brd
+  computer_decision(square, computer_choice, brd)
+end
+
+def computer_decision(square, computer_choice, brd)
+  if computer_choice == 'defense'
+    computer_places_defensively!(brd, square)
+  elsif computer_choice == 'offense'
+    computer_places_offensively!(brd, square)
+  else
+    computer_places_randomly!(brd)
+  end
 end
 
 def find_immediate_threat(brd, line)
-  line[brd.values_at(*line).index(INITIAL_MARKER)]
+  line[brd.values_at(*line).index(' ')]
 end
 
 def computer_places_defensively!(brd, square)
+  brd[square] = COMPUTER_MARKER
+end
+
+def computer_places_offensively!(brd, square)
   brd[square] = COMPUTER_MARKER
 end
 

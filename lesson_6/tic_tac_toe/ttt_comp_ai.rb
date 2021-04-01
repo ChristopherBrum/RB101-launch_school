@@ -54,14 +54,29 @@ board = {1=>"X", 2=>"X", 3=>" ", 4=>" ", 5=>" ", 6=>" ", 7=>" ", 8=>" ", 9=>" "}
 
 def computer_places_piece!(brd)
   square = nil
+  computer_choice = nil
   WINNING_LINES.each do |line|
-    if brd.values_at(*line).count('X') == 2 &&
-       brd.values_at(*line).count(' ') == 1
+    if brd.values_at(*line).count(PLAYER_MARKER) == 2 &&
+       brd.values_at(*line).count(INITIAL_MARKER) == 1
       square = find_immediate_threat(brd, line)
+      computer_choice = 'defense'
+    elsif brd.values_at(*line).count(COMPUTER_MARKER) == 2 &&
+          brd.values_at(*line).count(INITIAL_MARKER) == 1
+      square = find_immediate_threat(brd, line)
+      computer_choice = 'offense'
     end
   end
-  square == nil ? computer_places_randomly!(brd) : computer_places_defensively!(brd, square)
-  brd
+  computer_decision(square, computer_choice, brd)
+end
+
+def computer_decision(square, computer_choice, brd)
+  if computer_choice == 'defense'
+    computer_places_defensively!(brd, square)
+  elsif computer_choice == 'offense'
+    computer_places_offensively!(brd, square)
+  else
+    computer_places_randomly!(brd)
+  end
 end
 
 def find_immediate_threat(brd, line)
@@ -69,6 +84,10 @@ def find_immediate_threat(brd, line)
 end
 
 def computer_places_defensively!(brd, square)
+  brd[square] = COMPUTER_MARKER
+end
+
+def computer_places_offensively!(brd, square)
   brd[square] = COMPUTER_MARKER
 end
 
@@ -81,8 +100,8 @@ def empty_squares(brd)
   brd.keys.select { |num| brd[num] == INITIAL_MARKER }
 end
 
-p computer_places_piece!({1=>"X", 2=>"X", 3=>" ", 4=>" ", 5=>" ", 6=>" ", 7=>" ", 8=>" ", 9=>" "}) == {1=>"X", 2=>"X", 3=>"O", 4=>" ", 5=>" ", 6=>" ", 7=>" ", 8=>" ", 9=>" "}
-p computer_places_piece!({1=>" ", 2=>"X", 3=>" ", 4=>" ", 5=>"X", 6=>" ", 7=>" ", 8=>" ", 9=>" "}) == {1=>" ", 2=>"X", 3=>" ", 4=>" ", 5=>"X", 6=>" ", 7=>" ", 8=>"O", 9=>" "}
-p computer_places_piece!({1=>"X", 2=>" ", 3=>" ", 4=>" ", 5=>"X", 6=>" ", 7=>" ", 8=>" ", 9=>" "}) == {1=>"X", 2=>" ", 3=>" ", 4=>" ", 5=>"X", 6=>" ", 7=>" ", 8=>" ", 9=>"O"}
-p computer_places_piece!({1=>" ", 2=>" ", 3=>"X", 4=>" ", 5=>" ", 6=>" ", 7=>"X", 8=>" ", 9=>" "}) == {1=>" ", 2=>" ", 3=>"X", 4=>" ", 5=>"O", 6=>" ", 7=>"X", 8=>" ", 9=>" "}
-p computer_places_piece!({1=>" ", 2=>" ", 3=>" ", 4=>" ", 5=>" ", 6=>" ", 7=>" ", 8=>"X", 9=>"X"}) == {1=>" ", 2=>" ", 3=>" ", 4=>" ", 5=>" ", 6=>" ", 7=>"O", 8=>"X", 9=>"X"}
+computer_places_piece!({1=>"X", 2=>"X", 3=>" ", 4=>" ", 5=>" ", 6=>" ", 7=>" ", 8=>" ", 9=>" "}) == {1=>"X", 2=>"X", 3=>"O", 4=>" ", 5=>" ", 6=>" ", 7=>" ", 8=>" ", 9=>" "}
+computer_places_piece!({1=>" ", 2=>"X", 3=>" ", 4=>" ", 5=>"X", 6=>" ", 7=>" ", 8=>" ", 9=>" "}) == {1=>" ", 2=>"X", 3=>" ", 4=>" ", 5=>"X", 6=>" ", 7=>" ", 8=>"O", 9=>" "}
+computer_places_piece!({1=>"X", 2=>" ", 3=>" ", 4=>" ", 5=>"X", 6=>" ", 7=>" ", 8=>" ", 9=>" "}) == {1=>"X", 2=>" ", 3=>" ", 4=>" ", 5=>"X", 6=>" ", 7=>" ", 8=>" ", 9=>"O"}
+computer_places_piece!({1=>" ", 2=>" ", 3=>"X", 4=>" ", 5=>" ", 6=>" ", 7=>"X", 8=>" ", 9=>" "}) == {1=>" ", 2=>" ", 3=>"X", 4=>" ", 5=>"O", 6=>" ", 7=>"X", 8=>" ", 9=>" "}
+computer_places_piece!({1=>" ", 2=>" ", 3=>" ", 4=>" ", 5=>" ", 6=>" ", 7=>" ", 8=>"X", 9=>"X"}) == {1=>" ", 2=>" ", 3=>" ", 4=>" ", 5=>" ", 6=>" ", 7=>"O", 8=>"X", 9=>"X"}
