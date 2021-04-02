@@ -11,12 +11,16 @@
 10. Good bye
 =end
 
+require 'pry'
+
+FIRST_MOVE = 'choose'
 INITIAL_MARKER = ' '
 PLAYER_MARKER = 'X'
 COMPUTER_MARKER = 'O'
 WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] +
                 [[1, 4, 7], [2, 5, 8], [3, 6, 9]] +
                 [[1, 5, 9], [3, 5, 7]]
+
 
 # GAME SETUP
 
@@ -79,6 +83,24 @@ def tiny_joinor(arr)
   arr.size == 2 ? "#{arr[0]} or #{arr[1]}" : arr[0].to_s
 end
 
+# DETERMINING PLAYER ORDER
+
+def determine_who_goes_first
+  system 'clear'
+  return 'player' if FIRST_MOVE == 'player'
+  return 'computer' if FIRST_MOVE == 'computer'
+  answer = ''
+  loop do
+    prompt("Choose who goes first: Enter 'c' for computer or 'p' for player")
+    answer = gets.chomp.downcase
+    break if answer == 'c' || answer == 'p'
+  end
+  return 'computer' if answer == 'c'
+  return 'player' if answer == 'p'
+end
+
+# PLAYER PLACES PIECE
+
 def player_places_piece!(brd)
   square = ''
   loop do
@@ -90,18 +112,20 @@ def player_places_piece!(brd)
   brd[square] = PLAYER_MARKER
 end
 
+# COMPUTER PLACES PIECE
+
 def computer_places_piece!(brd)
   square = nil
   computer_choice = nil
   WINNING_LINES.each do |line|
-    if brd.values_at(*line).count(PLAYER_MARKER) == 2 &&
+    if brd.values_at(*line).count(COMPUTER_MARKER) == 2 &&
        brd.values_at(*line).count(INITIAL_MARKER) == 1
       square = find_immediate_threat(brd, line)
-      computer_choice = 'defense'
-    elsif brd.values_at(*line).count(COMPUTER_MARKER) == 2 &&
+      computer_choice = 'offense'
+    elsif brd.values_at(*line).count(PLAYER_MARKER) == 2 &&
           brd.values_at(*line).count(INITIAL_MARKER) == 1
       square = find_immediate_threat(brd, line)
-      computer_choice = 'offense'
+      computer_choice = 'defense'
     end
   end
   computer_decision(square, computer_choice, brd)
@@ -130,8 +154,12 @@ def computer_places_offensively!(brd, square)
 end
 
 def computer_places_randomly!(brd)
-  square = empty_squares(brd).sample
-  brd[square] = COMPUTER_MARKER
+  if brd[5] == ' '
+    brd[5] = COMPUTER_MARKER
+  else
+    square = empty_squares(brd).sample
+    brd[square] = COMPUTER_MARKER
+  end
 end
 
 # DETERMINE ROUND OUTCOME
@@ -195,19 +223,32 @@ wins = {
   'Computer' => 0
 }
 
+
 loop do
   board = ''
+  who_goes_first = determine_who_goes_first
   loop do
     board = initialize_board
     loop do
       display_board(board)
       display_wins(wins)
 
-      player_places_piece!(board)
-      break if someone_won?(board) || board_full?(board)
+      if who_goes_first == 'player'
+        player_places_piece!(board) 
+        break if someone_won?(board) || board_full?(board)
 
-      computer_places_piece!(board)
-      break if someone_won?(board) || board_full?(board)
+        computer_places_piece!(board)
+        break if someone_won?(board) || board_full?(board)
+      end
+
+      if who_goes_first == 'computer'
+        computer_places_piece!(board)
+        break if someone_won?(board) || board_full?(board)
+        display_board(board)
+        display_wins(wins)
+        player_places_piece!(board) 
+        break if someone_won?(board) || board_full?(board)
+      end
     end
 
     display_board(board)
