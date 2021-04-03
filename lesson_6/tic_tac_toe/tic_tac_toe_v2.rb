@@ -12,7 +12,7 @@ def prompt(msg)
 end
 
 # Board creation & display
-def display_board(brd)
+def display_board(brd, wins)
   system 'clear'
   puts "You're a '#{PLAYER_MARKER}', Computer is an '#{COMPUTER_MARKER}'"
   puts ""
@@ -28,6 +28,8 @@ def display_board(brd)
   puts "  #{brd[7]}  |  #{brd[8]}  |  #{brd[9]}"
   puts "     |     |"
   puts ""
+  puts "Player score: #{wins['Player']}"
+  puts "Computer score: #{wins['Computer']}"
 end
 
 def initialize_board
@@ -36,7 +38,7 @@ def initialize_board
   new_board
 end
 
-# Returns array of available squares on board
+# Functionality of each round
 def empty_squares(brd)
   brd.keys.select { |num| brd[num] == INITIAL_MARKER }
 end
@@ -51,6 +53,7 @@ def joinor(arr, delimiter=', ', joining_word='or')
   end
 end
 
+# Player & Computer Moves
 def player_places_piece!(brd)
   square = ''
   loop do
@@ -68,6 +71,7 @@ def computer_places_piece!(brd)
   brd[square] = COMPUTER_MARKER
 end
 
+# Determining Winner & Score Keeping
 def board_full?(brd)
   empty_squares(brd).empty?
 end
@@ -91,32 +95,56 @@ def detect_winner(brd)
   nil
 end
 
+def update_score(wins, winner, brd)
+  wins[winner] += 1
+  display_board(brd, wins)
+end
+
+def reset_score(wins)
+  wins['Player'] = 0
+  wins['Computer'] = 0
+end
+
+# Grand Winner
+
+def detect_grand_winner(wins)
+
+end
+
 # Game Program
+
+wins = { 'Player' => 0, 'Computer' => 0 }
 
 loop do
   board = initialize_board
-
   loop do
-    display_board(board)
+    loop do
+      display_board(board, wins)
 
-    player_places_piece!(board)
-    break if  someone_won?(board) || board_full?(board)
+      player_places_piece!(board)
+      break if  someone_won?(board) || board_full?(board)
 
-    computer_places_piece!(board)
-    break if  someone_won?(board) || board_full?(board)
-  end
+      computer_places_piece!(board)
+      break if  someone_won?(board) || board_full?(board)
+    end
 
-  display_board(board)
+    display_board(board, wins)
 
-  if someone_won?(board)
-    prompt("#{detect_winner(board)} won!")
-  else
-    prompt("It's a tie!")
+    if someone_won?(board)
+      prompt("#{detect_winner(board)} won!")
+      update_score(wins, detect_winner(board), board)
+    else
+      prompt("It's a tie!")
+    end
+
+    break if wins.values.any? { |win| win >= 5 }
+    board = initialize_board
   end
 
   prompt("Play again? (y or n)")
   answer = gets.chomp
   break unless answer.downcase.start_with?('y')
+  reset_score(wins)
 end
 
 prompt("Thanks for playing Tic-Tac-Toe! Good bye!")
