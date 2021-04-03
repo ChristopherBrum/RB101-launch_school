@@ -93,16 +93,16 @@ def computer_places_piece!(brd)
       break if square
     end
   end
-  
+
+  square = 5 if !square && brd[5] == ' '
   square = empty_squares(brd).sample if !square
+
   brd[square] = COMPUTER_MARKER
 end
 
 def determine_square_threat(line, brd, marker)
   if brd.values_at(*line).count(marker) == 2
-    brd.select { |k,v| line.include?(k) && v == ' ' }.keys.first 
-  else
-    nil
+    brd.select { |k, v| line.include?(k) && v == ' ' }.keys.first
   end
 end
 
@@ -124,10 +124,6 @@ def detect_winner(brd)
     end
   end
   nil
-end
-
-def detect_immediate_threat(brd)
-
 end
 
 def update_score(wins, winner, brd)
@@ -191,3 +187,5 @@ loop do
 end
 
 prompt("Thanks for playing Tic-Tac-Toe! Good bye!")
+
+##### Left off #5 part C
