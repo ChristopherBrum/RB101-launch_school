@@ -11,6 +11,19 @@ def prompt(msg)
   puts "=> #{msg}"
 end
 
+def display_blank_line
+  puts ''
+end
+
+def display_countdown
+  puts ""
+  print 'Next round in '
+  [3, 2, 1].each do |num|
+    print "#{num} "
+    sleep(0.85)
+  end
+end
+
 # Board creation & display
 def display_board(brd, wins)
   system 'clear'
@@ -30,6 +43,7 @@ def display_board(brd, wins)
   puts ""
   puts "Player score: #{wins['Player']}"
   puts "Computer score: #{wins['Computer']}"
+  puts ''
 end
 
 def initialize_board
@@ -45,9 +59,9 @@ end
 
 def joinor(arr, delimiter=', ', joining_word='or')
   case arr.length
-  when 1 then "#{arr[0]}"
-  when 2 then "#{arr[0]} #{joining_word} #{arr[1]}"
-  else 
+  when 1 then arr[0].to_s
+  when 2 then "#{arr[0]}#{joining_word}#{arr[1]}"
+  else
     last = arr.pop
     "#{arr.join(delimiter)}#{delimiter}#{joining_word} #{last}"
   end
@@ -82,17 +96,17 @@ end
 
 def detect_winner(brd)
   WINNING_LINES.each do |line|
-    if brd[line[0]] == PLAYER_MARKER &&
-       brd[line[1]] == PLAYER_MARKER &&
-       brd[line[2]] == PLAYER_MARKER
+    if line.all? { |el| brd[el] == PLAYER_MARKER }
       return 'Player'
-    elsif brd[line[0]] == COMPUTER_MARKER &&
-          brd[line[1]] == COMPUTER_MARKER &&
-          brd[line[2]] == COMPUTER_MARKER
+    elsif line.all? { |el| brd[el] == COMPUTER_MARKER }
       return 'Computer'
     end
   end
   nil
+end
+
+def detect_immediate_threat(brd)
+
 end
 
 def update_score(wins, winner, brd)
@@ -107,8 +121,9 @@ end
 
 # Grand Winner
 
-def detect_grand_winner(wins)
-
+def display_grand_winner(wins)
+  puts "#{wins.key(5)} is the Grand Winner!!"
+  display_blank_line
 end
 
 # Game Program
@@ -117,29 +132,36 @@ wins = { 'Player' => 0, 'Computer' => 0 }
 
 loop do
   board = initialize_board
+  # best out of 5 loop
   loop do
+    # square selection loop
     loop do
       display_board(board, wins)
 
       player_places_piece!(board)
-      break if  someone_won?(board) || board_full?(board)
+      break if someone_won?(board) || board_full?(board)
 
       computer_places_piece!(board)
-      break if  someone_won?(board) || board_full?(board)
+      break if someone_won?(board) || board_full?(board)
     end
 
     display_board(board, wins)
 
+    # determine & display winner
     if someone_won?(board)
-      prompt("#{detect_winner(board)} won!")
       update_score(wins, detect_winner(board), board)
+      prompt("#{detect_winner(board)} won!")
     else
       prompt("It's a tie!")
     end
 
     break if wins.values.any? { |win| win >= 5 }
+    display_countdown
     board = initialize_board
   end
+
+  display_board(board, wins)
+  display_grand_winner(wins)
 
   prompt("Play again? (y or n)")
   answer = gets.chomp
