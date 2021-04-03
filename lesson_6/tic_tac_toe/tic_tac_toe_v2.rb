@@ -81,8 +81,29 @@ def player_places_piece!(brd)
 end
 
 def computer_places_piece!(brd)
-  square = empty_squares(brd).sample
+  square = nil
+  WINNING_LINES.each do |line|
+    square = determine_square_threat(line, brd, COMPUTER_MARKER)
+    break if square
+  end
+
+  if !square
+    WINNING_LINES.each do |line|
+      square = determine_square_threat(line, brd, PLAYER_MARKER)
+      break if square
+    end
+  end
+  
+  square = empty_squares(brd).sample if !square
   brd[square] = COMPUTER_MARKER
+end
+
+def determine_square_threat(line, brd, marker)
+  if brd.values_at(*line).count(marker) == 2
+    brd.select { |k,v| line.include?(k) && v == ' ' }.keys.first 
+  else
+    nil
+  end
 end
 
 # Determining Winner & Score Keeping
