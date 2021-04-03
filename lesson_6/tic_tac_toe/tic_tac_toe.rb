@@ -18,14 +18,23 @@ def display_blank_line
 end
 
 def display_countdown
-  5.times do
-    print '.'
-    sleep(0.75)
+  puts ""
+  print 'Next round in '
+  [3, 2, 1].each do |num|
+    print "#{num} "
+    sleep(0.85)
   end
+end
+
+def display_welcome
+  system 'clear'
+  puts "~~~~~~~~~~~~~~~~~~~~> WELCOME TO TIC_TAC_TOE <~~~~~~~~~~~~~~~~~~~~"
+  display_blank_line
 end
 
 # rubocop:disable Metrics/AbcSize
 def display_board(brd)
+  system 'clear'
   display_game_legend
   puts ""
   puts "     |     |"
@@ -44,7 +53,6 @@ end
 # rubocop:enable Metrics/AbcSize
 
 def display_game_legend
-  system 'clear'
   puts "Player is a '#{PLAYER_MARKER}'"
   puts "Computer is an '#{COMPUTER_MARKER}'"
   puts ''
@@ -87,7 +95,6 @@ end
 # DETERMINING PLAYER ORDER
 
 def determine_who_goes_first
-  system 'clear'
   return 'player' if FIRST_MOVE == 'player'
   return 'computer' if FIRST_MOVE == 'computer'
   answer = ''
@@ -95,6 +102,7 @@ def determine_who_goes_first
     prompt("Choose who goes first: Enter 'c' for computer or 'p' for player")
     answer = gets.chomp.downcase
     break if answer == 'c' || answer == 'p'
+    prompt("Sorry, lets try that again.")
   end
   return 'computer' if answer == 'c'
   return 'player' if answer == 'p'
@@ -127,49 +135,27 @@ end
 
 def computer_places_piece!(brd)
   square = nil
-  computer_choice = nil
+
   WINNING_LINES.each do |line|
-    if brd.values_at(*line).count(COMPUTER_MARKER) == 2 &&
-       brd.values_at(*line).count(INITIAL_MARKER) == 1
-      square = find_immediate_threat(brd, line)
-      computer_choice = 'offense'
-    elsif brd.values_at(*line).count(PLAYER_MARKER) == 2 &&
-          brd.values_at(*line).count(INITIAL_MARKER) == 1
-      square = find_immediate_threat(brd, line)
-      computer_choice = 'defense'
-    end
+    break if square
+    square = determine_square_threat(line, brd, COMPUTER_MARKER)
   end
-  computer_decision(square, computer_choice, brd)
-end
 
-def computer_decision(square, computer_choice, brd)
-  if computer_choice == 'defense'
-    computer_places_defensively!(brd, square)
-  elsif computer_choice == 'offense'
-    computer_places_offensively!(brd, square)
-  else
-    computer_places_randomly!(brd)
+  WINNING_LINES.each do |line|
+    break if square
+    square = determine_square_threat(line, brd, PLAYER_MARKER)
   end
-end
 
-def find_immediate_threat(brd, line)
-  line[brd.values_at(*line).index(' ')]
-end
+  if !square
+    square = (brd[5] == INITIAL_MARKER ? 5 : empty_squares(brd).sample)
+  end
 
-def computer_places_defensively!(brd, square)
   brd[square] = COMPUTER_MARKER
 end
 
-def computer_places_offensively!(brd, square)
-  brd[square] = COMPUTER_MARKER
-end
-
-def computer_places_randomly!(brd)
-  if brd[5] == ' '
-    brd[5] = COMPUTER_MARKER
-  else
-    square = empty_squares(brd).sample
-    brd[square] = COMPUTER_MARKER
+def determine_square_threat(line, brd, marker)
+  if brd.values_at(*line).count(marker) == 2
+    brd.select { |k, v| line.include?(k) && v == ' ' }.keys.first
   end
 end
 
@@ -219,6 +205,7 @@ end
 def display_round_end(board, wins)
   if someone_won?(board)
     update_wins(detect_winner(board), wins)
+    display_wins(wins)
     display_winner(board)
   else
     prompt("It's a tie!")
@@ -240,17 +227,17 @@ end
 
 # PROGRAM
 
-wins = {
-  'Player' => 0,
-  'Computer' => 0
-}
+wins = { 'Player' => 0, 'Computer' => 0 }
 
 loop do
   board = ''
+  display_welcome
   starting_player = determine_who_goes_first
+
   loop do
     board = initialize_board
     current_player = starting_player
+
     loop do
       display_board(board)
       display_wins(wins)
@@ -261,8 +248,6 @@ loop do
     end
 
     display_board(board)
-    display_wins(wins)
-
     display_round_end(board, wins)
 
     break if wins.values.any? { |wins_count| wins_count >= GAMES_TO_WIN }
