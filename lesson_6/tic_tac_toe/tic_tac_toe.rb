@@ -2,6 +2,7 @@ FIRST_MOVE = 'choose'
 INITIAL_MARKER = ' '
 PLAYER_MARKER = 'X'
 COMPUTER_MARKER = 'O'
+GAMES_TO_WIN = 5
 WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] +
                 [[1, 4, 7], [2, 5, 8], [3, 6, 9]] +
                 [[1, 5, 9], [3, 5, 7]]
@@ -16,11 +17,16 @@ def display_blank_line
   puts ''
 end
 
-# rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+def display_countdown
+  5.times do
+    print '.'
+    sleep(0.75)
+  end
+end
+
+# rubocop:disable Metrics/AbcSize
 def display_board(brd)
-  system 'clear'
-  puts "Player is a '#{PLAYER_MARKER}'"
-  puts "Computer is an '#{COMPUTER_MARKER}'"
+  display_game_legend
   puts ""
   puts "     |     |"
   puts "  #{brd[1]}  |  #{brd[2]}  |  #{brd[3]}"
@@ -35,7 +41,18 @@ def display_board(brd)
   puts "     |     |"
   puts ""
 end
-# rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+# rubocop:enable Metrics/AbcSize
+
+def display_game_legend
+  system 'clear'
+  puts "Player is a '#{PLAYER_MARKER}'"
+  puts "Computer is an '#{COMPUTER_MARKER}'"
+  puts ''
+  puts "Square selection locations:"
+  puts "1|2|3"
+  puts "4|5|6"
+  puts "7|8|9"
+end
 
 # TURN FUNCTIONALITY
 
@@ -191,11 +208,22 @@ end
 
 def display_winner(brd)
   prompt("#{detect_winner(brd)} won!")
+  display_countdown
 end
 
 def reset_score!(wins)
   wins['Player'] = 0
   wins['Computer'] = 0
+end
+
+def display_round_end(board, wins)
+  if someone_won?(board)
+    update_wins(detect_winner(board), wins)
+    display_winner(board)
+  else
+    prompt("It's a tie!")
+    display_countdown
+  end
 end
 
 # GRAND WINNER
@@ -235,14 +263,9 @@ loop do
     display_board(board)
     display_wins(wins)
 
-    if someone_won?(board)
-      update_wins(detect_winner(board), wins)
-    else
-      prompt("It's a tie!")
-    end
+    display_round_end(board, wins)
 
-    # prompt("Next round in...")
-    break if wins.values.any? { |wins_count| wins_count == 5 }
+    break if wins.values.any? { |wins_count| wins_count >= GAMES_TO_WIN }
   end
 
   display_board(board)
