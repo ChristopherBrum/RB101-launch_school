@@ -8,3 +8,4 @@ def initialize_deck(values, suits)
 end
 
 deck = initialize_deck(VALUES, SUITS)
+p deck.size
