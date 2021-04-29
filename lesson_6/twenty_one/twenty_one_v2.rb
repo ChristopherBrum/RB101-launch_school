@@ -22,6 +22,10 @@ def display_blank_space
   puts ''
 end
 
+def prompt(msg)
+  puts "=> #{msg}"
+end
+
 # GAME INITIALIZATION
 
 def initialize_deck(values, suits)
@@ -39,15 +43,16 @@ def initial_deal!(player, dealer, deck)
   dealer.push(take_card_from_deck!(deck))
 end
 
-def take_card_from_deck!(deck) 
+def take_card_from_deck!(deck)
   deck.delete(deck.sample)
 end
 
 # DISPLAY HANDS & CARD FORMATTING
 
 def display_hands(player, dealer)
-  puts "Dealer has: #{format_hand(dealer)}"
-  puts "You have: #{format_hand(player)}"
+  prompt("Dealer has: #{format_hand(dealer)}")
+  prompt("You have: #{format_hand(player)}")
+  display_blank_space
 end
 
 def format_hand(hand)
@@ -71,14 +76,64 @@ def number_card?(card)
   card == card.to_i.to_s
 end
 
+# SCORE KEEPING & DISPLAY
+
+def display_current_score(player, dealer, score)
+  score[:player] = player.map { |card| get_card_value(card[0], score[:player]) }.sum
+  score[:dealer] = dealer.map { |card| get_card_value(card[0], score[:dealer]) }.sum
+  prompt("Dealer has: #{score[:dealer]}")
+  prompt("You have: #{score[:player]}")
+  display_blank_space
+end
+
+def get_card_value(card, score)
+  return card.to_i if is_not_face_card?(card)
+  if card == 'J' || card == 'Q' || card == 'K'
+    10
+  elsif card == 'A'
+    (score + 11) > 21 ? 1 : 11
+  end
+end
+
+def is_not_face_card?(card)
+  card == card.to_i.to_s
+end
+
+# PLAYER TURN MECHANICS
+
+def hit_or_stay
+  answer = ''
+  loop do
+    prompt("Hit or stay?")
+    answer = gets.chomp.downcase
+    break if valid_answer?(answer)
+    prompt("Sorry, that's not a valid input")
+  end
+  answer
+end
+
+def valid_answer?(answer)
+  %w(hit stay h s).include?(answer)
+end
+
 # GAME LOOP
 
 loop do
   system 'clear'
-  deck, player, dealer  = initialize_deck(VALUES, SUITS), [], []
+  deck = initialize_deck(VALUES, SUITS)
+  score = { player: 0, dealer: 0 }
+  player = []
+  dealer = []
+
   initial_deal!(player, dealer, deck)
   display_hands(player, dealer)
-  
-  p player
+
+  # PLAYER TURN LOOP
+  loop do
+    display_current_score(player  , dealer, score)
+    hit_or_stay
+    break
+  end
+
   break
 end
