@@ -26,6 +26,28 @@ def prompt(msg)
   puts "=> #{msg}"
 end
 
+def clear_screen
+  system 'clear'
+end
+
+def display_players_turn
+  prompt("Player, it's your turn.")
+  display_blank_space
+end
+
+def display_score(player_score, dealer_score)
+  prompt("Dealer current score: #{dealer_score}")
+  prompt("Your current score: #{player_score}")
+  display_blank_space
+end
+
+def display_game(player, dealer, score)
+  player_score = fetch_current_score(player, score[:player])
+  dealer_score = fetch_current_score(dealer, score[:dealer])
+  display_hands(player, dealer)
+  display_score(player_score, dealer_score)
+end
+
 # GAME INITIALIZATION
 
 def initialize_deck(values, suits)
@@ -50,8 +72,8 @@ end
 # DISPLAY HANDS & CARD FORMATTING
 
 def display_hands(player, dealer)
-  prompt("Dealer has: #{format_hand(dealer)}")
-  prompt("You have: #{format_hand(player)}")
+  prompt("Dealers hand: #{format_hand(dealer)}")
+  prompt("Your hand: #{format_hand(player)}")
   display_blank_space
 end
 
@@ -78,12 +100,10 @@ end
 
 # SCORE KEEPING & DISPLAY
 
-def display_current_score(player, dealer, score)
-  score[:player] = player.map { |card| get_card_value(card[0], score[:player]) }.sum
-  score[:dealer] = dealer.map { |card| get_card_value(card[0], score[:dealer]) }.sum
-  prompt("Dealer has: #{score[:dealer]}")
-  prompt("You have: #{score[:player]}")
-  display_blank_space
+def fetch_current_score(hand, score)
+  current_score = score
+  hand.each { |card| current_score += get_card_value(card[0], current_score) }
+  current_score
 end
 
 def get_card_value(card, score)
@@ -99,9 +119,13 @@ def is_not_face_card?(card)
   card == card.to_i.to_s
 end
 
+def busted?(score)
+  score > 21
+end
+
 # PLAYER TURN MECHANICS
 
-def hit_or_stay
+def hit?
   answer = ''
   loop do
     prompt("Hit or stay?")
@@ -109,7 +133,7 @@ def hit_or_stay
     break if valid_answer?(answer)
     prompt("Sorry, that's not a valid input")
   end
-  answer
+  %w(h hit).include?(answer)
 end
 
 def valid_answer?(answer)
@@ -119,20 +143,23 @@ end
 # GAME LOOP
 
 loop do
-  system 'clear'
+  clear_screen
   deck = initialize_deck(VALUES, SUITS)
   score = { player: 0, dealer: 0 }
   player = []
   dealer = []
-
   initial_deal!(player, dealer, deck)
-  display_hands(player, dealer)
+  display_game(player, dealer, score)
 
   # PLAYER TURN LOOP
   loop do
-    display_current_score(player  , dealer, score)
-    hit_or_stay
-    break
+    answer = hit?
+    break if !answer
+    clear_screen
+    player.push(take_card_from_deck!(deck))
+    display_game(player, dealer, score)
+    player_score = fetch_current_score(player, score[:player])
+    break if busted?(player_score)
   end
 
   break
