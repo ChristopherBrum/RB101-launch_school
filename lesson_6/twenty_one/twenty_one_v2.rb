@@ -42,10 +42,11 @@ def display_score(player_score, dealer_score)
 end
 
 def display_game(player, dealer, score)
-  player_score = fetch_current_score(player, score[:player])
-  dealer_score = fetch_current_score(dealer, score[:dealer])
+  clear_screen
+  score[:player] += fetch_current_score(player, score[:player])
+  score[:dealer] += fetch_current_score(dealer, score[:dealer])
   display_hands(player, dealer)
-  display_score(player_score, dealer_score)
+  display_score(score[:player], score[:dealer])
 end
 
 # GAME INITIALIZATION
@@ -67,6 +68,10 @@ end
 
 def take_card_from_deck!(deck)
   deck.delete(deck.sample)
+end
+
+def add_card_to_hand(hand, deck)
+  hand.push(take_card_from_deck!(deck))
 end
 
 # DISPLAY HANDS & CARD FORMATTING
@@ -99,6 +104,10 @@ def number_card?(card)
 end
 
 # SCORE KEEPING & DISPLAY
+
+# def update_score!(dealer, player, score)
+#   score[:player] = fetch_current_score(player, score)
+# end
 
 def fetch_current_score(hand, score)
   current_score = score
@@ -140,6 +149,12 @@ def valid_answer?(answer)
   %w(hit stay h s).include?(answer)
 end
 
+# DEALER TURN MECHANICS
+
+def dealer_stays?(dealer, deck, score)
+  score >= 17
+end
+
 # GAME LOOP
 
 loop do
@@ -153,14 +168,31 @@ loop do
 
   # PLAYER TURN LOOP
   loop do
+    # BREAK NEXT 2 LINES INTO METHOD 
     answer = hit?
     break if !answer
-    clear_screen
-    player.push(take_card_from_deck!(deck))
+    add_card_to_hand(player, deck)
     display_game(player, dealer, score)
-    player_score = fetch_current_score(player, score[:player])
-    break if busted?(player_score)
+    break if busted?(fetch_current_score(player, score[:player]))
   end
 
-  break
+  # DEALER TURN LOOP
+  loop do
+    add_card_to_hand(dealer, deck)
+    display_game(player, dealer, score[:dealer])
+    if busted?(fetch_current_score(player, score[:player])) ||
+       busted?(fetch_current_score(dealer, score[:dealer])) ||
+       dealer_stays?(dealer, deck, dealer_score)
+      break
+    end
+    
+  end
+
+  # DETERMINE WINNER
+  puts "Dealer: #{score[:dealer]} Player: #{score[:player]}"
+
+  prompt("Play another round? (y or yes)")
+  answer = gets.chomp.downcase
+  break unless answer == 'y' || answer == 'yes' 
 end
+
