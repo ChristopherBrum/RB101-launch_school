@@ -22,9 +22,22 @@ def display_blank_space
   puts ''
 end
 
+def prompt(msg)
+  puts "=> #{msg}"
+end
+
+def two_sec_delay
+  sleep(2)
+end
+
+def clear_screen
+  system 'clear'
+end
+
 # GAME MECHANICS
 
 def initialize_deck(values, suits)
+  clear_screen
   suits.each_with_object([]) do |suit, array|
     values.each { |value| array.push([value, suit]) }
   end
@@ -35,49 +48,63 @@ def initialize_game(player, dealer, deck)
 end
 
 def initial_deal!(plr, dlr, deck)
-  2.times do  
+  2.times do
     plr.push(take_card_from_deck!(deck))
-    dlr.push(take_card_from_deck!(deck))
-  end 
+  end
+  dlr.push(take_card_from_deck!(deck))
 end
 
-def take_card_from_deck!(deck) 
+def take_card_from_deck!(deck)
   deck.delete(deck.sample)
-end
-
-def display_hands_and_score_player_turn(dealer, player)
-  system 'clear'
-  display_dealer_hand_hidden(dealer)
-  display_player_hand(player)
-  display_blank_space
-  puts "Your score: #{tally_score(player)}"
-  display_blank_space
-end
-
-def display_hands_and_score_dealer_turn(dealer, player)
-  system 'clear'
-  display_dealer_hand_shown(dealer)
-  display_player_hand(player)
-  display_blank_space
-  puts "Dealer score: #{tally_score(dealer)}"
-  puts "Your score: #{tally_score(player)}"
-  display_blank_space
-end
-
-def display_dealer_turn
-  display_blank_space
-  puts "Dealers turn!"
-  sleep(2)
 end
 
 # FORMATTING AND DISPLAYING HANDS
 
-def is_not_face_card?(card)
-  card == card.to_i.to_s
+def display_dealer_turn
+  display_blank_space
+  prompt("Dealers turn!")
+  two_sec_delay
 end
 
-def format_card_name(card)
-  return card[0] if is_not_face_card?(card[0])
+def display_hands_and_score(player, dealer)
+  clear_screen
+  display_hands(player, dealer)
+  display_dealer_score(dealer)
+  display_player_score(player)
+end
+
+def display_hands(player, dealer)
+  prompt("Dealers hand: #{format_hand(dealer)}")
+  prompt("Your hand: #{format_hand(player)}")
+  display_blank_space
+end
+
+def display_player_score(plr)
+  prompt("Your current total: #{fetch_current_score(plr)}")
+  display_blank_space
+end
+
+def display_dealer_score(dlr)
+  prompt("Dealer's current total: #{fetch_current_score(dlr)}")
+end
+
+def display_dealer_hits
+  print "=> Dealer hits"
+  3.times do
+    print ' .'
+    sleep(0.8)
+  end
+end
+
+def format_hand(hand)
+  formatted_cards = hand.map { |card| format_card(card) }
+  formatted_cards.push('unknown') if formatted_cards.size < 2
+  last_card = formatted_cards.delete_at(-1)
+  formatted_cards.join(', ').concat(" and #{last_card}")
+end
+
+def format_card(card)
+  return card[0] if not_face_card?(card[0])
   case card[0]
   when 'J' then 'Jack'
   when 'Q' then 'Queen'
@@ -86,112 +113,87 @@ def format_card_name(card)
   end
 end
 
-def display_player_hand(plr)
-  puts "You have: #{format_shown_hand(plr)}"
-end
-
-def display_dealer_hand_hidden(dlr)
-  puts "Dealer has: #{format_hidden_hand(dlr)}"
-end
-
-def display_dealer_hand_shown(dlr)
-  puts "Dealer has: #{format_shown_hand(dlr)}"
-end
-
-def format_hidden_hand(hand)
-  formatted_hand = []
-  hand.each { |card| formatted_hand.push(format_card_name(card)) }
-  formatted_hand.delete(formatted_hand.last)
-  formatted_hand.join(', ').concat(" and unkown")
-end
-
-def format_shown_hand(hand)
-  formatted_hand = []
-  hand.each { |card| formatted_hand.push(format_card_name(card)) }
-  last_card = formatted_hand.delete(formatted_hand.last)
-  formatted_hand.join(', ').concat(" and #{last_card}")
-end
-
 # PLAYER TURN
 
 def player_turn(player, dealer, deck)
-  loop do 
-    display_hands_and_score_player_turn(dealer, player)
-    puts "Hit or stay?"
+  loop do
+    display_hands_and_score(player, dealer)
+    prompt("Hit or stay?")
     answer = gets.chomp.downcase
 
     player.push(deck.sample) if answer == 'hit'
-    break if answer == 'stay' || has_busted?(tally_score(player))
+    break if answer == 'stay' || busted?(fetch_current_score(player))
   end
-  display_hands_and_score_dealer_turn(dealer, player)
-  puts "Bust!" if has_busted?(tally_score(player))
 end
 
 # DEALERS TURN
 
 def dealer_turn(dealer, player, deck)
-  loop do 
-    display_hands_and_score_dealer_turn(dealer, player)
-    puts "Dealer busts!" if has_busted?(tally_score(dealer))
-    sleep(2)
-    break if tally_score(dealer) >= 17 ||
-             
-             has_busted?(tally_score(dealer))
-
+  dealer.push(deck.sample)
+  display_hands_and_score(player, dealer)
+  loop do
+    break if busted?(fetch_current_score(player)) ||
+             busted?(fetch_current_score(dealer)) ||
+             fetch_current_score(dealer) >= 17
+    display_dealer_hits
     dealer.push(deck.sample)
-    display_hands_and_score_dealer_turn(dealer, player)
+    display_hands_and_score(player, dealer)
   end
 end
 
 # SCORE KEEPING
 
-def tally_score(hand)
+def fetch_current_score(hand)
   score = 0
   hand.each { |card| score += get_card_value(card, score) }
   score
 end
 
 def get_card_value(card, score)
-  return card.first.to_i if is_not_face_card?(card[0])
+  return card.first.to_i if not_face_card?(card[0])
   if card.first == 'J' || card.first == 'Q' || card.first == 'K'
     10
   elsif card.first == 'A'
-    (score + 11) > 21 ? 1 : 11
+    determine_ace_value(score)
   end
 end
 
-def is_twenty_one?(score)
-  score == 21
+def determine_ace_value(score)
+  (score + 11) > 21 ? 1 : 11
 end
 
-def has_busted?(score)
+def not_face_card?(card)
+  card == card.to_i.to_s
+end
+
+def busted?(score)
   score > 21
 end
 
 def determine_winner(dealer, player)
-  dlr = tally_score(dealer)
-  plr = tally_score(player)
+  dlr = fetch_current_score(dealer)
+  plr = fetch_current_score(player)
   if plr > 21
-    puts "You bust. Dealer Wins!"
+    prompt("You bust. Dealer Wins!")
   elsif dlr > 21
-    puts "Dealer busts. You win!"
+    prompt("Dealer busts. You win!")
   elsif plr > dlr
-    puts "You win!"
+    prompt("You win!")
   elsif dlr >= plr
-    puts "Dealer wins!"
+    prompt("Dealer wins!")
   end
 end
 
 # PROGRAM
 
-loop do 
+loop do
   deck = initialize_deck(VALUES, SUITS)
   player = []
   dealer = []
 
   initialize_game(player, dealer, deck)
   player_turn(player, dealer, deck)
-  determine_winner(dealer, player)
+  # determine_winner(dealer, player)
   dealer_turn(dealer, player, deck)
   determine_winner(dealer, player)
   break

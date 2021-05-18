@@ -43,10 +43,10 @@ end
 
 def display_game(player, dealer, score)
   clear_screen
-  score[:player] += fetch_current_score(player, score[:player])
-  score[:dealer] += fetch_current_score(dealer, score[:dealer])
+  player_score = fetch_current_score(player, score[:player])
+  dealer_score = fetch_current_score(dealer, score[:dealer])
   display_hands(player, dealer)
-  display_score(score[:player], score[:dealer])
+  display_score(player_score, dealer_score)
 end
 
 # GAME INITIALIZATION
@@ -116,15 +116,19 @@ def fetch_current_score(hand, score)
 end
 
 def get_card_value(card, score)
-  return card.to_i if is_not_face_card?(card)
+  return card.to_i if not_face_card?(card)
   if card == 'J' || card == 'Q' || card == 'K'
     10
   elsif card == 'A'
-    (score + 11) > 21 ? 1 : 11
+    determine_ace_value(score)
   end
 end
 
-def is_not_face_card?(card)
+def determine_ace_value(score)
+  (score + 11) > 21 ? 1 : 11
+end
+
+def not_face_card?(card)
   card == card.to_i.to_s
 end
 
@@ -151,7 +155,7 @@ end
 
 # DEALER TURN MECHANICS
 
-def dealer_stays?(dealer, deck, score)
+def dealer_stays?(score)
   score >= 17
 end
 
@@ -168,7 +172,7 @@ loop do
 
   # PLAYER TURN LOOP
   loop do
-    # BREAK NEXT 2 LINES INTO METHOD 
+    # BREAK NEXT 2 LINES INTO METHOD
     answer = hit?
     break if !answer
     add_card_to_hand(player, deck)
@@ -179,20 +183,17 @@ loop do
   # DEALER TURN LOOP
   loop do
     add_card_to_hand(dealer, deck)
-    display_game(player, dealer, score[:dealer])
+    display_game(player, dealer, score)
     if busted?(fetch_current_score(player, score[:player])) ||
        busted?(fetch_current_score(dealer, score[:dealer])) ||
-       dealer_stays?(dealer, deck, dealer_score)
+       dealer_stays?(score[:dealer])
       break
     end
-    
   end
 
   # DETERMINE WINNER
-  puts "Dealer: #{score[:dealer]} Player: #{score[:player]}"
 
   prompt("Play another round? (y or yes)")
   answer = gets.chomp.downcase
-  break unless answer == 'y' || answer == 'yes' 
+  break unless answer == 'y' || answer == 'yes'
 end
-
