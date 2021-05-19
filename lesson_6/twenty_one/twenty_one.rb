@@ -1,7 +1,7 @@
 VALUES = %w(2 3 4 5 6 7 8 9 10 J Q K A)
 SUITS = %w(C D H S)
 FACE_CARDS = { 'J': 'Jack', 'Q': 'Queen', 'K': 'King', 'A': 'Ace' }
-MAX_SCORE = 101
+MAX_SCORE = 21
 MIN_DEALER_BET = {
   21 => 17,
   31 => 27,
