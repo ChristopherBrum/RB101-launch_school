@@ -38,6 +38,17 @@ def clear_screen
   system 'clear'
 end
 
+def welcome
+  clear_screen
+  puts "~~~~~~~~>   Welcome to Twenty-One  <~~~~~~~~"
+  display_blank_space
+  print "Dealing Cards"
+  4.times do
+    sleep(0.8)
+    print " ."
+  end
+end
+
 def goodbye
   display_blank_space
   prompt("Thanks for playing Twenty-One!! Goodbye!")
@@ -76,8 +87,9 @@ def display_dealer_turn
   two_sec_delay
 end
 
-def display_hands_and_score(player, dealer)
+def display_hands_and_score(player, dealer, wins)
   clear_screen
+  display_hands_won(wins)
   display_hands(player, dealer)
   display_dealer_score(dealer)
   display_player_score(player)
@@ -123,11 +135,16 @@ def format_card(card)
   end
 end
 
+def display_hands_won(wins)
+  prompt("Hands won by Dealer: #{wins[:dealer]}, Hands won by Player: #{wins[:player]}")
+  display_blank_space
+end
+
 # PLAYER TURN
 
-def player_turn(player, dealer, deck)
+def player_turn(player, dealer, deck, wins)
   loop do
-    display_hands_and_score(player, dealer)
+    display_hands_and_score(player, dealer, wins)
     player_hits = hit?
     player.push(deck.sample) if player_hits
     break if busted?(fetch_current_score(player)) || !player_hits
@@ -148,16 +165,16 @@ end
 
 # DEALERS TURN
 
-def dealer_turn(dealer, player, deck)
+def dealer_turn(dealer, player, deck, wins)
   dealer.push(deck.sample)
-  display_hands_and_score(player, dealer)
+  display_hands_and_score(player, dealer, wins)
   loop do
     break if busted?(fetch_current_score(player)) ||
              busted?(fetch_current_score(dealer)) ||
              fetch_current_score(dealer) >= 17
     display_dealer_hits
     dealer.push(deck.sample)
-    display_hands_and_score(player, dealer)
+    display_hands_and_score(player, dealer, wins)
   end
 end
 
@@ -192,28 +209,72 @@ end
 
 # WINNER
 
-def declare_winner(dealer, player)
+def declare_winner(dealer, player, wins)
   dlr = fetch_current_score(dealer)
   plr = fetch_current_score(player)
   if plr > 21
-    prompt("You busted. Dealer Wins!")
+    prompt("You busted. Dealer Wins this hand!")
   elsif dlr > 21
-    prompt("Dealer busts. You win!")
+    prompt("Dealer busts. You win this hand!")
   elsif plr > dlr
-    prompt("You win!")
+    prompt("You win this hand!")
   elsif dlr >= plr
-    prompt("Dealer wins!")
+    prompt("Dealer wins this hand!")
   end
   display_blank_space
+  next_round? unless winner?(wins)
 end
 
-def display_final_scores(player, dealer)
+def next_round?
+  loop do
+    prompt("Ready for the next round? Press any key to continue.")
+    answer = gets.chomp
+    break if answer != nil
+  end
+  true
+end
+
+def display_final_scores(player, dealer, wins)
+  display_hands_and_score(player, dealer, wins)
   display_streamer
   prompt("Dealer has a #{format_hand(dealer)}, \
 for a total of: #{fetch_current_score(dealer)}")
   prompt("You have a #{format_hand(player)}, \
 for a total of: #{fetch_current_score(player)}")
   display_streamer
+  display_blank_space
+end
+
+def update_winner!(player, dealer, wins)
+  dlr = fetch_current_score(dealer)
+  plr = fetch_current_score(player)
+  if plr > 21
+    wins[:dealer] += 1
+  elsif dlr > 21
+    wins[:player] += 1
+  elsif plr > dlr
+    wins[:player] += 1
+  elsif dlr >= plr
+    wins[:dealer] += 1
+  end
+end
+
+def winner?(wins)
+  wins[:dealer] >= 2 || wins[:player] >= 2
+end
+
+def display_game_winner(wins)
+  winner = ''
+  if wins.key(2) == :player
+    winner = 'Player'
+  elsif wins.key(2) == :dealer
+    winner = 'Dealer'
+  end
+  prompt("")
+  puts "==>"
+  puts("===>!!! Congratulations #{winner}, you are the grand winner !!!")
+  puts "==>"
+  prompt("")
   display_blank_space
 end
 
@@ -227,16 +288,23 @@ end
 
 # PROGRAM
 
+welcome
 loop do
-  deck = initialize_deck(VALUES, SUITS)
-  player = []
-  dealer = []
+  wins = { player: 0, dealer: 0 }
+  loop do
+    deck = initialize_deck(VALUES, SUITS)
+    player = []
+    dealer = []
 
-  initialize_game(player, dealer, deck)
-  player_turn(player, dealer, deck)
-  dealer_turn(dealer, player, deck)
-  display_final_scores(player, dealer)
-  declare_winner(dealer, player)
+    initialize_game(player, dealer, deck)
+    player_turn(player, dealer, deck, wins)
+    dealer_turn(dealer, player, deck, wins)
+    update_winner!(player, dealer, wins)
+    display_final_scores(player, dealer, wins)
+    declare_winner(dealer, player, wins)
+    break if winner?(wins)
+  end
+  display_game_winner(wins)
   break unless play_again?
 end
 goodbye
