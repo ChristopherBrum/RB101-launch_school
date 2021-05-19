@@ -17,6 +17,29 @@ require 'pry'
 VALUES = %w(2 3 4 5 6 7 8 9 10 J Q K A)
 SUITS = %w(C D H S)
 FACE_CARDS = { 'J': 'Jack', 'Q': 'Queen', 'K': 'King', 'A': 'Ace' }
+MAX_SCORE = 101
+MIN_DEALER_BET = {
+  21 => 17,
+  31 => 27,
+  41 => 37,
+  51 => 47,
+  61 => 57,
+  71 => 67,
+  81 => 77,
+  91 => 87,
+  101 => 97
+}
+GAME_TITLE = {
+  21 => 'Twenty-One',
+  31 => 'Thirty-One',
+  41 => 'Fourty-One',
+  51 => 'Fifty-One',
+  61 => 'Sixty-One',
+  71 => 'Seventy-One',
+  81 => 'Eighty-One',
+  91 => 'Ninety-One',
+  101 => 'One-Hundred-One'
+}
 
 def display_blank_space
   puts ''
@@ -40,7 +63,7 @@ end
 
 def welcome
   clear_screen
-  puts "~~~~~~~~>   Welcome to Twenty-One  <~~~~~~~~"
+  puts "~~~~~~~~>   Welcome to #{GAME_TITLE[MAX_SCORE]}  <~~~~~~~~"
   display_blank_space
   print "Dealing Cards"
   4.times do
@@ -51,7 +74,7 @@ end
 
 def goodbye
   display_blank_space
-  prompt("Thanks for playing Twenty-One!! Goodbye!")
+  prompt("Thanks for playing #{GAME_TITLE[MAX_SCORE]}!! Goodbye!")
   display_blank_space
 end
 
@@ -89,6 +112,7 @@ end
 
 def display_hands_and_score(player, dealer, wins)
   clear_screen
+  display_game_rules
   display_hands_won(wins)
   display_hands(player, dealer)
   display_dealer_score(dealer)
@@ -135,8 +159,14 @@ def format_card(card)
   end
 end
 
+def display_game_rules
+  puts "** Closest to #{MAX_SCORE} without going over wins. **"
+  display_blank_space
+end
+
 def display_hands_won(wins)
-  prompt("Hands won by Dealer: #{wins[:dealer]}, Hands won by Player: #{wins[:player]}")
+  prompt("Hands won by Dealer: #{wins[:dealer]}, \
+Hands won by Player: #{wins[:player]}")
   display_blank_space
 end
 
@@ -171,7 +201,7 @@ def dealer_turn(dealer, player, deck, wins)
   loop do
     break if busted?(fetch_current_score(player)) ||
              busted?(fetch_current_score(dealer)) ||
-             fetch_current_score(dealer) >= 17
+             fetch_current_score(dealer) >= MIN_DEALER_BET[MAX_SCORE]
     display_dealer_hits
     dealer.push(deck.sample)
     display_hands_and_score(player, dealer, wins)
@@ -196,7 +226,7 @@ def get_card_value(card, score)
 end
 
 def determine_ace_value(score)
-  (score + 11) > 21 ? 1 : 11
+  (score + 11) > MAX_SCORE ? 1 : 11
 end
 
 def not_face_card?(card)
@@ -204,7 +234,7 @@ def not_face_card?(card)
 end
 
 def busted?(score)
-  score > 21
+  score > MAX_SCORE
 end
 
 # WINNER
@@ -212,9 +242,9 @@ end
 def declare_winner(dealer, player, wins)
   dlr = fetch_current_score(dealer)
   plr = fetch_current_score(player)
-  if plr > 21
+  if plr > MAX_SCORE
     prompt("You busted. Dealer Wins this hand!")
-  elsif dlr > 21
+  elsif dlr > MAX_SCORE
     prompt("Dealer busts. You win this hand!")
   elsif plr > dlr
     prompt("You win this hand!")
@@ -229,7 +259,7 @@ def next_round?
   loop do
     prompt("Ready for the next round? Press any key to continue.")
     answer = gets.chomp
-    break if answer != nil
+    break if !answer.nil?
   end
   true
 end
@@ -248,9 +278,9 @@ end
 def update_winner!(player, dealer, wins)
   dlr = fetch_current_score(dealer)
   plr = fetch_current_score(player)
-  if plr > 21
+  if plr > MAX_SCORE
     wins[:dealer] += 1
-  elsif dlr > 21
+  elsif dlr > MAX_SCORE
     wins[:player] += 1
   elsif plr > dlr
     wins[:player] += 1
@@ -260,14 +290,14 @@ def update_winner!(player, dealer, wins)
 end
 
 def winner?(wins)
-  wins[:dealer] >= 2 || wins[:player] >= 2
+  wins[:dealer] >= 5 || wins[:player] >= 5
 end
 
 def display_game_winner(wins)
   winner = ''
-  if wins.key(2) == :player
+  if wins.key(5) == :player
     winner = 'Player'
-  elsif wins.key(2) == :dealer
+  elsif wins.key(5) == :dealer
     winner = 'Dealer'
   end
   prompt("")
