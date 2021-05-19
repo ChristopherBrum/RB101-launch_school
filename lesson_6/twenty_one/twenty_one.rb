@@ -25,6 +25,8 @@ GAME_TITLE = {
   101 => 'One-Hundred-One'
 }
 
+# FORMATTING METHODS 
+
 def display_blank_space
   puts ''
 end
@@ -273,10 +275,6 @@ def update_winner!(player, dealer, wins)
   end
 end
 
-def winner?(wins)
-  wins[:dealer] >= 5 || wins[:player] >= 5
-end
-
 def display_game_winner(wins)
   winner = ''
   if wins.key(5) == :player
@@ -290,6 +288,10 @@ def display_game_winner(wins)
   puts "==>"
   prompt("")
   display_blank_space
+end
+
+def winner?(wins)
+  wins[:dealer] >= 5 || wins[:player] >= 5
 end
 
 # PLAY AGAIN?
