@@ -1,31 +1,21 @@
 VALUES = %w(2 3 4 5 6 7 8 9 10 J Q K A)
 SUITS = %w(C D H S)
 FACE_CARDS = { 'J': 'Jack', 'Q': 'Queen', 'K': 'King', 'A': 'Ace' }
+VALID_ANSWER = %w(h hit s stay)
+VALID_HIT = %w(h hit)
+HANDS_TO_WIN = 5
 MAX_SCORE = 21
-MIN_DEALER_BET = {
-  21 => 17,
-  31 => 27,
-  41 => 37,
-  51 => 47,
-  61 => 57,
-  71 => 67,
-  81 => 77,
-  91 => 87,
-  101 => 97
+GAME_VERSION = {
+  21 => [17, 'Twenty-One'],
+  31 => [27, 'Thirty-One'],
+  41 => [37, 'Fourty-One'],
+  51 => [47, 'Fifty-One'],
+  61 => [57, 'Sixty-One'],
+  71 => [67, 'Seventy-One'],
+  81 => [77, 'Eighty-One'],
+  91 => [87, 'Ninety-One'],
+  101 => [97, 'One-Hundred-One']
 }
-GAME_TITLE = {
-  21 => 'Twenty-One',
-  31 => 'Thirty-One',
-  41 => 'Fourty-One',
-  51 => 'Fifty-One',
-  61 => 'Sixty-One',
-  71 => 'Seventy-One',
-  81 => 'Eighty-One',
-  91 => 'Ninety-One',
-  101 => 'One-Hundred-One'
-}
-
-# FORMATTING METHODS 
 
 def display_blank_space
   puts ''
@@ -48,10 +38,42 @@ def clear_screen
 end
 
 def welcome
+  loop do
+    clear_screen
+    display_game_title
+    display_rules
+    break start?
+  end
   clear_screen
-  puts "~~~~~~~~>   Welcome to #{GAME_TITLE[MAX_SCORE]}  <~~~~~~~~"
+  display_dealing_animation
+end
+
+def display_game_title
+  puts "~~~~~~~~>   Welcome to #{GAME_VERSION[MAX_SCORE][1]}  <~~~~~~~~"
   display_blank_space
-  print "Dealing Cards"
+end
+
+def display_rules
+  prompt("Rules:")
+  display_blank_space
+  prompt("Closest to #{MAX_SCORE} without going over wins the hand.")
+  prompt("In the case of a tie the Dealer wins the hand.")
+  prompt("First person to win #{HANDS_TO_WIN} hands is the winner.")
+  prompt("Press 'ctrl' + 'c' at any time to exit the game")
+  display_blank_space
+end
+
+def start?
+  loop do
+    prompt("Press any key to start the game.")
+    answer = gets.chomp
+    break if !answer.nil?
+  end
+  true
+end
+
+def display_dealing_animation
+  print "=> Dealing Cards"
   4.times do
     sleep(0.8)
     print " ."
@@ -60,11 +82,9 @@ end
 
 def goodbye
   display_blank_space
-  prompt("Thanks for playing #{GAME_TITLE[MAX_SCORE]}!! Goodbye!")
+  prompt("Thanks for playing #{GAME_VERSION[MAX_SCORE][1]}!! Goodbye!")
   display_blank_space
 end
-
-# GAME MECHANICS
 
 def initialize_deck(values, suits)
   clear_screen
@@ -88,8 +108,6 @@ def take_card_from_deck!(deck)
   deck.delete(deck.sample)
 end
 
-# FORMATTING AND DISPLAYING HANDS
-
 def display_dealer_turn
   display_blank_space
   prompt("Dealers turn!")
@@ -98,7 +116,6 @@ end
 
 def display_hands_and_score(player, dealer, wins)
   clear_screen
-  display_game_rules
   display_hands_won(wins)
   display_hands(player, dealer)
   display_dealer_score(dealer)
@@ -145,18 +162,11 @@ def format_card(card)
   end
 end
 
-def display_game_rules
-  puts "** Closest to #{MAX_SCORE} without going over wins. **"
-  display_blank_space
-end
-
 def display_hands_won(wins)
   prompt("Hands won by Dealer: #{wins[:dealer]}, \
 Hands won by Player: #{wins[:player]}")
   display_blank_space
 end
-
-# PLAYER TURN
 
 def player_turn(player, dealer, deck, wins)
   loop do
@@ -171,15 +181,13 @@ def hit?
   answer = ''
   loop do
     prompt("Hit or stay?")
-    answer = gets.chomp.downcase
-    break if %w(h hit s stay).include?(answer)
+    answer = gets.chomp.downcase.strip
+    break if VALID_ANSWER.include?(answer)
     prompt("Invaid inout. Please try again")
     two_sec_delay
   end
-  %w(h hit).include?(answer) ? true : false
+  VALID_HIT.include?(answer) ? true : false
 end
-
-# DEALERS TURN
 
 def dealer_turn(dealer, player, deck, wins)
   dealer.push(deck.sample)
@@ -187,14 +195,12 @@ def dealer_turn(dealer, player, deck, wins)
   loop do
     break if busted?(fetch_current_score(player)) ||
              busted?(fetch_current_score(dealer)) ||
-             fetch_current_score(dealer) >= MIN_DEALER_BET[MAX_SCORE]
+             fetch_current_score(dealer) >= GAME_VERSION[MAX_SCORE][0]
     display_dealer_hits
     dealer.push(deck.sample)
     display_hands_and_score(player, dealer, wins)
   end
 end
-
-# SCORE KEEPING
 
 def fetch_current_score(hand)
   score = 0
@@ -222,8 +228,6 @@ end
 def busted?(score)
   score > MAX_SCORE
 end
-
-# WINNER
 
 def declare_winner(dealer, player, wins)
   dlr = fetch_current_score(dealer)
@@ -277,9 +281,9 @@ end
 
 def display_game_winner(wins)
   winner = ''
-  if wins.key(5) == :player
+  if wins.key(HANDS_TO_WIN) == :player
     winner = 'Player'
-  elsif wins.key(5) == :dealer
+  elsif wins.key(HANDS_TO_WIN) == :dealer
     winner = 'Dealer'
   end
   prompt("")
@@ -291,18 +295,14 @@ def display_game_winner(wins)
 end
 
 def winner?(wins)
-  wins[:dealer] >= 5 || wins[:player] >= 5
+  wins[:dealer] >= HANDS_TO_WIN || wins[:player] >= HANDS_TO_WIN
 end
-
-# PLAY AGAIN?
 
 def play_again?
   prompt("Play again? y or yes")
   answer = gets.chomp.downcase
   return true if %w(y yes).include?(answer)
 end
-
-# PROGRAM
 
 welcome
 loop do
